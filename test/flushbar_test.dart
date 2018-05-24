@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   test('adds one to input values', () {
-    final calculator = new Flushbar(new Container(), "Test", "This is a test");
+    final calculator = new Flushbar("Test", "This is a test");
     expect(calculator.duration, null);
   });
 }
