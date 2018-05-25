@@ -1,12 +1,3 @@
-## [0.0.1] - 2017-05-23
-             
-### Added
-- Flushbar creation
-- Single button action
-- Status listeners
-- Left or right icon positioning
-- Top or bottom positioning
-
 ## [0.2.0] - 2017-05-24
 ### Added
 - Removed requirement for a initial widget
@@ -19,3 +10,12 @@
 - Flushbar now accepts an Icon instead of only the IconData and IconColor
 - Alignment changes
 - Default background color
+
+## [0.0.1] - 2017-05-23
+             
+### Added
+- Flushbar creation
+- Single button action
+- Status listeners
+- Left or right icon positioning
+- Top or bottom positioning

@@ -68,4 +68,129 @@ Flushbar flushbar = new Flushbar(
     ),
   );
 ```
+
+If you already have a Flushbar instance, you can use `changeTitleText` and `changeMessageText`.
+* Remember to call `commitChanges()` after you finish making changes.
+
+```dart
+flushbar
+  .changeTitleText(titleText)
+  .changeMessageText(messageText)
+  .commitChanges();
+```
+
 //TODO put picture
+
+### Customize background and shadow
+
+You can paint the background with any color you want. The same goes for shadows.
+`shadow` won't show by default. You will only see a shadow if you specify a color.
+
+```dart
+Flushbar flushbar = new Flushbar(
+    "Hey Ninja", //title
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+    backgroundColor: Colors.red,
+    shadowColor: Colors.red[800],
+  );
+```
+
+Want a gradient in the background? No problem.
+* Note that `backgroundColor` will be ignored while `backgroundGradient` is not null
+
+```dart
+Flushbar flushbar = new Flushbar(
+  "Hey Ninja", //title
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+  backgroundGradient: new LinearGradient(colors: [Colors.blue, Colors.teal]),
+  backgroundColor: Colors.red,
+  shadowColor: Colors.blue[800],
+  );
+```
+
+//TODO put picture
+
+You can also change these properties using `changeBackgroundColor()`,
+`changeShadowColor()`, and `changeBackgroundGradient()`
+
+```dart
+flushbar.changeBackgroundColor(backgroundColor)
+  .changeBackgroundGradient(backgroundGradient)
+  .changeShadowColor(shadowColor)
+  .commitChanges();
+```
+
+//TODO put picture
+
+### Icon and button action
+
+Lets put a Icon that has a `PulseAnimation`. Icons have this animation by default
+and cannot be changed as of this moment.
+* You can use `changeMainButton()` and `changeIcon()` once you have an instance.
+
+```dart
+Flushbar flushbar = new Flushbar(
+  "Hey Ninja", //title
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+  icon: Icon(
+    Icons.info_outline,
+    color: Colors.blue,
+  ),
+  mainButton: FlatButton(
+    onPressed: () {},
+    child: Text("ADD", style: TextStyle(color: Colors.amber),),
+  ),
+);
+```
+
+//TODO put picture
+
+Icon can be at the `IconPosition.START` or at the `IconPosition.END` of the bar. Use `iconPosition`.
+
+```dart
+Flushbar flushbar = new Flushbar(
+  "Hey Ninja", //title
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+  iconPosition: IconPosition.END,
+  icon: Icon(
+    Icons.info_outline,
+    color: Colors.blue,
+  ),
+  mainButton: FlatButton(
+    onPressed: () {},
+    child: Text("ADD", style: TextStyle(color: Colors.amber),),
+  ),
+);
+```
+
+//TODO put picture
+
+### Flushbar position
+
+Flushbar can be at `FlushbarPosition.BOTTOM` or `FlushbarPosition.TOP`.
+* This variable is immutable and can not be changed after the bar is created.
+
+```dart
+Flushbar flushbar = new Flushbar(
+  "Hey Ninja", //title
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+  flushbarPosition: FlushbarPosition.TOP,
+);
+```
+
+//TODO put picture
+
+### Duration and dismiss policy
+
+By default, Flushbar is infinite. To set a duration, use `duration` or `changeDuration()`.
+By default, Flushbar is dismissible by the user. A right or left scroll will dismiss it.
+Use `isDismissible` or `changeIsDismissible()` to change it.
+
+```dart
+Flushbar flushbar = new Flushbar(
+  "Hey Ninja", //title
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+  duration: Duration(seconds: 3),
+  isDismissible: false,
+);
+```
