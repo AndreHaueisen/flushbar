@@ -143,7 +143,7 @@ Flushbar flushbar = new Flushbar(
 );
 ```
 
-//TODO put picture
+//TODO put gif
 
 Icon can be at the `IconPosition.START` or at the `IconPosition.END` of the bar. Use `iconPosition`.
 
@@ -163,7 +163,7 @@ Flushbar flushbar = new Flushbar(
 );
 ```
 
-//TODO put picture
+//TODO put gif
 
 ### Flushbar position
 
@@ -193,4 +193,154 @@ Flushbar flushbar = new Flushbar(
   duration: Duration(seconds: 3),
   isDismissible: false,
 );
+```
+
+### Progress Indicator
+
+If you are loading something, use a [LinearProgressIndicator](https://docs.flutter.io/flutter/material/LinearProgressIndicator-class.html)
+
+```dart
+Flushbar flushbar = new Flushbar(
+  "Hey Ninja", //title
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+  linearProgressIndicator: new LinearProgressIndicator(backgroundColor: Colors.grey[800],),
+);
+```
+
+//TODO add gif
+
+### Show and dismiss animation curves
+
+You can set custom animation curves using `forwardAnimationCurve` and `reverseAnimationCurve`.
+* These properties are immutable
+
+```dart
+Flushbar flushbar = new Flushbar(
+  "Hey Ninja", //title
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+  forwardAnimationCurve: Curves.decelerate,
+  reverseAnimationCurve: Curves.easeOut,
+);
+```
+
+//TODO add gif
+
+### Listen to status updates
+
+You can listen to status update using `onStatusChanged`. If you need to reconfigure the listener,
+use the `changeStatusListener()` method.
+* Note that when you pass a new listener using `changeStatusListener()`, it will activate immediately
+so you can check in what state the Flushbar is.
+
+```dart
+Flushbar flushbar = new Flushbar(
+  "Hey Ninja", //title
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+  onStatusChanged: (FlushbarStatus status){
+    if(status == FlushbarStatus.DISMISSED){
+      doSomething();
+    }
+  },
+);
+```
+
+## Usage Sample
+
+Since you are probably going to control your Flushbar from `YourMainScreenWidget()`, pass it as an argument.
+For consistency, use methods to alternate between you flushbar status.
+
+```dart
+class YourAwesomeApp extends StatelessWidget {
+
+  Flushbar flushbar = new Flushbar(
+    "Hey Ninja", //title
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", //message
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'YourAwesomeApp',
+      home: new Scaffold(
+        body: Stack(
+          children: <Widget>[YourMainScreenWidget(flushbar), flushbar],
+        ),
+      ),
+    );
+  }
+}
+```
+
+```dart
+
+class YourMainScreenWidget extends StatelessWdiget {
+  
+  YourMainScreenWidget(this.flushbar);
+  
+  Flushbar flushbar;
+  
+  void changeToInfoFlushbar(String title, String message) {
+      flushbar
+          .changeTitle(title)
+          .changeMessage(message)
+          .changeDuration(Duration(seconds: 3))
+          .changeIcon(Icon(
+            Icons.info_outline,
+            color: Colors.amber,
+          ))
+          .changeStatusListener(
+            (FlushbarStatus status) {
+              talkLikeAFox();
+            },
+         ).commitChanges();
+  }
+  
+  void changeToConfirmFlushbar(String title, String message) {
+      flushbar
+          .changeTitle(title)
+          .changeMessage(message)
+          .changeDuration(Duration(seconds: 3))
+          .changeIcon(Icon(
+            Icons.check,
+            color: Colors.green,
+          ))
+          .changeStatusListener(
+        (FlushbarStatus status) {
+          if (status == FlushbarStatus.DISMISSED) {
+            runLikeASnail();
+          }
+        },
+      ).commitChanges();
+  }
+  
+  void changeToErrorFlushbar(String title, String message) {
+      flushbar
+          .changeTitle(title)
+          .changeMessage(message)
+          .changeDuration(Duration(seconds: 3))
+          .changeIcon(Icon(
+            Icons.error,
+            color: Colors.red,
+          ))
+          .changeStatusListener(null)
+          .commitChanges();
+    }
+  
+  void changeToLoadingFlushbar(String title, String message) {
+      flushbar
+          .changeTitle(title)
+          .changeMessage(message)
+          .changeDuration(null)
+          .changeIcon(Icon(
+            Icons.cloud_upload,
+            color: Colors.orange,
+            ),
+          )
+          .changeLinearProgressIndicator(new LinearProgressIndicator(
+            backgroundColor: Color(0xFF303030),
+          ),
+            )
+          .commitChanges();
+  }
+}
 ```
