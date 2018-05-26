@@ -1,7 +1,5 @@
 import 'package:test/test.dart';
-
 import 'package:flushbar/flushbar.dart';
-import 'package:flutter/material.dart';
 
 void main() {
   test('adds one to input values', () {

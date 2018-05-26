@@ -4,6 +4,8 @@
 .packages
 .pub/
 
+readme_resources/
+
 build/
 ios/.generated/
 ios/Flutter/Generated.xcconfig

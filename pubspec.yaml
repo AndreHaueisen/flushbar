@@ -1,8 +1,12 @@
 name: flushbar
-description: A custom widget for user notification
-version: 0.0.1
-author: Andre Haueisen
-homepage:
+description: A flexible widget for user notification
+version: 0.2.5
+author: Andre Haueisen <andrehaueisen@gmail.com>
+homepage: https://github.com/AndreHaueisen/flushbar
+
+environment:
+  sdk: '>=1.19.0 <2.0.0'
+  flutter: ^0.1.2
 
 dependencies:
   flutter:
