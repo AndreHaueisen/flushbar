@@ -1,3 +1,9 @@
+## [0.2.5] - 2017-05-26
+### Changed
+- Bug fixes
+- Moved icon animation into the flushbar
+- changeStatusListener() is now activated on change
+
 ## [0.2.0] - 2017-05-24
 ### Added
 - Removed requirement for a initial widget

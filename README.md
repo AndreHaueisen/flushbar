@@ -38,7 +38,7 @@ class YourAwesomeApp extends StatelessWidget {
   }
 }
 ```
-//TODO put picture
+![Basic Example](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/basic_bar.png)
 
 
 ### Customize your text
@@ -79,7 +79,7 @@ flushbar
   .commitChanges();
 ```
 
-//TODO put picture
+![Customized Text](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/text_bar.png)
 
 ### Customize background and shadow
 
@@ -108,19 +108,20 @@ Flushbar flushbar = new Flushbar(
   );
 ```
 
-//TODO put picture
+![Background and Shadow](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/background_color_bar.png)
 
 You can also change these properties using `changeBackgroundColor()`,
 `changeShadowColor()`, and `changeBackgroundGradient()`
 
 ```dart
-flushbar.changeBackgroundColor(backgroundColor)
+flushbar
+  .changeBackgroundColor(backgroundColor)
   .changeBackgroundGradient(backgroundGradient)
   .changeShadowColor(shadowColor)
   .commitChanges();
 ```
 
-//TODO put picture
+![Background Gradient](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/gradient_bar.png)
 
 ### Icon and button action
 
@@ -143,7 +144,7 @@ Flushbar flushbar = new Flushbar(
 );
 ```
 
-//TODO put gif
+![Icon and Button](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/icon_and_button_bar.png)
 
 Icon can be at the `IconPosition.START` or at the `IconPosition.END` of the bar. Use `iconPosition`.
 
@@ -163,7 +164,7 @@ Flushbar flushbar = new Flushbar(
 );
 ```
 
-//TODO put gif
+![Icon position](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/icon_position_bar.png)
 
 ### Flushbar position
 
@@ -178,7 +179,7 @@ Flushbar flushbar = new Flushbar(
 );
 ```
 
-//TODO put picture
+![Bar position](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/position_bar.png)
 
 ### Duration and dismiss policy
 
