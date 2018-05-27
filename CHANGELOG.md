@@ -1,3 +1,10 @@
+## [0.3.1] - 2017-05-27
+### Changed
+- Fixed bar being automatically called
+- Title and message are not required at construction time
+- Better usage example
+- Removed callback from constructor
+
 ## [0.3.0] - 2017-05-27
 ### Changed
 - Removed the possibility to chose icon position

@@ -14,8 +14,10 @@ Make sure Flushbar is the last child in the Stack.
 
 ### A basic Flushbar
 
-The most basic Flushbar needs a title and a message. Keep a reference to it. 
-You are going to need it latter.
+The most basic Flushbar needs should receive title and a message. You can set your text and title latter
+if you don't have them on construction time. Simply use `changeTitle()` or `changeMessage()` or `changeTitleText()`
+and `changeMessageText()`
+* Keep a reference to you flushbar. You are going to need it latter for customization.
 
 ```dart
 class YourAwesomeApp extends StatelessWidget {
@@ -51,7 +53,6 @@ Flushbar flushbar = new Flushbar(
     flushbarPosition: FlushbarPosition.TOP, //Immutable
     reverseAnimationCurve: Curves.decelerate, //Immutable
     forwardAnimationCurve: Curves.elasticOut, //Immutable
-    onStatusChanged: (FlushbarStatus status){},
     backgroundColor: Colors.red,
     shadowColor: Colors.blue[800],
     backgroundGradient: new LinearGradient(colors: [Colors.blueGrey, Colors.black]),
@@ -103,7 +104,7 @@ flushbar
     .changeIsDismissible(isDismissible) //bool
     .changeShadowColor(shadowColor) //Color
     .changeLinearProgressIndicator(linearProgressIndicator) //LinearProgressIndicator widget
-    .changeStatusListener(onStatusChanged) //(FlashbarStatus) {}
+    .setStatusListener(onStatusChanged) //(FlashbarStatus) {}
     .commitChanges();
 ```
 
@@ -258,27 +259,30 @@ Flushbar flushbar = new Flushbar(
 
 ### Listen to status updates
 
-You can listen to status update using `onStatusChanged`. If you need to reconfigure the listener,
-use the `changeStatusListener()` method.
-* Note that when you pass a new listener using `changeStatusListener()`, it will activate immediately
+You can listen to status update using `setStatusListener()`. 
+* Note that when you pass a new listener using `setStatusListener()`, it will activate once immediately
 so you can check in what state the Flushbar is.
 
 ```dart
+
 Flushbar flushbar = new Flushbar(
   "Hey Ninja", //title
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-  onStatusChanged: (FlushbarStatus status){
-    if(status == FlushbarStatus.DISMISSED){
-      doSomething();
-    }
-  },
-);
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry");
+
+flushbar.setStatusListener(
+  (FlushbarStatus status){
+   if(status == FlushbarStatus.DISMISSED){
+     doSomething();
+   }
+  }
+ );
 ```
 
 ## Usage Sample
 
-Since you are probably going to control your Flushbar from `YourMainScreenWidget()`, pass it as an argument.
-For consistency, use methods to alternate between you flushbar status.
+Since you are probably going to control your Flushbar from `FirstScreen()`, pass `flushbar` as an argument.
+Flushbar is an offscreen widget. It was made to be wrapped in a [Stack](https://docs.flutter.io/flutter/widgets/Stack-class.html).
+Make sure Flushbar is the last child in the Stack.
 
 ```dart
 class YourAwesomeApp extends StatelessWidget {
@@ -294,7 +298,7 @@ class YourAwesomeApp extends StatelessWidget {
       title: 'YourAwesomeApp',
       home: new Scaffold(
         body: Stack(
-          children: <Widget>[YourMainScreenWidget(flushbar), flushbar],
+          children: <Widget>[FirstScreen(flushbar), flushbar],
         ),
       ),
     );
@@ -302,76 +306,119 @@ class YourAwesomeApp extends StatelessWidget {
 }
 ```
 
+For consistency, create a helper class so you can mutate you Flushbar. Customize it to your need.
+* Remember to pass `null` to deactivate a widget.
+
 ```dart
 
-class YourMainScreenWidget extends StatelessWdiget {
-  
-  YourMainScreenWidget(this.flushbar);
-  
-  Flushbar flushbar;
-  
-  void changeToInfoFlushbar(String title, String message) {
-      flushbar
-          .changeTitle(title)
-          .changeMessage(message)
-          .changeDuration(Duration(seconds: 3))
-          .changeIcon(Icon(
+class FlushbarHelper {
+  static Flushbar changeToInfoFlushbar(Flushbar flushbar,
+      {@required String title, @required String message}) {
+    return flushbar
+        .changeTitle(title)
+        .changeMessage(message)
+        .changeIcon(
+          Icon(
             Icons.info_outline,
-            color: Colors.amber,
-          ))
-          .changeStatusListener(
-            (FlushbarStatus status) {
-              talkLikeAFox();
-            },
-         ).commitChanges();
+            color: Colors.blue,
+          ),
+        )
+        .changeDuration(Duration(seconds: 2))
+        .changeMainButton(null)
+        .changeLinearProgressIndicator(null);
   }
-  
-  void changeToConfirmFlushbar(String title, String message) {
-      flushbar
-          .changeTitle(title)
-          .changeMessage(message)
-          .changeDuration(Duration(seconds: 3))
-          .changeIcon(Icon(
-            Icons.check,
-            color: Colors.green,
-          ))
-          .changeStatusListener(
-        (FlushbarStatus status) {
-          if (status == FlushbarStatus.DISMISSED) {
-            runLikeASnail();
-          }
-        },
-      ).commitChanges();
+
+  static Flushbar changeToActionFlushbar(Flushbar flushbar,
+      {@required String title,
+      @required String message,
+      @required FlatButton button}) {
+    return flushbar
+        .changeTitle(title)
+        .changeMessage(message)
+        .changeIcon(null)
+        .changeDuration(Duration(seconds: 2))
+        .changeMainButton(button)
+        .changeLinearProgressIndicator(null);
   }
-  
-  void changeToErrorFlushbar(String title, String message) {
-      flushbar
-          .changeTitle(title)
-          .changeMessage(message)
-          .changeDuration(Duration(seconds: 3))
-          .changeIcon(Icon(
+
+  static Flushbar changeToLoadingFlushbar(Flushbar flushbar,
+      {@required String title,
+      @required String message,
+      @required LinearProgressIndicator linearProgressIndicator}) {
+    return flushbar
+        .changeTitle(title)
+        .changeMessage(message)
+        .changeIcon(
+          Icon(
+            Icons.cloud_upload,
+            color: Colors.blue,
+          ),
+        )
+        .changeDuration(Duration(seconds: 2))
+        .changeMainButton(null)
+        .changeLinearProgressIndicator(linearProgressIndicator);
+  }
+
+  static Flushbar changeToErrorFlushbar(Flushbar flushbar,
+      {@required String title, @required String message}) {
+    return flushbar
+        .changeTitle(title)
+        .changeMessage(message)
+        .changeIcon(
+          Icon(
             Icons.error,
             color: Colors.red,
-          ))
-          .changeStatusListener(null)
-          .commitChanges();
-    }
-  
-  void changeToLoadingFlushbar(String title, String message) {
-      flushbar
-          .changeTitle(title)
-          .changeMessage(message)
-          .changeDuration(null)
-          .changeIcon(Icon(
-            Icons.cloud_upload,
-            color: Colors.orange,
-            ),
-          )
-          .changeLinearProgressIndicator(new LinearProgressIndicator(
-            backgroundColor: Color(0xFF303030),
           ),
-            )
-          .commitChanges();
+        )
+        .changeDuration(Duration(seconds: 2))
+        .changeMainButton(null)
+        .changeLinearProgressIndicator(null);
+  }
+
+  static Flushbar changeToConfirmFlushbar(Flushbar flushbar,
+      {@required String title, @required String message}) {
+    return flushbar
+        .changeTitle(title)
+        .changeMessage(message)
+        .changeIcon(
+          Icon(
+            Icons.check,
+            color: Colors.green,
+          ),
+        )
+        .changeDuration(Duration(seconds: 2))
+        .changeMainButton(null)
+        .changeLinearProgressIndicator(null);
+  }
+}
+```
+
+Inside you MainScreenWidget use the reference to control it. Don't forget to `commitChanges()`
+
+```dart
+class FirstScreen extends StatelessWidget {
+  FirstScreen(this.flushbar);
+
+  final Flushbar flushbar;
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      child: new Center(
+        child: new FloatingActionButton(
+          backgroundColor: Theme.of(context).accentColor,
+          child: Icon(Icons.info_outline),
+          onPressed: () {
+            FlushbarHelper
+                .changeToInfoFlushbar(flushbar,
+                    title: "No connection",
+                    message: "Your app is diconnected. Action not saved")
+                .commitChanges();
+            flushbar.show();
+          },
+        ),
+      ),
+    );
   }
 }
 ```
