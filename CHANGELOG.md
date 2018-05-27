@@ -1,3 +1,9 @@
+## [0.3.0] - 2017-05-27
+### Changed
+- Removed the possibility to chose icon position
+- Widgets are now aligned correctly
+- Documentation improvements
+
 ## [0.2.5] - 2017-05-26
 ### Changed
 - Bug fixes

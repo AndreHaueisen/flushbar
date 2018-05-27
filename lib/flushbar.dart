@@ -19,7 +19,6 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// [backgroundGradient] Flushbar background gradient. Makes [backgroundColor] be ignored.
 /// [mainButton] A [FlatButton] widget if you need an action from the user.
 /// [flushbarPosition] Flushbar can be based on [FlushbarPosition.TOP] or on [FlushbarPosition.BOTTOM] of your screen. [FlushbarPosition.BOTTOM] is the default.
-/// [iconPosition] The icon can take [IconPosition.START] or [IconPosition.END]. [IconPosition.START] is default.
 /// [duration] How long until Flushbar will hide itself (be dismissed). To make it indefinite, leave it null.
 /// [isDismissible] Determines if the user can swipe to dismiss the bar. It is recommended that you set [duration] != null if [isDismissible] == false.
 /// [forwardAnimationCurve] The [Curve] animation used when show() is called. [Curves.easeOut] is default.
@@ -47,7 +46,6 @@ class Flushbar extends StatefulWidget {
         this.backgroundGradient,
         this.mainButton,
         this.flushbarPosition = FlushbarPosition.BOTTOM,
-        this.iconPosition = IconPosition.START,
         this.duration,
         this.isDismissible = true,
         this.forwardAnimationCurve = Curves.easeOut,
@@ -65,7 +63,6 @@ class Flushbar extends StatefulWidget {
   Icon icon;
   FlatButton mainButton;
   FlushbarPosition flushbarPosition;
-  IconPosition iconPosition;
   Duration duration;
   Curve forwardAnimationCurve;
   Curve reverseAnimationCurve;
@@ -119,11 +116,6 @@ class Flushbar extends StatefulWidget {
 
   Flushbar changeMainButton(FlatButton mainButton) {
     flushbarState._changeMainButton(mainButton);
-    return this;
-  }
-
-  Flushbar changeIconPosition(IconPosition iconPosition) {
-    flushbarState._changeIconPosition(iconPosition);
     return this;
   }
 
@@ -189,7 +181,6 @@ class Flushbar extends StatefulWidget {
         backgroundGradient: backgroundGradient,
         mainButton: mainButton,
         flushbarPosition: flushbarPosition,
-        iconPosition: iconPosition,
         duration: duration,
         isDismissible: isDismissible,
         forwardAnimationCurve: forwardAnimationCurve,
@@ -211,7 +202,6 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
         this.backgroundGradient,
         this.mainButton,
         this.flushbarPosition,
-        this.iconPosition,
         this.duration,
         this.isDismissible = true,
         this.forwardAnimationCurve,
@@ -277,7 +267,6 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
   Gradient backgroundGradient;
   FlatButton mainButton;
   FlushbarPosition flushbarPosition;
-  IconPosition iconPosition;
   Duration duration;
   Curve forwardAnimationCurve;
   Curve reverseAnimationCurve;
@@ -340,10 +329,6 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
 
   void _changeMainButton(FlatButton mainButton) {
     this.mainButton = mainButton;
-  }
-
-  void _changeIconPosition(IconPosition iconPosition) {
-    this.iconPosition = iconPosition;
   }
 
   void _changeDuration(Duration duration) {
@@ -481,6 +466,17 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
     _fadeController.forward();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return new Align(
+      heightFactor: 1.0,
+      child: new AlignTransition(
+        alignment: _popAnimation,
+        child: _getFlushbar(),
+      ),
+    );
+  }
+
   void _setBoxShadow() {
     switch (flushbarPosition) {
       case FlushbarPosition.TOP:
@@ -536,137 +532,142 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
   }
 
   Widget _generateFlushbar() {
-    if (iconPosition == IconPosition.START) {
-      return new DecoratedBox(
-        decoration: new BoxDecoration(
-          color: backgroundColor,
-          gradient: backgroundGradient,
-          boxShadow: _getBoxShadowList(),
+    return new DecoratedBox(
+      decoration: new BoxDecoration(
+        color: backgroundColor,
+        gradient: backgroundGradient,
+        boxShadow: _getBoxShadowList(),
+      ),
+      child: new Padding(
+        padding: barInsets,
+        child: new Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            linearProgressIndicator ?? _emptyWidget,
+            new Row(mainAxisSize: MainAxisSize.max, children: _getRowLayout()),
+          ],
         ),
-        child: new Padding(
-          padding: barInsets,
+      ),
+    );
+  }
+
+  List<Widget> _getRowLayout() {
+    if (icon == null && mainButton == null) {
+      return [
+        new Expanded(
+          flex: 1,
           child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
-            children: [
-              linearProgressIndicator ?? _emptyWidget,
-              new Row(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  _getIcon(),
-                  new Expanded(
-                    flex: 6,
-                    child: new Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        new Padding(
-                          padding: const EdgeInsets.only(
-                              top: 16.0, left: 8.0, right: 8.0),
-                          child: titleText ?? _getDefaultTitleText(),
-                        ),
-                        new Padding(
-                          padding: const EdgeInsets.only(
-                              top: 8.0, left: 8.0, right: 8.0, bottom: 16.0),
-                          child: messageText ?? _getDefaultNotificationText(),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+            children: <Widget>[
+              new Padding(
+                padding:
+                const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+                child: titleText ?? _getDefaultTitleText(),
               ),
-              new Align(
-                heightFactor: 1.0,
-                alignment: Alignment.centerRight,
-                child: new Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0, right: 8.0),
-                  child: _getMainActionButton(),
-                ) ??
-                    _emptyWidget,
+              new Padding(
+                padding: const EdgeInsets.only(
+                    top: 8.0, left: 16.0, right: 16.0, bottom: 16.0),
+                child: messageText ?? _getDefaultNotificationText(),
               ),
             ],
           ),
         ),
-      );
+      ];
+    } else if (icon != null && mainButton == null) {
+      return <Widget>[
+        new Expanded(flex: 1, child: _getIcon(),),
+        new Expanded(
+          flex: 6,
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              new Padding(
+                padding:
+                const EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
+                child: titleText ?? _getDefaultTitleText(),
+              ),
+              new Padding(
+                padding: const EdgeInsets.only(
+                    top: 8.0, left: 8.0, right: 8.0, bottom: 16.0),
+                child: messageText ?? _getDefaultNotificationText(),
+              ),
+            ],
+          ),
+        ),
+      ];
+
+    } else if (icon == null && mainButton != null) {
+      return <Widget>[
+        new Expanded(
+          flex: 7,
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              new Padding(
+                padding:
+                const EdgeInsets.only(top: 16.0, left: 16.0, right: 8.0),
+                child: titleText ?? _getDefaultTitleText(),
+              ),
+              new Padding(
+                padding: const EdgeInsets.only(
+                    top: 8.0, left: 16.0, right: 8.0, bottom: 16.0),
+                child: messageText ?? _getDefaultNotificationText(),
+              ),
+            ],
+          ),
+        ),
+        new Expanded(
+          flex: 2,
+          child: new Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: _getMainActionButton(),
+          ),
+        ),
+      ];
+
     } else {
-      return new DecoratedBox(
-        decoration: new BoxDecoration(
-          color: backgroundColor,
-          gradient: backgroundGradient,
-          boxShadow: _getBoxShadowList(),
-        ),
-        child: new Padding(
-          padding: barInsets,
+      return <Widget>[
+        new Expanded(flex: 2, child: _getIcon()),
+        new Expanded(
+          flex: 6,
           child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
-            children: [
-              linearProgressIndicator ?? _emptyWidget,
-              new Row(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  new Expanded(
-                    flex: 5,
-                    child: new Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        new Padding(
-                          padding: const EdgeInsets.only(
-                              top: 16.0, left: 8.0, right: 8.0),
-                          child: titleText ?? _getDefaultTitleText(),
-                        ),
-                        new Padding(
-                          padding: const EdgeInsets.only(
-                              top: 8.0, left: 8.0, right: 8.0, bottom: 16.0),
-                          child: messageText ?? _getDefaultNotificationText(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  _getIcon(),
-                ],
+            children: <Widget>[
+              new Padding(
+                padding:
+                const EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
+                child: titleText ?? _getDefaultTitleText(),
               ),
-              new Align(
-                heightFactor: 1.0,
-                alignment: Alignment.centerRight,
-                child: new Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: _getMainActionButton(),
-                ) ??
-                    _emptyWidget,
+              new Padding(
+                padding: const EdgeInsets.only(
+                    top: 8.0, left: 8.0, right: 8.0, bottom: 16.0),
+                child: messageText ?? _getDefaultNotificationText(),
               ),
             ],
           ),
         ),
-      );
+        new Expanded(
+          flex: 2,
+          child: new Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: _getMainActionButton(),
+          ) ??
+              _emptyWidget,
+        ),
+      ];
     }
   }
 
   Widget _getIcon() {
     if (icon != null) {
-      if (iconPosition == IconPosition.START) {
-        return new Expanded(
-          flex: 1,
-          child: new Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FadeTransition(
-              opacity: _fadeAnimation,
-              child: icon,
-            ),
-          ),
-        );
-      } else {
-        return new Expanded(
-          flex: 1,
-          child: new Padding(
-            padding: const EdgeInsets.only(
-                top: 8.0, left: 8.0, bottom: 8.0, right: 16.0),
-            child: FadeTransition(
-              opacity: _fadeAnimation,
-              child: icon,
-            ),
-          ),
-        );
-      }
+      return FadeTransition(
+        opacity: _fadeAnimation,
+        child: icon,
+      );
     } else {
       return _emptyWidget;
     }
@@ -694,24 +695,10 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
       return null;
     }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Align(
-      heightFactor: 1.0,
-      child: new AlignTransition(
-        alignment: _popAnimation,
-        child: _getFlushbar(),
-      ),
-    );
-  }
 }
 
 /// Indicates if flushbar is going to start at the [TOP] or at the [BOTTOM]
 enum FlushbarPosition { TOP, BOTTOM }
-
-/// Indicates if icon is at the [START] or [END] position
-enum IconPosition { START, END }
 
 /// Indicates the animation status
 /// [FlushbarStatus.SHOWING] Flushbar has stopped and the user can see it

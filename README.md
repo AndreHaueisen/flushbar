@@ -14,8 +14,8 @@ Make sure Flushbar is the last child in the Stack.
 
 ### A basic Flushbar
 
-The most basic Flushbar needs a title and a message. Keep a reference to
-the it. You are going to need it latter.
+The most basic Flushbar needs a title and a message. Keep a reference to it. 
+You are going to need it latter.
 
 ```dart
 class YourAwesomeApp extends StatelessWidget {
@@ -40,6 +40,74 @@ class YourAwesomeApp extends StatelessWidget {
 ```
 ![Basic Example](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/basic_bar.png)
 
+### Lets get crazy Flushbar
+
+Here is how customized things can get.
+
+```dart
+Flushbar flushbar = new Flushbar(
+    "Hey Ninja", //title
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+    flushbarPosition: FlushbarPosition.TOP, //Immutable
+    reverseAnimationCurve: Curves.decelerate, //Immutable
+    forwardAnimationCurve: Curves.elasticOut, //Immutable
+    onStatusChanged: (FlushbarStatus status){},
+    backgroundColor: Colors.red,
+    shadowColor: Colors.blue[800],
+    backgroundGradient: new LinearGradient(colors: [Colors.blueGrey, Colors.black]),
+    isDismissible: false,
+    duration: Duration(seconds: 4),
+    icon: Icon(
+      Icons.check,
+      color: Colors.greenAccent,
+    ),
+    mainButton: FlatButton(
+      onPressed: () {},
+      child: Text("CLAP", style: TextStyle(color: Colors.amber),),
+    ),
+    linearProgressIndicator: LinearProgressIndicator(backgroundColor: Colors.blueGrey,),
+    titleText: new Text(
+      "Hello Hero",
+      style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20.0,
+          color: Colors.yellow[600],
+          fontFamily: "ShadowsIntoLightTwo"),
+    ),
+    messageText: new Text(
+      "You killed that giant monster in the city. Congratulations!",
+      style: TextStyle(
+        fontSize: 18.0,
+          color: Colors.green[300],
+          fontFamily: "ShadowsIntoLightTwo"),
+    ),
+  );
+```
+
+* Note that every property has a change...() function so you don't have to create a new Flushbar every single time. The
+exceptions are `flushbarPosition`, `reverseAnimationCurve`, `forwardAnimationCurve`.
+* Don't forget to call `commitChanges()` or the changes won't take effect.
+* To deactivate any of those properties, pass `null` to it, with the exception of `changeTitle(title)` and `changeMessage(message)`
+
+```dart
+flushbar
+    .changeTitle(title) //string
+    .changeMessage(message) //string
+    .changeTitleText(titleText) //Text widget
+    .changeMessageText(messageText) //Text widget
+    .changeDuration(duration) //Duration
+    .changeIcon(icon) //Icon widget
+    .changeMainButton(mainButton) //FlatButton widget
+    .changeBackgroundColor(backgroundColor) //Color
+    .changeBackgroundGradient(backgroundGradient) //Gradient
+    .changeIsDismissible(isDismissible) //bool
+    .changeShadowColor(shadowColor) //Color
+    .changeLinearProgressIndicator(linearProgressIndicator) //LinearProgressIndicator widget
+    .changeStatusListener(onStatusChanged) //(FlashbarStatus) {}
+    .commitChanges();
+```
+
+![Complete Example](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/complete_bar.png)
 
 ### Customize your text
 
@@ -55,28 +123,19 @@ Flushbar flushbar = new Flushbar(
     titleText: new Text(
       "Hello Hero",
       style: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 16.0,
-        color: Colors.yellow[600],
-        fontFamily: "Raleway"),
+          fontWeight: FontWeight.bold,
+          fontSize: 20.0,
+          color: Colors.yellow[600],
+          fontFamily: "ShadowsIntoLightTwo"),
     ),
     messageText: new Text(
-      "Dummy text just because I have zero creativity going on right now",
+      "You killed that giant monster in the city. Congratulations!",
       style: TextStyle(
-        color: Colors.green[600],
-        fontFamily: "Raleway"),
+        fontSize: 16.0,
+          color: Colors.green[600],
+          fontFamily: "ShadowsIntoLightTwo"),
     ),
   );
-```
-
-If you already have a Flushbar instance, you can use `changeTitleText` and `changeMessageText`.
-* Remember to call `commitChanges()` after you finish making changes.
-
-```dart
-flushbar
-  .changeTitleText(titleText)
-  .changeMessageText(messageText)
-  .commitChanges();
 ```
 
 ![Customized Text](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/text_bar.png)
@@ -95,6 +154,8 @@ Flushbar flushbar = new Flushbar(
   );
 ```
 
+![Background and Shadow](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/background_color_bar.png)
+
 Want a gradient in the background? No problem.
 * Note that `backgroundColor` will be ignored while `backgroundGradient` is not null
 
@@ -106,19 +167,6 @@ Flushbar flushbar = new Flushbar(
   backgroundColor: Colors.red,
   shadowColor: Colors.blue[800],
   );
-```
-
-![Background and Shadow](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/background_color_bar.png)
-
-You can also change these properties using `changeBackgroundColor()`,
-`changeShadowColor()`, and `changeBackgroundGradient()`
-
-```dart
-flushbar
-  .changeBackgroundColor(backgroundColor)
-  .changeBackgroundGradient(backgroundGradient)
-  .changeShadowColor(shadowColor)
-  .commitChanges();
 ```
 
 ![Background Gradient](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/gradient_bar.png)
@@ -145,26 +193,6 @@ Flushbar flushbar = new Flushbar(
 ```
 
 ![Icon and Button](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/icon_and_button_bar.png)
-
-Icon can be at the `IconPosition.START` or at the `IconPosition.END` of the bar. Use `iconPosition`.
-
-```dart
-Flushbar flushbar = new Flushbar(
-  "Hey Ninja", //title
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-  iconPosition: IconPosition.END,
-  icon: Icon(
-    Icons.info_outline,
-    color: Colors.blue,
-  ),
-  mainButton: FlatButton(
-    onPressed: () {},
-    child: Text("ADD", style: TextStyle(color: Colors.amber),),
-  ),
-);
-```
-
-![Icon position](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/icon_position_bar.png)
 
 ### Flushbar position
 
@@ -195,6 +223,8 @@ Flushbar flushbar = new Flushbar(
   isDismissible: false,
 );
 ```
+
+//TODO add gif
 
 ### Progress Indicator
 
