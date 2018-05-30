@@ -23,6 +23,7 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// [forwardAnimationCurve] The [Curve] animation used when show() is called. [Curves.easeOut] is default.
 /// [reverseAnimationCurve] The [Curve] animation used when dismiss() is called. [Curves.fastOutSlowIn] is default.
 /// [linearProgressIndicator] An optional [LinearProgressIndicator] ideal when loading or uploading something
+/// [userInputTextField] Used when you want a user to input a text. Other widgets will be ignored until this goes back to being null.
 ///
 /// ATTENTION
 /// The changes will take effect only after you call commitChanges().
@@ -68,6 +69,7 @@ class Flushbar extends StatefulWidget {
   Curve reverseAnimationCurve;
   LinearProgressIndicator linearProgressIndicator;
   bool isDismissible;
+  TextFormField userInputTextField;
 
   _FlushbarState flushbarState;
 
@@ -132,6 +134,11 @@ class Flushbar extends StatefulWidget {
 
   Flushbar changeIsDismissible(bool isDismissible) {
     flushbarState._changeIsDismissible(isDismissible);
+    return this;
+  }
+
+  Flushbar setUserInputTextField(TextFormField userInputTextField) {
+    flushbarState._changeTextField(userInputTextField);
     return this;
   }
 
@@ -276,6 +283,7 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
   Curve reverseAnimationCurve;
   LinearProgressIndicator linearProgressIndicator;
   bool isDismissible;
+  TextFormField textField;
 
   BoxShadow _boxShadow;
   FlushbarStatus currentStatus;
@@ -350,6 +358,10 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
 
   void _changeIcon(Icon icon) {
     this.icon = icon;
+  }
+
+  void _changeTextField(TextFormField textField) {
+    this.textField = textField;
   }
 
   void _show() {
@@ -526,11 +538,28 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
           dismissibleKeyGen += "1";
           _resetAnimations();
         },
-        child: _generateFlushbar(),
+        child: (textField != null) ? _generateInputFlushbar() : _generateFlushbar(),
       );
     } else {
-      return _generateFlushbar();
+      return _generateInputFlushbar() ?? _generateFlushbar();
     }
+  }
+
+  Widget _generateInputFlushbar() {
+    return new DecoratedBox(
+      decoration: new BoxDecoration(
+        color: backgroundColor,
+        gradient: backgroundGradient,
+        boxShadow: _getBoxShadowList(),
+      ),
+      child: new Padding(
+        padding: barInsets,
+        child: new Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0, top: 16.0),
+          child: textField,
+        ),
+      ),
+    );
   }
 
   Widget _generateFlushbar() {

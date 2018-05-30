@@ -1,3 +1,7 @@
+## [0.4.0] - 2017-05-27
+### Added
+- InputTextField
+
 ## [0.3.1] - 2017-05-27
 ### Changed
 - Fixed bar being automatically called

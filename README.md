@@ -278,6 +278,43 @@ flushbar.setStatusListener(
  );
 ```
 
+### Input text
+
+Sometimes we just want a simple user input. Use `setUserInputTextField`.
+* Note that buttons, messages, and icons will be ignored if `userInputTextField != null`
+
+This example tries to mimic the [Material Design style guide](https://material.io/design/components/text-fields.html#anatomy)
+```dart
+flushbar
+        .setUserInputTextField(
+          new TextFormField(
+            initialValue: "Initial Value",
+            onFieldSubmitted: (String value){
+              flushbar.dismiss();
+            },
+            style: TextStyle(color: Colors.white),
+            maxLength: 100,
+            maxLines: 1,
+            //maxLengthEnforced: ,
+            decoration: InputDecoration(
+                fillColor: Colors.white10,
+                filled: true,
+                icon: Icon(
+                  Icons.label,
+                  color: Colors.grey[500],
+                ),
+                border: UnderlineInputBorder(),
+                helperText: "Helper Text",
+                helperStyle: TextStyle(color: Colors.grey),
+                labelText: "Label Text",
+                labelStyle: TextStyle(color: Colors.grey)),
+          ),
+        )
+        .commitChanges();
+```
+
+![Bar input](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/input_bar.png)
+
 ## Usage Sample
 
 Since you are probably going to control your Flushbar from `FirstScreen()`, pass `flushbar` as an argument.
