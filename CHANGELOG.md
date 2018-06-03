@@ -1,3 +1,11 @@
+## [0.4.5] - 2017-06-03
+### Added
+- Blink animation when commitChanges() is called when Fluhsbar is not dismissed. This provides a 
+smooth content transition
+- Helper class to morph Flushbar (FlushbarMorph)
+### Changed
+- Code cleanup
+
 ## [0.4.0] - 2017-05-27
 ### Added
 - InputTextField
