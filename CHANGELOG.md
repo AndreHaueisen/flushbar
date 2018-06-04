@@ -1,4 +1,10 @@
-## [0.4.5] - 2017-06-03
+## [0.4.7] - 2018-06-04
+### Changed
+- Fixed bug with bar duration
+- Blink animation when Fluhsbar is not dismissed now animates the whole bar
+and is synchronised with content change.
+
+## [0.4.5] - 2018-06-03
 ### Added
 - Blink animation when commitChanges() is called when Fluhsbar is not dismissed. This provides a 
 smooth content transition
@@ -6,30 +12,30 @@ smooth content transition
 ### Changed
 - Code cleanup
 
-## [0.4.0] - 2017-05-27
+## [0.4.0] - 2018-05-27
 ### Added
 - InputTextField
 
-## [0.3.1] - 2017-05-27
+## [0.3.1] - 2018-05-27
 ### Changed
 - Fixed bar being automatically called
 - Title and message are not required at construction time
 - Better usage example
 - Removed callback from constructor
 
-## [0.3.0] - 2017-05-27
+## [0.3.0] - 2018-05-27
 ### Changed
 - Removed the possibility to chose icon position
 - Widgets are now aligned correctly
 - Documentation improvements
 
-## [0.2.5] - 2017-05-26
+## [0.2.5] - 2018-05-26
 ### Changed
 - Bug fixes
 - Moved icon animation into the flushbar
 - changeStatusListener() is now activated on change
 
-## [0.2.0] - 2017-05-24
+## [0.2.0] - 2018-05-24
 ### Added
 - Removed requirement for a initial widget
 - OnStatusChanged callback so it is possible to listen to the various Flushbar status
@@ -42,7 +48,7 @@ smooth content transition
 - Alignment changes
 - Default background color
 
-## [0.0.1] - 2017-05-23
+## [0.0.1] - 2018-05-23
              
 ### Added
 - Flushbar creation
