@@ -1,3 +1,7 @@
+## [0.5.1] - 2018-06-05
+### Changed
+- Fixed brain fart. Same changes as 0.5.0
+
 ## [0.5.0] - 2018-06-05
 ### Changed
 - Removed change...() functions. Cascade notation is now recommended

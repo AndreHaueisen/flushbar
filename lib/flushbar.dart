@@ -24,6 +24,7 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// [flushbarPosition] (final) Flushbar can be based on [FlushbarPosition.TOP] or on [FlushbarPosition.BOTTOM] of your screen. [FlushbarPosition.BOTTOM] is the default.
 /// [reverseAnimationCurve] (final) The [Curve] animation used when dismiss() is called. [Curves.fastOutSlowIn] is default.
 /// [linearProgressIndicator] (final) An optional [LinearProgressIndicator] ideal when loading or uploading something
+/// [userInputTextField] A [TextFormField] in case you want a simple user input. Every other widget is ignored if this is not null
 ///
 /// ATTENTION
 /// The changes will take effect only after you call commitChanges().
@@ -551,14 +552,14 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
   Text _getDefaultTitleText() {
     return new Text(
       widget.title ?? "",
-      style: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.bold),
+      style: TextStyle(fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.bold),
     );
   }
 
   Text _getDefaultNotificationText() {
     return new Text(
       widget.message ?? "",
-      style: TextStyle(fontSize: 16.0, color: Colors.white),
+      style: TextStyle(fontSize: 14.0, color: Colors.white),
     );
   }
 
