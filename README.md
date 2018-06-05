@@ -3,8 +3,9 @@
 This is a flutter widget inspired by [Flashbar](https://github.com/aritraroy/Flashbar). Use this package if you need
 more customization when notifying your user. For Android developers, it is made to substitute
 toasts and snackbars.
-Development of Flushbar and [Flashbar](https://github.com/aritraroy/Flashbar) are totally separate.
+Development of Flushbar and Flashbar are totally separate.
 Although they look like each other, they work very differently. See the examples bellow.
+See the [install instructions](https://pub.dartlang.org/packages/flushbar#-installing-tab-).
 
 ## Getting Started
 
@@ -14,21 +15,46 @@ Make sure Flushbar is the last child in the Stack.
 
 ### A basic Flushbar
 
-The most basic Flushbar needs should receive title and a message. You can set your text and title latter
-if you don't have them on construction time. Simply use `changeTitle()` or `changeMessage()` or `changeTitleText()`
-and `changeMessageText()`
+The most basic Flushbar uses title and a message. You can set your text and title latter
+if you don't have them on construction time. 
 * Keep a reference to you flushbar. You are going to need it latter for customization.
 
 ```dart
 class YourAwesomeApp extends StatelessWidget {
 
   Flushbar flushbar = new Flushbar(
-    "Hey Ninja", //title
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", //message
+    title: "Hey Ninja", //title
+    message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", //message
   );
 
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'YourAwesomeApp',
+      home: new Scaffold(
+        body: Stack(
+          children: <Widget>[YourMainScreenWidget(), flushbar],
+        ),
+      ),
+    );
+  }
+}
+```
+
+or
+
+```dart
+class YourAwesomeApp extends StatelessWidget {
+
+  Flushbar flushbar = new Flushbar();
+
+  @override
+  Widget build(BuildContext context) {
+    flushbar
+          ..message = "Hey Ninja"
+          ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+          ..commitChanges();
+    
     return MaterialApp(
       title: 'YourAwesomeApp',
       home: new Scaffold(
@@ -85,37 +111,36 @@ Flushbar flushbar = new Flushbar(
   );
 ```
 
-* Note that every property has a change...() function so you don't have to create a new Flushbar every single time. The
-exceptions are `flushbarPosition`, `reverseAnimationCurve`, `forwardAnimationCurve`.
+![Complete Example](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/complete_bar.png)
+
+* Note that every property is mutable after instantiation. The exceptions are `flushbarPosition`, `reverseAnimationCurve`, `forwardAnimationCurve`.
 * Don't forget to call `commitChanges()` or the changes won't take effect.
-* To deactivate any of those properties, pass `null` to it, with the exception of `changeTitle(title)` and `changeMessage(message)`
+* To deactivate any of those properties, pass `null` to it.
 
 ```dart
 flushbar
-    .changeTitle(title) //string
-    .changeMessage(message) //string
-    .changeTitleText(titleText) //Text widget
-    .changeMessageText(messageText) //Text widget
-    .changeDuration(duration) //Duration
-    .changeIcon(icon) //Icon widget
-    .changeMainButton(mainButton) //FlatButton widget
-    .changeBackgroundColor(backgroundColor) //Color
-    .changeBackgroundGradient(backgroundGradient) //Gradient
-    .changeIsDismissible(isDismissible) //bool
-    .changeShadowColor(shadowColor) //Color
-    .changeLinearProgressIndicator(linearProgressIndicator) //LinearProgressIndicator widget
-    .setStatusListener(onStatusChanged) //(FlashbarStatus) {}
-    .commitChanges();
+      ..title = "Title"
+      ..message = "Message"
+      ..titleText = Text()
+      ..messageText = Text()
+      ..duration = Duration()
+      ..icon = Icon()
+      ..mainButton = FlatButton()
+      ..backgroundColor = Color()
+      ..backgroundGradient = LinearGradient()
+      ..isDismissible = true
+      ..shadowColor = Color()
+      ..linearProgressIndicator = LinearProgressIndicator()
+      ..onStatusChanged = (status) {}
+      ..commitChanges();
 ```
-
-![Complete Example](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/complete_bar.png)
 
 ### Customize your text
 
 If you need a more fancy text, you can create a [Text](https://docs.flutter.io/flutter/widgets/Text-class.html)
 and pass it to the `titleText` or `messageText` variables.
-* Note that `title` will be ignored if `titleText` is used
-* Note that `message` will be ignored if `messageText` is used
+* Note that `title` will be ignored if `titleText` is not `null`
+* Note that `message` will be ignored if `messageText` is not `null`
 
 ```dart
 Flushbar flushbar = new Flushbar(
@@ -158,7 +183,7 @@ Flushbar flushbar = new Flushbar(
 ![Background and Shadow](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/background_color_bar.png)
 
 Want a gradient in the background? No problem.
-* Note that `backgroundColor` will be ignored while `backgroundGradient` is not null
+* Note that `backgroundColor` will be ignored while `backgroundGradient` is not `null`
 
 ```dart
 Flushbar flushbar = new Flushbar(
@@ -176,7 +201,6 @@ Flushbar flushbar = new Flushbar(
 
 Lets put a Icon that has a `PulseAnimation`. Icons have this animation by default
 and cannot be changed as of this moment.
-* You can use `changeMainButton()` and `changeIcon()` once you have an instance.
 
 ```dart
 Flushbar flushbar = new Flushbar(
@@ -212,9 +236,9 @@ Flushbar flushbar = new Flushbar(
 
 ### Duration and dismiss policy
 
-By default, Flushbar is infinite. To set a duration, use `duration` or `changeDuration()`.
-By default, Flushbar is dismissible by the user. A right or left scroll will dismiss it.
-Use `isDismissible` or `changeIsDismissible()` to change it.
+By default, Flushbar is infinite. To set a duration, use the `duration` property.
+By default, Flushbar is dismissible by the user. A right or left drag will dismiss it.
+Use the `isDismissible` to change it.
 
 ```dart
 Flushbar flushbar = new Flushbar(
@@ -259,8 +283,8 @@ Flushbar flushbar = new Flushbar(
 
 ### Listen to status updates
 
-You can listen to status update using `setStatusListener()`. 
-* Note that when you pass a new listener using `setStatusListener()`, it will activate once immediately
+You can listen to status update using the `onStatusChanged` property. 
+* Note that when you pass a new listener using `onStatusChanged`, it will activate once immediately
 so you can check in what state the Flushbar is.
 
 ```dart
@@ -269,48 +293,48 @@ Flushbar flushbar = new Flushbar(
   "Hey Ninja", //title
   "Lorem Ipsum is simply dummy text of the printing and typesetting industry");
 
-flushbar.setStatusListener(
-  (FlushbarStatus status){
-   if(status == FlushbarStatus.DISMISSED){
-     doSomething();
-   }
-  }
- );
+flushbar
+   ..onStatusChanged = (FlushbarStatus status)
+     {
+       if(status == FlushbarStatus.DISMISSED){
+         doSomething();
+       }
+     }
+   ..commitChanges();
+
 ```
 
 ### Input text
 
-Sometimes we just want a simple user input. Use `setUserInputTextField`.
+Sometimes we just want a simple user input. Use the property`userInputTextField`.
 * Note that buttons, messages, and icons will be ignored if `userInputTextField != null`
 
 This example tries to mimic the [Material Design style guide](https://material.io/design/components/text-fields.html#anatomy)
 ```dart
 flushbar
-        .setUserInputTextField(
-          new TextFormField(
-            initialValue: "Initial Value",
-            onFieldSubmitted: (String value){
-              flushbar.dismiss();
-            },
-            style: TextStyle(color: Colors.white),
-            maxLength: 100,
-            maxLines: 1,
-            //maxLengthEnforced: ,
-            decoration: InputDecoration(
-                fillColor: Colors.white10,
-                filled: true,
-                icon: Icon(
-                  Icons.label,
-                  color: Colors.grey[500],
-                ),
-                border: UnderlineInputBorder(),
-                helperText: "Helper Text",
-                helperStyle: TextStyle(color: Colors.grey),
-                labelText: "Label Text",
-                labelStyle: TextStyle(color: Colors.grey)),
-          ),
-        )
-        .commitChanges();
+      ..userInputTextField = TextFormField(
+        initialValue: "Initial Value",
+        onFieldSubmitted: (String value) {
+          flushbar.dismiss();
+        },
+        style: TextStyle(color: Colors.white),
+        maxLength: 100,
+        maxLines: 1,
+        //maxLengthEnforced: ,
+        decoration: InputDecoration(
+            fillColor: Colors.white10,
+            filled: true,
+            icon: Icon(
+              Icons.label,
+              color: Colors.grey[500],
+            ),
+            border: UnderlineInputBorder(),
+            helperText: "Helper Text",
+            helperStyle: TextStyle(color: Colors.grey),
+            labelText: "Label Text",
+            labelStyle: TextStyle(color: Colors.grey)),
+      )
+      ..commitChanges();
 ```
 
 ![Bar input](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/input_bar.png)
@@ -324,10 +348,7 @@ Make sure Flushbar is the last child in the Stack.
 ```dart
 class YourAwesomeApp extends StatelessWidget {
 
-  Flushbar flushbar = new Flushbar(
-    "Hey Ninja", //title
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", //message
-  );
+  Flushbar flushbar = new Flushbar();
 
   @override
   Widget build(BuildContext context) {
@@ -343,89 +364,89 @@ class YourAwesomeApp extends StatelessWidget {
 }
 ```
 
-For consistency, create a helper class so you can mutate you Flushbar. Customize it to your need.
+I created a helper class `FlushbarMorph` to help change the bar during the app lifetime.
+Fell free to create your own helper.
 * Remember to pass `null` to deactivate a widget.
 
 ```dart
 
-class FlushbarHelper {
-  static Flushbar changeToInfoFlushbar(Flushbar flushbar,
-      {@required String title, @required String message}) {
+class FlushbarMorph {
+  /// Morph flushbar into a success notification.
+  static Flushbar morphIntoSuccess(Flushbar flushbar,
+      {@required String title, @required String message, Duration duration = const Duration(seconds: 3)}) {
     return flushbar
-        .changeTitle(title)
-        .changeMessage(message)
-        .changeIcon(
-          Icon(
-            Icons.info_outline,
-            color: Colors.blue,
-          ),
-        )
-        .changeDuration(Duration(seconds: 2))
-        .changeMainButton(null)
-        .changeLinearProgressIndicator(null);
+      ..title = title
+      ..message = message
+      ..icon = Icon(
+        Icons.check_circle,
+        color: Colors.green,
+      )
+      ..duration = duration
+      ..mainButton = null
+      ..linearProgressIndicator = null;
   }
 
-  static Flushbar changeToActionFlushbar(Flushbar flushbar,
+  /// Morph flushbar into a information notification.
+  static Flushbar morphIntoInfo(Flushbar flushbar,
+      {@required String title, @required String message, Duration duration = const Duration(seconds: 3)}) {
+    return flushbar
+      ..title = title
+      ..message = message
+      ..icon = Icon(
+        Icons.info_outline,
+        color: Colors.blue,
+      )
+      ..duration = duration
+      ..mainButton = null
+      ..linearProgressIndicator = null;
+  }
+
+  /// Morph flushbar into a error notification.
+  static Flushbar morphIntoError(Flushbar flushbar,
+      {@required String title, @required String message, Duration duration = const Duration(seconds: 3)}) {
+    return flushbar
+      ..title = title
+      ..message = message
+      ..icon = Icon(
+        Icons.warning,
+        color: Colors.red,
+      )
+      ..duration = duration
+      ..mainButton = null
+      ..linearProgressIndicator = null;
+  }
+
+  /// Morph flushbar into a notification that can receive a user action through a button.
+  static Flushbar morphIntoAction(Flushbar flushbar,
       {@required String title,
-      @required String message,
-      @required FlatButton button}) {
+        @required String message,
+        @required FlatButton button,
+        Duration duration = const Duration(seconds: 3)}) {
     return flushbar
-        .changeTitle(title)
-        .changeMessage(message)
-        .changeIcon(null)
-        .changeDuration(Duration(seconds: 2))
-        .changeMainButton(button)
-        .changeLinearProgressIndicator(null);
+      ..title = title
+      ..message = message
+      ..icon = null
+      ..duration = duration
+      ..mainButton = button
+      ..linearProgressIndicator = null;
   }
 
-  static Flushbar changeToLoadingFlushbar(Flushbar flushbar,
+  /// Morph flushbar into a notification that shows the progress of a async computation.
+  static Flushbar morphIntoLoading(Flushbar flushbar,
       {@required String title,
-      @required String message,
-      @required LinearProgressIndicator linearProgressIndicator}) {
+        @required String message,
+        @required LinearProgressIndicator linearProgressIndicator,
+        Duration duration = const Duration(seconds: 3)}) {
     return flushbar
-        .changeTitle(title)
-        .changeMessage(message)
-        .changeIcon(
-          Icon(
-            Icons.cloud_upload,
-            color: Colors.blue,
-          ),
-        )
-        .changeDuration(Duration(seconds: 2))
-        .changeMainButton(null)
-        .changeLinearProgressIndicator(linearProgressIndicator);
-  }
-
-  static Flushbar changeToErrorFlushbar(Flushbar flushbar,
-      {@required String title, @required String message}) {
-    return flushbar
-        .changeTitle(title)
-        .changeMessage(message)
-        .changeIcon(
-          Icon(
-            Icons.error,
-            color: Colors.red,
-          ),
-        )
-        .changeDuration(Duration(seconds: 2))
-        .changeMainButton(null)
-        .changeLinearProgressIndicator(null);
-  }
-
-  static Flushbar changeToConfirmFlushbar(Flushbar flushbar,
-      {@required String title, @required String message}) {
-    return flushbar
-        .changeTitle(title)
-        .changeMessage(message)
-        .changeIcon(
-          Icon(
-            Icons.check,
-            color: Colors.green,
-          ),
-        )
-        .changeDuration(Duration(seconds: 2))
-        .changeMainButton(null)
-        .changeLinearProgressIndicator(null);
+      ..title = title
+      ..message = message
+      ..icon = Icon(
+        Icons.cloud_upload,
+        color: Colors.blue,
+      )
+      ..duration = duration
+      ..mainButton = null
+      ..linearProgressIndicator = linearProgressIndicator;
   }
 }
 ```

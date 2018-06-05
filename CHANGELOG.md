@@ -1,12 +1,19 @@
+## [0.5.0] - 2018-06-05
+### Changed
+- Removed change...() functions. Cascade notation is now recommended
+- Update readme file
+- Default message font size reduced from 16.0 to 14.0
+- Default title font size reduced from 16.0 to 15.0
+
 ## [0.4.7] - 2018-06-04
 ### Changed
 - Fixed bug with bar duration
-- Blink animation when Fluhsbar is not dismissed now animates the whole bar
+- Blink animation when Flushbar is not dismissed now animates the whole bar
 and is synchronised with content change.
 
 ## [0.4.5] - 2018-06-03
 ### Added
-- Blink animation when commitChanges() is called when Fluhsbar is not dismissed. This provides a 
+- Blink animation when commitChanges() is called when Flushbar is not dismissed. This provides a 
 smooth content transition
 - Helper class to morph Flushbar (FlushbarMorph)
 ### Changed
