@@ -1,3 +1,7 @@
+## [0.5.2] - 2018-06-05
+### Changed
+- User input now receives a Form to facilitate field validation
+
 ## [0.5.1] - 2018-06-05
 ### Changed
 - Fixed brain fart. Same changes as 0.5.0

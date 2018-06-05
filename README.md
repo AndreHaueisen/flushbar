@@ -306,13 +306,14 @@ flushbar
 
 ### Input text
 
-Sometimes we just want a simple user input. Use the property`userInputTextField`.
-* Note that buttons, messages, and icons will be ignored if `userInputTextField != null`
+Sometimes we just want a simple user input. Use the property`userInputForm`.
+* Note that buttons, messages, and icons will be ignored if `userInputForm != null`
 
 This example tries to mimic the [Material Design style guide](https://material.io/design/components/text-fields.html#anatomy)
 ```dart
 flushbar
-      ..userInputTextField = TextFormField(
+      ..userInputForm = Form(
+          child: TextFormField(
         initialValue: "Initial Value",
         onFieldSubmitted: (String value) {
           flushbar.dismiss();
@@ -333,7 +334,7 @@ flushbar
             helperStyle: TextStyle(color: Colors.grey),
             labelText: "Label Text",
             labelStyle: TextStyle(color: Colors.grey)),
-      )
+      ))
       ..commitChanges();
 ```
 
