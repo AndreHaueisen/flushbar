@@ -391,8 +391,11 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
   }
 
   Widget _generateInputFlushbar() {
-    return new FadeTransition(
-      opacity: _blinkAnimation,
+    return new AnimatedSize(
+      alignment: Alignment.topCenter,
+      vsync: this,
+      curve: Curves.bounceOut,
+      duration: Duration(milliseconds: 500),
       child: new DecoratedBox(
         decoration: new BoxDecoration(
           color: widget.backgroundColor,
@@ -403,7 +406,10 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
           padding: barInsets,
           child: new Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0, top: 16.0),
-            child: widget.userInputForm,
+            child: new FadeTransition(
+              opacity: _blinkAnimation,
+              child: widget.userInputForm,
+            ),
           ),
         ),
       ),
@@ -411,8 +417,11 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
   }
 
   Widget _generateFlushbar() {
-    return new FadeTransition(
-      opacity: _blinkAnimation,
+    return new AnimatedSize(
+      alignment: Alignment.topCenter,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.bounceOut,
+      vsync: this,
       child: new DecoratedBox(
         decoration: new BoxDecoration(
           color: widget.backgroundColor,
@@ -425,7 +434,10 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
             mainAxisSize: MainAxisSize.min,
             children: [
               widget.linearProgressIndicator ?? _emptyWidget,
-              new Row(mainAxisSize: MainAxisSize.max, children: _getRowLayout()),
+              new FadeTransition(
+                opacity: _blinkAnimation,
+                child: new Row(mainAxisSize: MainAxisSize.max, children: _getRowLayout()),
+              ),
             ],
           ),
         ),
@@ -447,7 +459,7 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
                 child: widget.titleText ?? _getDefaultTitleText(),
               ),
               new Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0, bottom: 16.0),
+                padding: const EdgeInsets.only(top: 6.0, left: 16.0, right: 16.0, bottom: 16.0),
                 child: widget.messageText ?? _getDefaultNotificationText(),
               ),
             ],
@@ -467,11 +479,11 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
+                padding: const EdgeInsets.only(top: 16.0, left: 4.0, right: 16.0),
                 child: widget.titleText ?? _getDefaultTitleText(),
               ),
               new Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0, bottom: 16.0),
+                padding: const EdgeInsets.only(top: 6.0, left: 4.0, right: 16.0, bottom: 16.0),
                 child: widget.messageText ?? _getDefaultNotificationText(),
               ),
             ],
@@ -487,11 +499,11 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 8.0),
+                padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
                 child: widget.titleText ?? _getDefaultTitleText(),
               ),
               new Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 16.0, right: 8.0, bottom: 16.0),
+                padding: const EdgeInsets.only(top: 6.0, left: 16.0, right: 16.0, bottom: 16.0),
                 child: widget.messageText ?? _getDefaultNotificationText(),
               ),
             ],
@@ -509,24 +521,24 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
       return <Widget>[
         new Expanded(flex: 2, child: _getIcon()),
         new Expanded(
-          flex: 6,
+          flex: 8,
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0),
+                padding: const EdgeInsets.only(top: 16.0, left: 4.0, right: 8.0),
                 child: widget.titleText ?? _getDefaultTitleText(),
               ),
               new Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0, bottom: 16.0),
+                padding: const EdgeInsets.only(top: 6.0, left: 4.0, right: 8.0, bottom: 16.0),
                 child: widget.messageText ?? _getDefaultNotificationText(),
               ),
             ],
           ),
         ),
         new Expanded(
-          flex: 2,
+          flex: 4,
           child: new Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: _getMainActionButton(),
@@ -551,7 +563,7 @@ class _FlushbarState extends State<Flushbar> with TickerProviderStateMixin {
   Text _getDefaultTitleText() {
     return new Text(
       widget.title ?? "",
-      style: TextStyle(fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.bold),
+      style: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.bold),
     );
   }
 

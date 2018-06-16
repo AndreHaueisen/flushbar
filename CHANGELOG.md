@@ -1,3 +1,8 @@
+## [0.5.4] - 2018-06-16
+### Changed
+- Flushbar now animates size changes when commit is called while showing
+- Layout refinements
+
 ## [0.5.2] - 2018-06-05
 ### Changed
 - User input now receives a Form to facilitate field validation
