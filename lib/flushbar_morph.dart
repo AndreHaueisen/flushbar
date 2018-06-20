@@ -13,11 +13,13 @@ class FlushbarMorph {
       ..message = message
       ..icon = Icon(
         Icons.check_circle,
+        size: 28.0,
         color: Colors.green,
       )
       ..duration = duration
       ..mainButton = null
-      ..linearProgressIndicator = null;
+      ..linearProgressIndicator = null
+      ..userInputForm = null;
   }
 
   /// Morph flushbar into a information notification.
@@ -28,11 +30,13 @@ class FlushbarMorph {
       ..message = message
       ..icon = Icon(
         Icons.info_outline,
+        size: 28.0,
         color: Colors.blue,
       )
       ..duration = duration
       ..mainButton = null
-      ..linearProgressIndicator = null;
+      ..linearProgressIndicator = null
+      ..userInputForm = null;
   }
 
   /// Morph flushbar into a error notification.
@@ -43,11 +47,13 @@ class FlushbarMorph {
       ..message = message
       ..icon = Icon(
         Icons.warning,
+        size: 28.0,
         color: Colors.red,
       )
       ..duration = duration
       ..mainButton = null
-      ..linearProgressIndicator = null;
+      ..linearProgressIndicator = null
+      ..userInputForm = null;
   }
 
   /// Morph flushbar into a notification that can receive a user action through a button.
@@ -62,7 +68,8 @@ class FlushbarMorph {
       ..icon = null
       ..duration = duration
       ..mainButton = button
-      ..linearProgressIndicator = null;
+      ..linearProgressIndicator = null
+      ..userInputForm = null;
   }
 
   /// Morph flushbar into a notification that shows the progress of a async computation.
@@ -76,10 +83,12 @@ class FlushbarMorph {
       ..message = message
       ..icon = Icon(
         Icons.cloud_upload,
+        size: 28.0,
         color: Colors.blue,
       )
       ..duration = duration
       ..mainButton = null
-      ..linearProgressIndicator = linearProgressIndicator;
+      ..linearProgressIndicator = linearProgressIndicator
+      ..userInputForm = null;
   }
 }

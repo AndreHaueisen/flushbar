@@ -1,3 +1,8 @@
+## [0.5.5] - 2018-06-20
+### Changed
+- Updated flushbar_morph
+- Updated sdk version
+
 ## [0.5.4] - 2018-06-16
 ### Changed
 - Flushbar now animates size changes when commit is called while showing
