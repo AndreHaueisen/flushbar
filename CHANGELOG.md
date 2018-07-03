@@ -1,3 +1,7 @@
+## [0.5.6] - 2018-06-20
+### Changed
+- Fixed dependency issue
+
 ## [0.5.5] - 2018-06-20
 ### Changed
 - Updated flushbar_morph
