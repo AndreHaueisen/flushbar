@@ -1,23 +1,20 @@
 # Flushbar
 
-This is a flutter widget inspired by [Flashbar](https://github.com/aritraroy/Flashbar). Use this package if you need
-more customization when notifying your user. For Android developers, it is made to substitute
+Use this package if you need more customization when notifying your user. For Android developers, it is made to substitute
 toasts and snackbars.
-Development of Flushbar and Flashbar are totally separate.
+
 Although they look like each other, they work very differently. See the examples bellow.
 See the [install instructions](https://pub.dartlang.org/packages/flushbar#-installing-tab-).
 
-## Getting Started
+This is a flutter widget inspired by [Flashbar](https://github.com/aritraroy/Flashbar). 
+Development of Flushbar and Flashbar are totally separate.
 
-Since Flushbar is an offscreen widget, I made it to be wrapped 
-in a [Stack](https://docs.flutter.io/flutter/widgets/Stack-class.html).
-Make sure Flushbar is the last child in the Stack.
+## Getting Started
 
 ### A basic Flushbar
 
 The most basic Flushbar uses title and a message. You can set your text and title latter
-if you don't have them on construction time. 
-* Keep a reference to you flushbar. You are going to need it latter for customization.
+if you don't have them on construction time. Make sure you have them before calling `show()`
 
 ```dart
 class YourAwesomeApp extends StatelessWidget {
@@ -27,6 +24,7 @@ class YourAwesomeApp extends StatelessWidget {
     message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", //message
   );
 
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

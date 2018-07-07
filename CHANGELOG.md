@@ -1,3 +1,18 @@
+## [0.7.0] - 2018-06-20
+### Breaking changes
+- Flushbar does not need a global instance anymore
+- Flushbar it now made be used only one time. After it hits the dismissed state, that instance wont work anymore
+- Due to the behaviour above, there is no need to call commitChanges() anymore
+- Flushbar does not need to be within a Stack widget anymore
+- Purged state eliminated
+- FlushbarMorph is now called FlushbarHelper
+
+### Changes
+- README.md is updated
+
+### Known issues
+- When using a Form, the keyboard is not shown. Still figuring out how to solve it.
+
 ## [0.5.6] - 2018-06-20
 ### Changed
 - Fixed dependency issue
