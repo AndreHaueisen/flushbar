@@ -30,8 +30,14 @@ class YourAwesomeApp extends StatelessWidget {
     return MaterialApp(
       title: 'YourAwesomeApp',
       home: new Scaffold(
-        body: Stack(
-          children: <Widget>[YourMainScreenWidget(), flushbar],
+        Container(
+          child: Center(
+            child: MaterialButton(
+              onPressed: (){
+                
+              },
+            ),
+          ),
         ),
       ),
     );
