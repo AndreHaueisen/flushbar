@@ -3,7 +3,6 @@
 Use this package if you need more customization when notifying your user. For Android developers, it is made to substitute
 toasts and snackbars.
 
-Although they look like each other, they work very differently. See the examples bellow.
 See the [install instructions](https://pub.dartlang.org/packages/flushbar#-installing-tab-).
 
 This is a flutter widget inspired by [Flashbar](https://github.com/aritraroy/Flashbar). 
@@ -13,18 +12,13 @@ Development of Flushbar and Flashbar are totally separate.
 
 ### A basic Flushbar
 
-The most basic Flushbar uses title and a message. You can set your text and title latter
-if you don't have them on construction time. Make sure you have them before calling `show()`
+The most basic Flushbar uses title and a message. Failing to provide one of
+them before you call `show()` will result in a runtime error.
+`Duration`, if not provided, will create an infinite Flushbar, only dismissible by code, backbutton click or a drag (case `isDismissible` is set to `true`).
 
 ```dart
 class YourAwesomeApp extends StatelessWidget {
 
-  Flushbar flushbar = new Flushbar(
-    title: "Hey Ninja", //title
-    message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", //message
-  );
-
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,7 +28,11 @@ class YourAwesomeApp extends StatelessWidget {
           child: Center(
             child: MaterialButton(
               onPressed: (){
-                
+                Flushbar()
+                  ..title = "Hey Ninja"
+                  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+                  ..duration = Duration(seconds: 3)
+                  ..show(context);
               },
             ),
           ),
@@ -45,31 +43,6 @@ class YourAwesomeApp extends StatelessWidget {
 }
 ```
 
-or
-
-```dart
-class YourAwesomeApp extends StatelessWidget {
-
-  Flushbar flushbar = new Flushbar();
-
-  @override
-  Widget build(BuildContext context) {
-    flushbar
-          ..message = "Hey Ninja"
-          ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-          ..commitChanges();
-    
-    return MaterialApp(
-      title: 'YourAwesomeApp',
-      home: new Scaffold(
-        body: Stack(
-          children: <Widget>[YourMainScreenWidget(), flushbar],
-        ),
-      ),
-    );
-  }
-}
-```
 ![Basic Example](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/basic_bar.png)
 
 ### Lets get crazy Flushbar
@@ -77,49 +50,49 @@ class YourAwesomeApp extends StatelessWidget {
 Here is how customized things can get.
 
 ```dart
-Flushbar flushbar = new Flushbar(
-    "Hey Ninja", //title
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    flushbarPosition: FlushbarPosition.TOP, //Immutable
-    reverseAnimationCurve: Curves.decelerate, //Immutable
-    forwardAnimationCurve: Curves.elasticOut, //Immutable
-    backgroundColor: Colors.red,
-    shadowColor: Colors.blue[800],
-    backgroundGradient: new LinearGradient(colors: [Colors.blueGrey, Colors.black]),
-    isDismissible: false,
-    duration: Duration(seconds: 4),
-    icon: Icon(
-      Icons.check,
-      color: Colors.greenAccent,
+Flushbar(
+  title: "Hey Ninja",
+  message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+  flushbarPosition: FlushbarPosition.TOP, //Immutable
+  reverseAnimationCurve: Curves.decelerate, //Immutable
+  forwardAnimationCurve: Curves.elasticOut, //Immutable
+  backgroundColor: Colors.red,
+  shadowColor: Colors.blue[800],
+  backgroundGradient: new LinearGradient(colors: [Colors.blu Colors.black]),
+  isDismissible: false,
+  duration: Duration(seconds: 4),
+  icon: Icon(
+    Icons.check,
+    color: Colors.greenAccent,
+  ),
+  mainButton: FlatButton(
+    onPressed: () {},
+    child: Text(
+      "CLAP",
+      style: TextStyle(color: Colors.amber),
     ),
-    mainButton: FlatButton(
-      onPressed: () {},
-      child: Text("CLAP", style: TextStyle(color: Colors.amber),),
-    ),
-    linearProgressIndicator: LinearProgressIndicator(backgroundColor: Colors.blueGrey,),
-    titleText: new Text(
-      "Hello Hero",
-      style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
-          color: Colors.yellow[600],
-          fontFamily: "ShadowsIntoLightTwo"),
-    ),
-    messageText: new Text(
-      "You killed that giant monster in the city. Congratulations!",
-      style: TextStyle(
-        fontSize: 18.0,
-          color: Colors.green[300],
-          fontFamily: "ShadowsIntoLightTwo"),
-    ),
-  );
+  ),
+  linearProgressIndicator: LinearProgressIndicator(
+    backgroundColor: Colors.blueGrey,
+  ),
+  titleText: new Text(
+    "Hello Hero",
+    style: TextStyle(fontWeight: FontWeight.bold, fontSize: color: Colors.yellow[600], fontFamily: "ShadowsIntoLightTwo"),
+  ),
+  messageText: new Text(
+    "You killed that giant monster in the city. Congratulations!",
+    style: TextStyle(fontSize: 18.0, color: Colors.green[fontFamily: "ShadowsIntoLightTwo"),
+  ),
+);
 ```
 
 ![Complete Example](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/complete_bar.png)
 
-* Note that every property is mutable after instantiation. The exceptions are `flushbarPosition`, `reverseAnimationCurve`, `forwardAnimationCurve`.
-* Don't forget to call `commitChanges()` or the changes won't take effect.
+* Note that the properties `flushbarPosition`, `reverseAnimationCurve`, `forwardAnimationCurve` are immutable and have to be set at construction time.
+* Don't forget to call `show()` or the bar will stay hidden.
 * To deactivate any of those properties, pass `null` to it.
+
+Here is a notation a like to use.
 
 ```dart
 flushbar
@@ -136,7 +109,7 @@ flushbar
       ..shadowColor = Color()
       ..linearProgressIndicator = LinearProgressIndicator()
       ..onStatusChanged = (status) {}
-      ..commitChanges();
+      ..show(context);
 ```
 
 ### Customize your text
@@ -147,25 +120,15 @@ and pass it to the `titleText` or `messageText` variables.
 * Note that `message` will be ignored if `messageText` is not `null`
 
 ```dart
-Flushbar flushbar = new Flushbar(
-    "Hey Ninja", //title
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry", //message
-    titleText: new Text(
-      "Hello Hero",
-      style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
-          color: Colors.yellow[600],
-          fontFamily: "ShadowsIntoLightTwo"),
-    ),
-    messageText: new Text(
-      "You killed that giant monster in the city. Congratulations!",
-      style: TextStyle(
-        fontSize: 16.0,
-          color: Colors.green[600],
-          fontFamily: "ShadowsIntoLightTwo"),
-    ),
-  );
+Flushbar()
+  ..title = "Hey Ninja" //ignored since titleText != null
+  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry" //ignored since messageText != null
+  ..titleText = new Text("Hello Hero",
+      style:
+          TextStyle(fontWeight: FontWeight.bold, fontSize: color: Colors.yellow[600], fontFa"ShadowsIntoLightTwo"))
+  ..messageText = new Text("You killed that giant monster in the city. Congratulations!",
+      style: TextStyle(fontSize: 16.0, color: Colors.green[fontFamily: "ShadowsIntoLightTwo"))
+  ..show(context);
 ```
 
 ![Customized Text](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/text_bar.png)
@@ -176,12 +139,12 @@ You can paint the background with any color you want. The same goes for shadows.
 `shadow` won't show by default. You will only see a shadow if you specify a color.
 
 ```dart
-Flushbar flushbar = new Flushbar(
-    "Hey Ninja", //title
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    backgroundColor: Colors.red,
-    shadowColor: Colors.red[800],
-  );
+Flushbar()
+  ..title = "Hey Ninja"
+  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+  ..backgroundColor = Colors.red
+  ..shadowColor = Colors.red[800]
+  ..show(context);
 ```
 
 ![Background and Shadow](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/background_color_bar.png)
@@ -190,35 +153,62 @@ Want a gradient in the background? No problem.
 * Note that `backgroundColor` will be ignored while `backgroundGradient` is not `null`
 
 ```dart
-Flushbar flushbar = new Flushbar(
-  "Hey Ninja", //title
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-  backgroundGradient: new LinearGradient(colors: [Colors.blue, Colors.teal]),
-  backgroundColor: Colors.red,
-  shadowColor: Colors.blue[800],
-  );
+Flushbar()
+  ..title = "Hey Ninja"
+  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+  ..backgroundGradient = new LinearGradient(colors: [Colors.Colors.teal])
+  ..backgroundColor = Colors.red
+  ..shadowColor = Colors.blue[800]
+  ..show(context);
 ```
 
 ![Background Gradient](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/gradient_bar.png)
 
 ### Icon and button action
 
-Lets put a Icon that has a `PulseAnimation`. Icons have this animation by default
-and cannot be changed as of this moment.
+Let us put a Icon that has a `PulseAnimation`. Icons have this animation by default and cannot be changed as of this moment.
+Also, let us put a button. Have you noticed that `show()` returns a `Future`?
+This Future will yield a value when you call `dismiss([T result])`.
+I recomment that you specify the `result` generic type if you intend to collect an user input.
 
 ```dart
-Flushbar flushbar = new Flushbar(
-  "Hey Ninja", //title
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-  icon: Icon(
-    Icons.info_outline,
-    color: Colors.blue,
-  ),
-  mainButton: FlatButton(
-    onPressed: () {},
-    child: Text("ADD", style: TextStyle(color: Colors.amber),),
-  ),
-);
+Flushbar flush;
+bool _wasAddClicked;
+```
+
+```dart
+@override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: MaterialButton(
+          onPressed: () {
+            flush = Flushbar<bool>() // <bool> is the type of the result passed to dismiss() and collected by show().then((result){})
+              ..title = "Hey Ninja"
+              ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+              ..icon = Icon(
+                Icons.info_outline,
+                color: Colors.blue,
+              )
+              ..mainButton = FlatButton(
+                onPressed: () {
+                  flush.dismiss(true); // result = true
+                },
+                child: Text(
+                  "ADD",
+                  style: TextStyle(color: Colors.amber),
+                ),
+              )
+              ..show(context).then((result) {
+                setState(() { // setState() is optional here
+                  _wasAddClicked = result;
+                });
+              });
+          },
+        ),
+      ),
+    );
+  }
 ```
 
 ![Icon and Button](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/icon_and_button_bar.png)
@@ -226,14 +216,13 @@ Flushbar flushbar = new Flushbar(
 ### Flushbar position
 
 Flushbar can be at `FlushbarPosition.BOTTOM` or `FlushbarPosition.TOP`.
-* This variable is immutable and can not be changed after the bar is created.
+* This variable is immutable and can not be changed after the instance is created.
 
 ```dart
-Flushbar flushbar = new Flushbar(
-  "Hey Ninja", //title
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-  flushbarPosition: FlushbarPosition.TOP,
-);
+Flushbar(flushbarPosition: FlushbarPosition.TOP)
+  ..title = "Hey Ninja"
+  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+  ..show(context);
 ```
 
 ![Bar position](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/position_bar.png)
@@ -245,12 +234,12 @@ By default, Flushbar is dismissible by the user. A right or left drag will dismi
 Use the `isDismissible` to change it.
 
 ```dart
-Flushbar flushbar = new Flushbar(
-  "Hey Ninja", //title
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-  duration: Duration(seconds: 3),
-  isDismissible: false,
-);
+Flushbar()
+  ..title = "Hey Ninja" //title
+  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+  ..duration = Duration(seconds: 3)
+  ..isDismissible = false
+  ..show(context);
 ```
 
 //TODO add gif
@@ -260,11 +249,12 @@ Flushbar flushbar = new Flushbar(
 If you are loading something, use a [LinearProgressIndicator](https://docs.flutter.io/flutter/material/LinearProgressIndicator-class.html)
 
 ```dart
-Flushbar flushbar = new Flushbar(
-  "Hey Ninja", //title
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-  linearProgressIndicator: new LinearProgressIndicator(backgroundColor: Colors.grey[800],),
-);
+Flushbar()
+  ..title = "Hey Ninja"
+  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+  ..linearProgressIndicator = new LinearProgressIndicator(
+    backgroundColor: Colors.grey[800],)
+  ..show(context);
 ```
 
 //TODO add gif
@@ -275,12 +265,13 @@ You can set custom animation curves using `forwardAnimationCurve` and `reverseAn
 * These properties are immutable
 
 ```dart
-Flushbar flushbar = new Flushbar(
-  "Hey Ninja", //title
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+Flushbar(
   forwardAnimationCurve: Curves.decelerate,
   reverseAnimationCurve: Curves.easeOut,
-);
+)
+  ..title = "Hey Ninja"
+  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+  ..show(context);
 ```
 
 //TODO add gif
@@ -288,23 +279,38 @@ Flushbar flushbar = new Flushbar(
 ### Listen to status updates
 
 You can listen to status update using the `onStatusChanged` property. 
-* Note that when you pass a new listener using `onStatusChanged`, it will activate once immediately
-so you can check in what state the Flushbar is.
+* Note that when you pass a new listener using `onStatusChanged`, it will activate once immediately so you can check in what state the Flushbar is.
 
 ```dart
 
-Flushbar flushbar = new Flushbar(
-  "Hey Ninja", //title
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry");
+Flushbar flushbar = Flushbar(title: "Hey Ninja", message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry");
 
-flushbar
-   ..onStatusChanged = (FlushbarStatus status)
-     {
-       if(status == FlushbarStatus.DISMISSED){
-         doSomething();
-       }
-     }
-   ..commitChanges();
+  flushbar
+    ..onStatusChanged = (FlushbarStatus status) {
+      switch (status) {
+        case FlushbarStatus.SHOWING:
+          {
+            doSomething();
+            break;
+          }
+        case FlushbarStatus.IS_APPEARING:
+          {
+            doSomethingElse();
+            break;
+          }
+        case FlushbarStatus.IS_HIDING:
+          {
+            doSomethingElse();
+            break;
+          }
+        case FlushbarStatus.DISMISSED:
+          {
+            doSomethingElse();
+            break;
+          }
+      }
+    }
+    ..show(context);
 
 ```
 
@@ -312,176 +318,87 @@ flushbar
 
 Sometimes we just want a simple user input. Use the property`userInputForm`.
 * Note that buttons, messages, and icons will be ignored if `userInputForm != null`
+* `dismiss(result)` will yield result. `dismiss()` will yield null.
+* There is a bug here where the keyboard is not displayed. Trying to fix it.
 
-This example tries to mimic the [Material Design style guide](https://material.io/design/components/text-fields.html#anatomy)
 ```dart
-flushbar
+Flushbar<List<String>> flush;
+final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+TextEditingController _controller1 = TextEditingController(text: "Initial Value");
+TextEditingController _controller2 = TextEditingController(text: "Initial Value Two");
+```
+
+```dart
+flush = Flushbar<List<String>>()
       ..userInputForm = Form(
-          child: TextFormField(
-        initialValue: "Initial Value",
-        onFieldSubmitted: (String value) {
-          flushbar.dismiss();
-        },
-        style: TextStyle(color: Colors.white),
-        maxLength: 100,
-        maxLines: 1,
-        //maxLengthEnforced: ,
-        decoration: InputDecoration(
-            fillColor: Colors.white10,
-            filled: true,
-            icon: Icon(
-              Icons.label,
-              color: Colors.grey[500],
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+            TextFormField(
+              controller: _controller1,
+              onFieldSubmitted: (String value) {},
             ),
-            border: UnderlineInputBorder(),
-            helperText: "Helper Text",
-            helperStyle: TextStyle(color: Colors.grey),
-            labelText: "Label Text",
-            labelStyle: TextStyle(color: Colors.grey)),
-      ))
-      ..commitChanges();
+            TextFormField(
+              controller: _controller2,
+              onFieldSubmitted: (String value) {},
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: MaterialButton(
+                  textColor: Colors.amberAccent,
+                  child: Text("SUBMIT"),
+                  onPressed: () {
+                    flush.dismiss([_controller1.value.text, _controller2.value.text]);
+                  },
+                ),
+              ),
+            )
+          ]))
+      ..show(context).then((result) {
+        if (result != null) {
+          String userInput1 = result[0];
+          String userInput2 = result[1];
+        }
+      });
 ```
 
 ![Bar input](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/input_bar.png)
 
-## Usage Sample
-
-Since you are probably going to control your Flushbar from `FirstScreen()`, pass `flushbar` as an argument.
-Flushbar is an offscreen widget. It was made to be wrapped in a [Stack](https://docs.flutter.io/flutter/widgets/Stack-class.html).
-Make sure Flushbar is the last child in the Stack.
-
+This example tries to mimic the [Material Design style guide](https://material.io/design/components/text-fields.html#anatomy)
+This is the `TextFormField` customization omitted from the example above for simplicity:
 ```dart
-class YourAwesomeApp extends StatelessWidget {
-
-  Flushbar flushbar = new Flushbar();
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'YourAwesomeApp',
-      home: new Scaffold(
-        body: Stack(
-          children: <Widget>[FirstScreen(flushbar), flushbar],
-        ),
+TextFormField(
+  initialValue: "Initial Value",
+  style: TextStyle(color: Colors.white),
+  maxLength: 100,
+  maxLines: 1,
+  maxLengthEnforced: true,
+  decoration: InputDecoration(
+      fillColor: Colors.white10,
+      filled: true,
+      icon: Icon(
+        Icons.label,
+        color: Colors.grey[500],
       ),
-    );
-  }
-}
+      border: UnderlineInputBorder(),
+      helperText: "Helper Text",
+      helperStyle: TextStyle(color: Colors.grey),
+      labelText: "Label Text",
+      labelStyle: TextStyle(color: Colors.grey)),
+)
 ```
 
-I created a helper class `FlushbarMorph` to help change the bar during the app lifetime.
-Fell free to create your own helper.
-* Remember to pass `null` to deactivate a widget.
+## Flushbar Helper
+
+I made a helper class to facilitate the creation of the most common Flushbars.
 
 ```dart
-
-class FlushbarMorph {
-  /// Morph flushbar into a success notification.
-  static Flushbar morphIntoSuccess(Flushbar flushbar,
-      {@required String title, @required String message, Duration duration = const Duration(seconds: 3)}) {
-    return flushbar
-      ..title = title
-      ..message = message
-      ..icon = Icon(
-        Icons.check_circle,
-        color: Colors.green,
-      )
-      ..duration = duration
-      ..mainButton = null
-      ..linearProgressIndicator = null;
-  }
-
-  /// Morph flushbar into a information notification.
-  static Flushbar morphIntoInfo(Flushbar flushbar,
-      {@required String title, @required String message, Duration duration = const Duration(seconds: 3)}) {
-    return flushbar
-      ..title = title
-      ..message = message
-      ..icon = Icon(
-        Icons.info_outline,
-        color: Colors.blue,
-      )
-      ..duration = duration
-      ..mainButton = null
-      ..linearProgressIndicator = null;
-  }
-
-  /// Morph flushbar into a error notification.
-  static Flushbar morphIntoError(Flushbar flushbar,
-      {@required String title, @required String message, Duration duration = const Duration(seconds: 3)}) {
-    return flushbar
-      ..title = title
-      ..message = message
-      ..icon = Icon(
-        Icons.warning,
-        color: Colors.red,
-      )
-      ..duration = duration
-      ..mainButton = null
-      ..linearProgressIndicator = null;
-  }
-
-  /// Morph flushbar into a notification that can receive a user action through a button.
-  static Flushbar morphIntoAction(Flushbar flushbar,
-      {@required String title,
-        @required String message,
-        @required FlatButton button,
-        Duration duration = const Duration(seconds: 3)}) {
-    return flushbar
-      ..title = title
-      ..message = message
-      ..icon = null
-      ..duration = duration
-      ..mainButton = button
-      ..linearProgressIndicator = null;
-  }
-
-  /// Morph flushbar into a notification that shows the progress of a async computation.
-  static Flushbar morphIntoLoading(Flushbar flushbar,
-      {@required String title,
-        @required String message,
-        @required LinearProgressIndicator linearProgressIndicator,
-        Duration duration = const Duration(seconds: 3)}) {
-    return flushbar
-      ..title = title
-      ..message = message
-      ..icon = Icon(
-        Icons.cloud_upload,
-        color: Colors.blue,
-      )
-      ..duration = duration
-      ..mainButton = null
-      ..linearProgressIndicator = linearProgressIndicator;
-  }
-}
-```
-
-Inside you MainScreenWidget use the reference to control it. Don't forget to `commitChanges()`
-
-```dart
-class FirstScreen extends StatelessWidget {
-  FirstScreen(this.flushbar);
-
-  final Flushbar flushbar;
-
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      child: new Center(
-        child: new FloatingActionButton(
-          backgroundColor: Theme.of(context).accentColor,
-          child: Icon(Icons.info_outline),
-          onPressed: () {
-            FlushbarHelper
-                .changeToInfoFlushbar(flushbar,
-                    title: "No connection",
-                    message: "Your app is diconnected. Action not saved")
-                .commitChanges();
-            flushbar.show();
-          },
-        ),
-      ),
-    );
-  }
-}
+FlushbarHelper.createSuccess({title, message, duration});
+FlushbarHelper.createInformation({title, message, duration});
+FlushbarHelper.createError({title, message, duration});
+FlushbarHelper.createAction({title, message, duration, flatButton});
+FlushbarHelper.createLoading({{title, message, duration, linearProgressIndicator}});
 ```

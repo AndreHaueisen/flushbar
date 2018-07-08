@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class _FlushbarRoute<T> extends OverlayRoute<T> {
-  
   _FlushbarRoute({
     @required this.theme,
     @required this.child,
@@ -31,10 +30,9 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
           opaque: false),
     ];
   }
-
 }
 
-Future<T> showFlushbar<T>({@required BuildContext context, WidgetBuilder builder}) {
+Future<T> _showFlushbar<T>({@required BuildContext context, WidgetBuilder builder}) {
   assert(builder != null);
   return Navigator.of(context, rootNavigator: true).push(new _FlushbarRoute<T>(
         child: new Builder(builder: builder),
@@ -113,13 +111,12 @@ class Flushbar<T extends Object> extends StatefulWidget {
   T _result;
 
   /// Show the flushbar. Kicks in [FlushbarStatus.IS_APPEARING] state followed by [FlushbarStatus.SHOWING]
-  Future<T> show(BuildContext context) async{
-    return await showFlushbar<T>(
-      context: context,
-      builder: (BuildContext innerContext){
-        return this;
-      }
-    );
+  Future<T> show(BuildContext context) async {
+    return await _showFlushbar<T>(
+        context: context,
+        builder: (BuildContext innerContext) {
+          return this;
+        });
   }
 
   /// Dismisses the flushbar causing is to return [result].
@@ -164,7 +161,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
 
         case AnimationStatus.dismissed:
           {
-            assert(widget._result is K,
+            assert(widget._result is K || widget._result == null,
                 "Flushbar is configured to return ${widget._result.runtimeType}. Check the value passed to dismiss([T result])!");
             (widget._result == null) ? Navigator.pop(context) : Navigator.pop(context, widget._result);
 
@@ -216,9 +213,9 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   final Duration _duration = Duration(seconds: 1);
 
   void _dismiss() {
-    if (!_popController.isAnimating) {
-      _popController.reverse();
-      _fadeController.reset();
+    _popController.reverse();
+    if (_timer != null && _timer.isActive) {
+        _timer.cancel();
     }
   }
 
@@ -232,7 +229,6 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
 
   void _resetAnimations() {
     _popController.reset();
-    _fadeController.reset();
   }
 
   List<BoxShadow> _getBoxShadowList() {
