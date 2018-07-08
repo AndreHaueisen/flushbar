@@ -1,4 +1,8 @@
-## [0.7.0] - 2018-06-20
+## [0.7.1] - 2018-07-08
+### Changes
+- Flushbar doc update
+
+## [0.7.0] - 2018-07-08
 ### Breaking changes
 - Flushbar does not need a global instance anymore
 - Flushbar it now made be used only one time. After it hits the dismissed state, that instance wont work anymore

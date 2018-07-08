@@ -45,7 +45,7 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// A custom widget so you can notify your user when you fell like he needs an explanation.
 /// This is inspired on a custom view (Flashbar)[https://github.com/aritraroy/Flashbar] created for android.
 ///
-/// [title] The title displayed to the user (can be changed using [changeTitle]).
+/// [title] The title displayed to the user
 /// [message] The message displayed to the user.
 /// [titleText] If you need something more personalized, pass a [Text] widget to this variable. [title] will be ignored if this variable is not null.
 /// [messageText] If you need something more personalized, pass a [Text] widget to this variable. [message] will be ignored if this variable is not null.
@@ -61,13 +61,6 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// [reverseAnimationCurve] (final) The [Curve] animation used when dismiss() is called. [Curves.fastOutSlowIn] is default.
 /// [linearProgressIndicator] (final) An optional [LinearProgressIndicator] ideal when loading or uploading something
 /// [userInputForm] A [TextFormField] in case you want a simple user input. Every other widget is ignored if this is not null
-///
-/// ATTENTION
-/// The changes will take effect only after you call commitChanges().
-/// [flushbarPosition], [forwardAnimationCurve] and [reverseAnimationCurve] are immutable and can't be changed after instantiation.
-/// Make sure you call purge() if you are discarding the Flushbar.
-/// Call purge only if you are discarding the Flushbar.
-
 class Flushbar<T extends Object> extends StatefulWidget {
   Flushbar({
     this.title,
