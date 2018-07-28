@@ -1,3 +1,9 @@
+## [0.7.5] - 2018-07-28
+### Changes
+- Fix bug where keyboard did not show when using a Form
+- Flushbar is now compatible with the master channel
+- Bug fixes
+
 ## [0.7.1] - 2018-07-08
 ### Changes
 - Flushbar doc update

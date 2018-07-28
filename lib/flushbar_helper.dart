@@ -84,10 +84,10 @@ class FlushbarHelper {
       ..linearProgressIndicator = linearProgressIndicator;
   }
 
-  ///Not fully  functional. Don't use it for now
-  // static Flushbar getInputFlushbar({@required Form textForm}) {
-  //   return Flushbar()
-  //     ..duration = null
-  //     ..userInputForm = textForm;
-  // }
+  /// Get a flushbar that shows an user input form.
+  static Flushbar getInputFlushbar({@required Form textForm}) {
+    return Flushbar()
+      ..duration = null
+      ..userInputForm = textForm;
+  }
 }

@@ -12,7 +12,6 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
 
   final Widget child;
   final ThemeData theme;
-  final Duration _duration;
 
   @override
   Iterable<OverlayEntry> createOverlayEntries() {
@@ -21,6 +20,7 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
           builder: (BuildContext context) {
             final Widget annotatedChild = new Semantics(
               child: child,
+              focused: true,
               scopesRoute: true,
               explicitChildNodes: true,
             );
@@ -34,12 +34,12 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
 
 Future<T> _showFlushbar<T>({@required BuildContext context, WidgetBuilder builder}) {
   assert(builder != null);
-  return Navigator.of(context, rootNavigator: true).push(new _FlushbarRoute<T>(
-        child: new Builder(builder: builder),
-        theme: Theme.of(context, shadowThemeOnly: false),
-      ));
+
+  return Navigator.of(context, rootNavigator: false).push(new _FlushbarRoute<T>(
+      child: new Builder(builder: builder), theme: Theme.of(context), settings: RouteSettings(name: FLUSHBAR_ROUTE_NAME)));
 }
 
+const String FLUSHBAR_ROUTE_NAME = "/flushbarRoute";
 typedef void FlushbarStatusCallback(FlushbarStatus status);
 
 /// A custom widget so you can notify your user when you fell like he needs an explanation.
@@ -81,7 +81,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
   });
 
   /// [onStatusChanged] A callback used to listen to Flushbar status [FlushbarStatus]. Set it using [setStatusListener()]
-  FlushbarStatusCallback onStatusChanged;
+  FlushbarStatusCallback onStatusChanged = (FlushbarStatus status) {};
   String title;
   String message;
   Text titleText;
@@ -158,29 +158,25 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
                 "Flushbar is configured to return ${widget._result.runtimeType}. Check the value passed to dismiss([T result])!");
             (widget._result == null) ? Navigator.pop(context) : Navigator.pop(context, widget._result);
 
-            if (widget.onStatusChanged != null) {
-              currentStatus = FlushbarStatus.DISMISSED;
-              widget.onStatusChanged(currentStatus);
-            }
+            currentStatus = FlushbarStatus.DISMISSED;
+            widget.onStatusChanged(currentStatus);
 
             break;
           }
 
         case AnimationStatus.forward:
           {
-            if (widget.onStatusChanged != null) {
-              currentStatus = FlushbarStatus.IS_APPEARING;
-              widget.onStatusChanged(currentStatus);
-            }
+            currentStatus = FlushbarStatus.IS_APPEARING;
+            widget.onStatusChanged(currentStatus);
+
             break;
           }
 
         case AnimationStatus.reverse:
           {
-            if (widget.onStatusChanged != null) {
-              currentStatus = FlushbarStatus.IS_HIDING;
-              widget.onStatusChanged(currentStatus);
-            }
+            currentStatus = FlushbarStatus.IS_HIDING;
+            widget.onStatusChanged(currentStatus);
+
             break;
           }
       }
@@ -208,7 +204,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   void _dismiss() {
     _popController.reverse();
     if (_timer != null && _timer.isActive) {
-        _timer.cancel();
+      _timer.cancel();
     }
   }
 
@@ -234,7 +230,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
 
   void _configureTimer() {
     if (widget.duration != null) {
-      if (_timer != null) {
+      if (_timer != null && _timer.isActive) {
         _timer.cancel();
       }
       _timer = new Timer(widget.duration, () {
@@ -368,6 +364,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     _popAnimation.removeStatusListener(_animationStatusListener);
     _popController.dispose();
     _fadeController.dispose();
+    focusNode.detach();
     super.dispose();
   }
 
@@ -389,18 +386,31 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     }
   }
 
+  FocusScopeNode focusNode = FocusScopeNode();
+
   Widget _generateInputFlushbar() {
-    return new DecoratedBox(
-      decoration: new BoxDecoration(
-        color: widget.backgroundColor,
-        gradient: widget.backgroundGradient,
-        boxShadow: _getBoxShadowList(),
-      ),
-      child: new Padding(
-        padding: barInsets,
+    return SafeArea(
+      minimum: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      bottom: true,
+      top: false,
+      left: false,
+      right: false,
+      child: new DecoratedBox(
+        decoration: new BoxDecoration(
+          color: widget.backgroundColor,
+          gradient: widget.backgroundGradient,
+          boxShadow: _getBoxShadowList(),
+        ),
         child: new Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0, top: 8.0),
-          child: widget.userInputForm,
+          padding: barInsets,
+          child: new Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0, top: 8.0),
+            child: FocusScope(
+              child: widget.userInputForm,
+              node: focusNode,
+              autofocus: true,
+            ),
+          ),
         ),
       ),
     );

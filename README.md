@@ -319,7 +319,6 @@ Flushbar flushbar = Flushbar(title: "Hey Ninja", message: "Lorem Ipsum is simply
 Sometimes we just want a simple user input. Use the property`userInputForm`.
 * Note that buttons, messages, and icons will be ignored if `userInputForm != null`
 * `dismiss(result)` will yield result. `dismiss()` will yield null.
-* There is a bug here where the keyboard is not displayed. Trying to fix it.
 
 ```dart
 Flushbar<List<String>> flush;
