@@ -1,3 +1,7 @@
+## [0.7.6] - 2018-08-07
+### Changes
+- Version update to supprt master channel
+
 ## [0.7.5] - 2018-07-28
 ### Changes
 - Fix bug where keyboard did not show when using a Form
