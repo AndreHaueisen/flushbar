@@ -14,7 +14,7 @@ packages:
       name: args
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.4"
+    version: "1.5.0"
   async:
     dependency: transitive
     description:
@@ -262,7 +262,7 @@ packages:
       name: shelf_web_socket
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.2+3"
+    version: "0.2.2+4"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -374,5 +374,5 @@ packages:
     source: hosted
     version: "2.1.15"
 sdks:
-  dart: ">=2.0.0-dev.62.0 <=2.0.0-dev.69.5.flutter-b04def964c"
+  dart: ">=2.0.0-dev.62.0 <=2.0.0-dev.69.5.flutter-eab492385c"
   flutter: ">=0.4.0"

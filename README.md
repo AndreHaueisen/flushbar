@@ -12,9 +12,8 @@ Development of Flushbar and Flashbar are totally separate.
 
 ### A basic Flushbar
 
-The most basic Flushbar uses title and a message. Failing to provide one of
-them before you call `show()` will result in a runtime error.
-`Duration`, if not provided, will create an infinite Flushbar, only dismissible by code, backbutton click or a drag (case `isDismissible` is set to `true`).
+The most basic Flushbar uses only a message. Failing to provide it before you call `show()` will result in a runtime error.
+`Duration`, if not provided, will create an infinite Flushbar, only dismissible by code, backbutton click, or a drag (case `isDismissible` is set to `true`).
 
 ```dart
 class YourAwesomeApp extends StatelessWidget {
@@ -111,6 +110,26 @@ flushbar
       ..onStatusChanged = (status) {}
       ..show(context);
 ```
+
+### Left indicator bar
+Flushbar has a lateral bar to better convey the humor of the notification. To use it, simple give `leftBarIndicatorColor` a color.
+* Note that we do not use a `title` in this example as it is not mandatory after version 0.8
+
+```dart
+Flushbar()
+  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+  ..icon = Icon(
+    Icons.info_outline,
+    size: 28.0,
+    color: Colors.blue[300],
+    )
+  ..duration = Duration(seconds: 3)
+  ..leftBarIndicatorColor = Colors.blue[300]
+  ..show(context);
+```
+
+![Left indicator example](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/left_bar_indicator.png)
+
 
 ### Customize your text
 
@@ -235,7 +254,7 @@ Use the `isDismissible` to change it.
 
 ```dart
 Flushbar()
-  ..title = "Hey Ninja" //title
+  ..title = "Hey Ninja"
   ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
   ..duration = Duration(seconds: 3)
   ..isDismissible = false
@@ -247,13 +266,23 @@ Flushbar()
 ### Progress Indicator
 
 If you are loading something, use a [LinearProgressIndicator](https://docs.flutter.io/flutter/material/LinearProgressIndicator-class.html)
+If you want an undetermined progress indicator, do not set `progressIndicatorController`.
+If ou want a determined progress indicator, you now have full controll over the progress since you own the `AnimationController`
+* There is not need to add a listener to your controller just to call `setState(){}`. Once you pass in your controller, `Flushbar` will do this automatically. Just make sure you call `_controller.forward()`
 
 ```dart
+
+AnimationController _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 3),
+    );
+
 Flushbar()
   ..title = "Hey Ninja"
   ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-  ..linearProgressIndicator = new LinearProgressIndicator(
-    backgroundColor: Colors.grey[800],)
+  ..showProgressIndicator = true,
+  ..progressIndicatorController = _controller,
+  ..progressIndicatorBackgroundColor = Colors.grey[800],
   ..show(context);
 ```
 
@@ -395,9 +424,14 @@ TextFormField(
 I made a helper class to facilitate the creation of the most common Flushbars.
 
 ```dart
-FlushbarHelper.createSuccess({title, message, duration});
-FlushbarHelper.createInformation({title, message, duration});
-FlushbarHelper.createError({title, message, duration});
-FlushbarHelper.createAction({title, message, duration, flatButton});
-FlushbarHelper.createLoading({{title, message, duration, linearProgressIndicator}});
+FlushbarHelper.createSuccess({message, title, duration});
+FlushbarHelper.createInformation({message, title, duration});
+FlushbarHelper.createError({message, title, duration});
+FlushbarHelper.createAction({message, title, duration flatButton});
+FlushbarHelper.createLoading({message,linearProgressIndicator, title, duration, progressIndicatorController, progressIndicatorBackgroundColor});
+FlushbarHelper.createInputFlushbar({textForm});
 ```
+
+## Give me a hand?
+
+<a href="https://www.buymeacoffee.com/AndreHaueisen" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>

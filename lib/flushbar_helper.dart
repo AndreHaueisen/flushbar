@@ -1,10 +1,11 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
+
 class FlushbarHelper {
 
    /// Get a success notification flushbar.
-  static Flushbar createSuccess({@required String title, @required String message, Duration duration = const Duration(seconds: 3)}){
+  static Flushbar createSuccess({@required String message, String title, Duration duration = const Duration(seconds: 3)}){
     return  Flushbar()
             ..title = title
             ..message = message
@@ -12,15 +13,13 @@ class FlushbarHelper {
               Icons.check_circle,
               color: Colors.green[300],
             )
-            ..duration = duration
-            ..mainButton = null
-            ..userInputForm = null
-            ..linearProgressIndicator = null;
+            ..leftBarIndicatorColor = Colors.green[300]
+            ..duration = duration;
   }
 
   /// Get an information notification flushbar
   static Flushbar createInformation(
-      {@required String title, @required String message, Duration duration = const Duration(seconds: 3)}) {
+      {@required String message, String title, Duration duration = const Duration(seconds: 3)}) {
     return Flushbar()
       ..title = title
       ..message = message
@@ -29,15 +28,14 @@ class FlushbarHelper {
         size: 28.0,
         color: Colors.blue[300],
       )
-      ..duration = duration
-      ..mainButton = null
-      ..userInputForm = null
-      ..linearProgressIndicator = null;
+      ..leftBarIndicatorColor = Colors.blue[300]
+      ..duration = duration;
+      
   }
 
   /// Get a error notification flushbar
   static Flushbar createError(
-      {@required String title, @required String message, Duration duration = const Duration(seconds: 3)}) {
+      {@required String message, String title, Duration duration = const Duration(seconds: 3)}) {
     return Flushbar()
       ..title = title
       ..message = message
@@ -46,31 +44,28 @@ class FlushbarHelper {
         size: 28.0,
         color: Colors.red[300],
       )
-      ..duration = duration
-      ..mainButton = null
-      ..userInputForm = null
-      ..linearProgressIndicator = null;
+      ..leftBarIndicatorColor = Colors.red[300]
+      ..duration = duration;
   }
 
   /// Get a flushbar that can receive a user action through a button.
   static Flushbar createAction(
-      {@required String title, @required String message, @required FlatButton button, Duration duration = const Duration(seconds: 3)}) {
+      {@required String message, @required FlatButton button, String title, Duration duration = const Duration(seconds: 3)}) {
     return Flushbar()
       ..title = title
       ..message = message
-      ..icon = null
       ..duration = duration
-      ..mainButton = button
-      ..userInputForm = null
-      ..linearProgressIndicator = null;
+      ..mainButton = button;
   }
 
-  /// Get a flushbar that shows the progress of a async computation.
+  // Get a flushbar that shows the progress of a async computation.
   static Flushbar createLoading(
-      {@required String title,
-      @required String message,
+      {@required String message,
       @required LinearProgressIndicator linearProgressIndicator,
-      Duration duration = const Duration(seconds: 3)}) {
+      String title,
+      Duration duration = const Duration(seconds: 3),
+      AnimationController progressIndicatorController,
+      Color progressIndicatorBackgroundColor}) {
     return Flushbar()
       ..title = title
       ..message = message
@@ -79,13 +74,12 @@ class FlushbarHelper {
         color: Colors.blue[300],
       )
       ..duration = duration
-      ..mainButton = null
-      ..userInputForm = null
-      ..linearProgressIndicator = linearProgressIndicator;
+      ..progressIndicatorController = progressIndicatorController
+      ..progressIndicatorBackgroundColor = progressIndicatorBackgroundColor;
   }
 
   /// Get a flushbar that shows an user input form.
-  static Flushbar getInputFlushbar({@required Form textForm}) {
+  static Flushbar createInputFlushbar({@required Form textForm}) {
     return Flushbar()
       ..duration = null
       ..userInputForm = textForm;

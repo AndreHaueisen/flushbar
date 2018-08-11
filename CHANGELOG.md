@@ -1,3 +1,10 @@
+## [0.8.0] - 2018-08-11
+### Breaking changes
+- Changed the behaviour of linearProgressIndicator to allow the user to controll its progress. See README.md for examples
+### Changes
+- Added a left vertical bar to better convey the humor of the notification. See README.md for examples
+- Title is not mandatory anymore
+
 ## [0.7.6] - 2018-08-07
 ### Changes
 - Version update to supprt master channel
