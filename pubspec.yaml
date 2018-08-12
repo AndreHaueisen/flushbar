@@ -13,7 +13,7 @@ dev_dependencies:
     sdk: flutter
 
 environment:
-  sdk: ">=2.0.0-dev.52.0 <=2.0.0-dev.69.5.flutter-eab492385c"
+  sdk: ">=2.0.0-dev.52.0 <3.0.0"
   flutter: '>=0.4.0'
 
 # For information on the generic Dart part of this file, see the

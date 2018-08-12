@@ -1,3 +1,7 @@
+## [0.8.1] - 2018-08-12
+### Changes
+- Fixed Dart version issue
+
 ## [0.8.0] - 2018-08-11
 ### Breaking changes
 - Changed the behaviour of linearProgressIndicator to allow the user to controll its progress. See README.md for examples
