@@ -1,3 +1,9 @@
+## [0.8.2] - 2018-08-27
+### Changes
+- Add `key` property
+- Fixed bug here using flushbar_helper progressIndicator did not show
+- Fixed documentation about progressIndicator
+
 ## [0.8.1] - 2018-08-12
 ### Changes
 - Fixed Dart version issue

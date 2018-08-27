@@ -71,9 +71,8 @@ Flushbar(
       style: TextStyle(color: Colors.amber),
     ),
   ),
-  linearProgressIndicator: LinearProgressIndicator(
-    backgroundColor: Colors.blueGrey,
-  ),
+  showProgressIndicator: true,
+  progressIndicatorBackgroundColor: Colors.blueGrey,
   titleText: new Text(
     "Hello Hero",
     style: TextStyle(fontWeight: FontWeight.bold, fontSize: color: Colors.yellow[600], fontFamily: "ShadowsIntoLightTwo"),
@@ -91,7 +90,7 @@ Flushbar(
 * Don't forget to call `show()` or the bar will stay hidden.
 * To deactivate any of those properties, pass `null` to it.
 
-Here is a notation a like to use.
+Here is a notation I like to use.
 
 ```dart
 flushbar
@@ -106,7 +105,8 @@ flushbar
       ..backgroundGradient = LinearGradient()
       ..isDismissible = true
       ..shadowColor = Color()
-      ..linearProgressIndicator = LinearProgressIndicator()
+      ..showProgressIndicator = true,
+      ..progressIndicatorBackgroundColor = Colors.blueGrey,
       ..onStatusChanged = (status) {}
       ..show(context);
 ```

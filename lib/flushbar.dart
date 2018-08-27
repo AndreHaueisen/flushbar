@@ -69,6 +69,7 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// [userInputForm] A [TextFormField] in case you want a simple user input. Every other widget is ignored if this is not null.
 class Flushbar<T extends Object> extends StatefulWidget {
   Flushbar({
+    Key key,
     this.title,
     this.message,
     this.titleText,
@@ -88,7 +89,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
     this.flushbarPosition = FlushbarPosition.BOTTOM,
     this.forwardAnimationCurve = Curves.easeOut,
     this.reverseAnimationCurve = Curves.fastOutSlowIn,
-  });
+  }) : super(key: key);
 
   /// [onStatusChanged] A callback used to listen to Flushbar status [FlushbarStatus]. Set it using [setStatusListener()]
   FlushbarStatusCallback onStatusChanged = (FlushbarStatus status) {};

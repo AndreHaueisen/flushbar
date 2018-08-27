@@ -1,16 +1,32 @@
+import 'dart:ui';
 
 import 'package:flushbar/flushbar.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/material.dart';
-
 
 void main() {
-  test('test flushbar inicialization', () {
-    final flushbar = new Flushbar(title: "Test", message: "This is a test");
-    expect(flushbar.title, isNotNull);
-    expect(flushbar.message, isNotNull);
+  test('Test Flushbar basic inicialization', () {
+    final flushbar = new Flushbar(message: "This is a test");
+    expect(flushbar.title, null);
+    expect(flushbar.message, "This is a test");
     expect(flushbar.duration, null);
-    expect(flushbar.backgroundColor, isNotNull);
+    expect(flushbar.backgroundColor, Color(0xFF303030));
+    expect(flushbar.flushbarPosition, FlushbarPosition.BOTTOM);
+    expect(flushbar.forwardAnimationCurve, Curves.easeOut);
+    expect(flushbar.reverseAnimationCurve, Curves.fastOutSlowIn);
+    expect(flushbar.titleText, null);
+    expect(flushbar.messageText, null);
+    expect(flushbar.icon, null);
+    expect(flushbar.leftBarIndicatorColor, null);
+    expect(flushbar.shadowColor, null);
+    expect(flushbar.backgroundGradient, null);
+    expect(flushbar.mainButton, null);
+    expect(flushbar.isDismissible, true);
+    expect(flushbar.showProgressIndicator, false);
+    expect(flushbar.progressIndicatorController, null);
+    expect(flushbar.progressIndicatorBackgroundColor, null);
+    expect(flushbar.progressIndicatorValueColor, null);
   });
 
+  
 }
