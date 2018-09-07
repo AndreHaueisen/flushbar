@@ -374,7 +374,16 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
       child: new AlignTransition(
         alignment: _popAnimation,
         child: Material(
-          child: _getFlushbar(),
+          child: SafeArea(
+            minimum: widget.flushbarPosition == FlushbarPosition.BOTTOM
+                ? EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom)
+                : EdgeInsets.only(top: MediaQuery.of(context).viewInsets.top),
+            bottom: widget.flushbarPosition == FlushbarPosition.BOTTOM,
+            top: widget.flushbarPosition == FlushbarPosition.TOP,
+            left: false,
+            right: false,
+            child: _getFlushbar(),
+          ),
         ),
       ),
     );
@@ -436,34 +445,27 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
         child: (widget.userInputForm != null) ? _generateInputFlushbar() : _generateFlushbar(),
       );
     } else {
-      return _generateInputFlushbar() ?? _generateFlushbar();
+      return (widget.userInputForm != null) ? _generateInputFlushbar() : _generateFlushbar();
     }
   }
 
   FocusScopeNode focusNode = FocusScopeNode();
 
   Widget _generateInputFlushbar() {
-    return SafeArea(
-      minimum: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      bottom: true,
-      top: false,
-      left: false,
-      right: false,
-      child: new DecoratedBox(
-        decoration: new BoxDecoration(
-          color: widget.backgroundColor,
-          gradient: widget.backgroundGradient,
-          boxShadow: _getBoxShadowList(),
-        ),
+    return new DecoratedBox(
+      decoration: new BoxDecoration(
+        color: widget.backgroundColor,
+        gradient: widget.backgroundGradient,
+        boxShadow: _getBoxShadowList(),
+      ),
+      child: new Padding(
+        padding: barInsets,
         child: new Padding(
-          padding: barInsets,
-          child: new Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0, top: 8.0),
-            child: FocusScope(
-              child: widget.userInputForm,
-              node: focusNode,
-              autofocus: true,
-            ),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0, top: 8.0),
+          child: FocusScope(
+            child: widget.userInputForm,
+            node: focusNode,
+            autofocus: true,
           ),
         ),
       ),

@@ -1,3 +1,8 @@
+## [0.8.3] - 2018-09-07
+### Fixes
+- Fixed issue when `isDismissible` is set to false [Issue #6](https://github.com/AndreHaueisen/flushbar/issues/6#issue-357423067)
+- Fixed issue where the keyboard would hide Flushbar [Issue #7](https://github.com/AndreHaueisen/flushbar/issues/7#issue-357946307)
+
 ## [0.8.2] - 2018-08-27
 ### Changes
 - Add `key` property
