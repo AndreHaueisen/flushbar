@@ -420,6 +420,9 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
 
   @override
   void dispose() {
+    if (_timer != null && _timer.isActive) {
+      _timer.cancel();
+    }
     _popAnimation.removeStatusListener(_animationStatusListener);
     _popController.dispose();
     _fadeController.dispose();
