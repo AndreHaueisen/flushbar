@@ -5,40 +5,65 @@ import 'dart:async';
 
 import 'package:flutter/scheduler.dart';
 
-class _FlushbarRoute<T> extends OverlayRoute<T> {
-  _FlushbarRoute({
-    @required this.theme,
-    @required this.child,
+class _DialogRoute<T> extends PopupRoute<T> {
+  _DialogRoute({
+    @required RoutePageBuilder pageBuilder,
     RouteSettings settings,
-  }) : super(settings: settings);
+  })  : _pageBuilder = pageBuilder,
+        super(settings: settings);
 
-  final Widget child;
-  final ThemeData theme;
+  final RoutePageBuilder _pageBuilder;
 
   @override
-  Iterable<OverlayEntry> createOverlayEntries() {
-    return [
-      OverlayEntry(
-          builder: (BuildContext context) {
-            final Widget annotatedChild = new Semantics(
-              child: child,
-              focused: true,
-              scopesRoute: true,
-              explicitChildNodes: true,
-            );
-            return theme != null ? new Theme(data: theme, child: annotatedChild) : annotatedChild;
-          },
-          maintainState: false,
-          opaque: false),
-    ];
+  bool get barrierDismissible => true;
+
+  @override
+  String get barrierLabel => null;
+
+  @override
+  Color get barrierColor => const Color(0x01000000); //can't not be transparent
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 200);
+
+  @override
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
+    return new Semantics(
+      child: _pageBuilder(context, animation, secondaryAnimation),
+      scopesRoute: true,
+      explicitChildNodes: true,
+    );
   }
+
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+          Animation<double> secondaryAnimation, Widget child) =>
+      FadeTransition(
+          opacity: new CurvedAnimation(
+            parent: animation,
+            curve: Curves.linear,
+          ),
+          child: child);
 }
 
-Future<T> _showFlushbar<T>({@required BuildContext context, WidgetBuilder builder}) {
+Future<T> _showFlushbar<T>(
+    {@required BuildContext context, WidgetBuilder builder}) {
   assert(builder != null);
-
-  return Navigator.of(context, rootNavigator: false).push(new _FlushbarRoute<T>(
-      child: new Builder(builder: builder), theme: Theme.of(context), settings: RouteSettings(name: FLUSHBAR_ROUTE_NAME)));
+  return Navigator.of(context, rootNavigator: false).push(new _DialogRoute<T>(
+      pageBuilder: (BuildContext buildContext, Animation<double> animation,
+          Animation<double> secondaryAnimation) {
+        final ThemeData theme = Theme.of(context);
+        final Widget pageChild = new Builder(builder: builder);
+        return new SafeArea(
+          child: new Builder(builder: (BuildContext context) {
+            return theme != null
+                ? new Theme(data: theme, child: pageChild)
+                : pageChild;
+          }),
+        );
+      },
+      settings: RouteSettings(name: FLUSHBAR_ROUTE_NAME)));
 }
 
 const String FLUSHBAR_ROUTE_NAME = "/flushbarRoute";
@@ -209,6 +234,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
 
   EdgeInsets barInsets;
   AnimationStatusListener _animationStatusListener;
+  AnimationStatusListener _fadeStatusListener;
 
   final Widget _emptyWidget = SizedBox(width: 0.0, height: 0.0);
   final double _initialOpacity = 1.0;
@@ -248,6 +274,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
       if (_timer != null && _timer.isActive) {
         _timer.cancel();
       }
+
       _timer = new Timer(widget.duration, () {
         _popController.reverse();
       });
@@ -342,14 +369,16 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
       ),
     );
 
-    _fadeController.addStatusListener((status) {
+    _fadeStatusListener = (status) {
       if (status == AnimationStatus.completed) {
         _fadeController.reverse();
       }
       if (status == AnimationStatus.dismissed) {
         _fadeController.forward();
       }
-    });
+    };
+
+    _fadeController.addStatusListener(_fadeStatusListener);
 
     _fadeController.forward();
   }
@@ -425,6 +454,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     }
     _popAnimation.removeStatusListener(_animationStatusListener);
     _popController.dispose();
+    _fadeController.removeStatusListener(_fadeStatusListener);
     _fadeController.dispose();
     if (widget.progressIndicatorController != null) {
       widget.progressIndicatorController.removeListener(_progressListener);
