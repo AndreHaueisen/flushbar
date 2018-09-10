@@ -250,7 +250,7 @@ Flushbar(flushbarPosition: FlushbarPosition.TOP)
 
 By default, Flushbar is infinite. To set a duration, use the `duration` property.
 By default, Flushbar is dismissible by the user. A right or left drag will dismiss it.
-Use the `isDismissible` to change it.
+Set `isDismissible` to `false` to change this behaviour.
 
 ```dart
 Flushbar()
@@ -432,6 +432,6 @@ FlushbarHelper.createLoading({message,linearProgressIndicator, title, duration, 
 FlushbarHelper.createInputFlushbar({textForm});
 ```
 
-## Give me a hand?
+## Make it rain
 
 <a href="https://www.buymeacoffee.com/AndreHaueisen" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>

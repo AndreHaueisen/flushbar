@@ -1,3 +1,14 @@
+## [0.9.0] - 2018-09-10
+Looking good for version 1.0. Please, report any issues your have.
+### Changes
+- **IMPORTANT** `dismiss()` now returns a future when the animation is completed and route is poped. That makes it easier to concatenate two or more Flushbars.
+- Major changes on how `show` and `dismiss` animations work, making Flushbar more reliable.
+- Trying to `dismiss()` a Flushbar that is not the top route is going to throw an error.
+- Pressing the back button will now properly `dismiss()` Flushbar.
+- Performance improvements. In and out animations are smoother.
+### Layout Changes
+- Removed top padding when `flushbarPosition == FlushbarPosition.TOP`
+
 ## [0.8.3] - 2018-09-07
 ### Fixes
 - Fixed issue when `isDismissible` is set to false [Issue #6](https://github.com/AndreHaueisen/flushbar/issues/6#issue-357423067)
