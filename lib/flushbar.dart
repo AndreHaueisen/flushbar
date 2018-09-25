@@ -50,6 +50,7 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
   FlushbarStatusCallback _onStatusChanged;
   Alignment _initialAlignment;
   Alignment _endAlignment;
+  bool _wasDismissedBySwipe = false;
 
   Timer _timer;
 
@@ -81,9 +82,11 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
 
   Widget _getDismissibleFlushbar(Widget child) {
     return new Dismissible(
+      resizeDuration: null,
       key: Key(dismissibleKeyGen),
-      onDismissed: (dismissDirection) {
+      onDismissed: (_) {
         dismissibleKeyGen += "1";
+        _wasDismissedBySwipe = true;
         navigator.pop();
       },
       child: child,
@@ -209,7 +212,12 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
 
     _result = result;
     _cancelTimer();
-    _controller.reverse();
+    if (_wasDismissedBySwipe) {
+      _controller.reset();
+      _wasDismissedBySwipe = false;
+    } else {
+      _controller.reverse();
+    }
 
     return super.didPop(result);
   }
@@ -554,7 +562,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
         boxShadow: _getBoxShadowList(),
       ),
       child: new Padding(
-        padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0, top: 8.0),
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0, top: 16.0),
         child: FocusScope(
           child: widget.userInputForm,
           node: focusNode,
@@ -618,12 +626,12 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     } else if (widget.icon != null && widget.mainButton == null) {
       return <Widget>[
         _buildLeftBarIndicator(),
-        new Expanded(
-          flex: 1,
+        new ConstrainedBox(
+          constraints: BoxConstraints.tightFor(width: 42.0),
           child: _getIcon(),
         ),
         new Expanded(
-          flex: 6,
+          flex: 1,
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -646,7 +654,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
       return <Widget>[
         _buildLeftBarIndicator(),
         new Expanded(
-          flex: 7,
+          flex: 1,
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -658,26 +666,23 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
                     )
                   : _emptyWidget,
               new Padding(
-                padding: EdgeInsets.only(top: _messageTopMargin, left: 16.0, right: 16.0, bottom: 16.0),
+                padding: EdgeInsets.only(top: _messageTopMargin, left: 16.0, right: 8.0, bottom: 16.0),
                 child: widget.messageText ?? _getDefaultNotificationText(),
               ),
             ],
           ),
         ),
-        new Expanded(
-          flex: 2,
-          child: new Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: _getMainActionButton(),
-          ),
+        new Padding(
+          padding: const EdgeInsets.only(right: 4.0),
+          child: _getMainActionButton(),
         ),
       ];
     } else {
       return <Widget>[
         _buildLeftBarIndicator(),
-        new Expanded(flex: 2, child: _getIcon()),
+        new ConstrainedBox(constraints: BoxConstraints.tightFor(width: 42.0), child: _getIcon()),
         new Expanded(
-          flex: 8,
+          flex: 1,
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -695,14 +700,11 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
             ],
           ),
         ),
-        new Expanded(
-          flex: 4,
-          child: new Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: _getMainActionButton(),
-              ) ??
-              _emptyWidget,
-        ),
+        new Padding(
+              padding: const EdgeInsets.only(right: 4.0),
+              child: _getMainActionButton(),
+            ) ??
+            _emptyWidget,
       ];
     }
   }

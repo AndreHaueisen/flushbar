@@ -1,27 +1,48 @@
-## [0.9.0] - 2018-09-10
-Looking good for version 1.0. Please, report any issues your have.
+## [0.9.1] - 2018-09-25
+
 ### Changes
+
+- Fixed an issue where Flushbar could get stuck when swipe to dismiss was used
+- Minor layout tweeks
+- Flushbar gets a logo!
+- README file update
+- README file fixes
+
+## [0.9.0] - 2018-09-10
+
+Looking good for version 1.0. Please, report any issues your have.
+
+### Changes
+
 - **IMPORTANT** `dismiss()` now returns a future when the animation is completed and route is poped. That makes it easier to concatenate two or more Flushbars.
 - Major changes on how `show` and `dismiss` animations work, making Flushbar more reliable.
 - Trying to `dismiss()` a Flushbar that is not the top route is going to throw an error.
 - Pressing the back button will now properly `dismiss()` Flushbar.
 - Performance improvements. In and out animations are smoother.
+
 ### Layout Changes
+
 - Removed top padding when `flushbarPosition == FlushbarPosition.TOP`
 
 ## [0.8.3] - 2018-09-07
+
 ### Fixes
+
 - Fixed issue when `isDismissible` is set to false [Issue #6](https://github.com/AndreHaueisen/flushbar/issues/6#issue-357423067)
 - Fixed issue where the keyboard would hide Flushbar [Issue #7](https://github.com/AndreHaueisen/flushbar/issues/7#issue-357946307)
 
 ## [0.8.2] - 2018-08-27
+
 ### Changes
+
 - Add `key` property
 - Fixed bug here using flushbar_helper progressIndicator did not show
 - Fixed documentation about progressIndicator
 
 ## [0.8.1] - 2018-08-12
+
 ### Changes
+
 - Fixed Dart version issue
 
 ## [0.8.0] - 2018-08-11
