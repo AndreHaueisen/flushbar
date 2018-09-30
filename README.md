@@ -14,10 +14,11 @@ Development of Flushbar and Flashbar are totally separate.
 
 Flushbar works by pushing a new route on top of the existing ones. For it to work as intended, make sure there is no route on top of the Flushbar you want to dismiss. To help you accomplish that, you have two options. First, a listener that you can subscribe to that will notify you when it changed state, including when it reaches the `DISMISSED` state. Second, the function `dismiss()` yields a Future that completes only when Flushbar is `DISMISSED`. Choose your pick.
 
-- Dismissing a Flushbar that is not the top route will have the following effects:
- 1. It does not animate back. It simply vanishes.
- 2. FlushbarStatus listener will not register `FlushbarStatus.IS_HIDING` or `FlushbarStatus.DISMISSED`
- 3. It returns no value when the Future yield by `dismiss()` completes.
+Dismissing a Flushbar that is not the top route will have the following effects:
+
+- It does not animate back. It simply vanishes.
+- FlushbarStatus listener will not register `FlushbarStatus.IS_HIDING` or `FlushbarStatus.DISMISSED`
+- It returns no value when the Future yield by `dismiss()` completes.
 
 ## Getting Started
 
