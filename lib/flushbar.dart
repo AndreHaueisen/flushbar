@@ -86,8 +86,14 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
       key: Key(dismissibleKeyGen),
       onDismissed: (_) {
         dismissibleKeyGen += "1";
+        _cancelTimer();
         _wasDismissedBySwipe = true;
-        navigator.pop();
+
+        if (isCurrent) {
+          navigator.pop();
+        } else {
+          navigator.removeRoute(this);
+        }
       },
       child: child,
     );
@@ -107,6 +113,7 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
   @protected
   AnimationController get controller => _controller;
   AnimationController _controller;
+
 
   /// Called to create the animation controller that will drive the transitions to
   /// this route from the previous one, and back to the previous route from this
@@ -218,7 +225,7 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
     } else {
       _controller.reverse();
     }
-
+    
     return super.didPop(result);
   }
 
@@ -374,7 +381,10 @@ class Flushbar<T extends Object> extends StatefulWidget {
       _flushbarRoute.navigator.pop(result);
       return _flushbarRoute.completed;
     } else if (_flushbarRoute.isActive) {
-      throw ("There is another route (possibly another flushbar) on top of this one. Pop (dismiss) it first.");
+      // removeRoute is called every time you dismiss a Flushbar that is not the top route.
+      // It will not animate back and listeners will not detect FlushbarStatus.IS_HIDING or FlushbarStatus.DISMISSED
+      // To avoid this, always make sure that Flushbar is the top route when it is being dismissed
+      _flushbarRoute.navigator.removeRoute(_flushbarRoute);
     }
 
     return null;

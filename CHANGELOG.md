@@ -1,10 +1,24 @@
+## [0.9.2] - 2018-09-29
+
+### Changes
+
+- Dismissing a Flushbar that is not the top route no longer throws an exception
+- Dismissing a Flushbar that is not the top route has the following effects:
+   * It does not animate back. It simply vanishes
+   * FlushbarStatus listener will not register `FlushbarStatus.IS_HIDING` or `FlushbarStatus.DISMISSED`
+   * It returns no value when the Future yield by `dismiss()` completes
+
+### Fixes
+
+- Fixed an issue where a dismissible Flushbar would not cancel the timer and pop two routes instead of one
+
 ## [0.9.1] - 2018-09-25
 
 ### Changes
 
 - Fixed an issue where Flushbar could get stuck when swipe to dismiss was used
 - Minor layout tweeks
-- Flushbar gets a logo!
+- Flushbar gets a weird logo! Do not judge me. I'm not a designer :)
 - README file update
 - README file fixes
 

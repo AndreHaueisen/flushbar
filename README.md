@@ -12,16 +12,18 @@ Development of Flushbar and Flashbar are totally separate.
 
 ## **IMPORTANT**
 
-- When concatenating multiple Flushbars, make sure you dismiss them in the correct order (Last In First Out style). Failing to do so will yield an exception
-- Flushbar works by pushing a new route on top of the existing ones. Make sure there is no route on top of the Flushbar you want to dismiss. This can generate unexpected results
+Flushbar works by pushing a new route on top of the existing ones. For it to work as intended, make sure there is no route on top of the Flushbar you want to dismiss. To help you accomplish that, you have two options. First, a listener that you can subscribe to that will notify you when it changed state, including when it reaches the `DISMISSED` state. Second, the function `dismiss()` yields a Future that completes only when Flushbar is `DISMISSED`. Choose your pick.
 
-To help you accomplish those two recommendations, Flushbar gives you two options. First, a listener that you can subscribe to, that will notify you when it changed state, including when it reaches the `DISMISSED` state. Second, the function `dismiss()` yields a Future that completes only when Flushbar is `DISMISSED`. Choose your pick.
+- Dismissing a Flushbar that is not the top route will have the following effects:
+ 1. It does not animate back. It simply vanishes.
+ 2. FlushbarStatus listener will not register `FlushbarStatus.IS_HIDING` or `FlushbarStatus.DISMISSED`
+ 3. It returns no value when the Future yield by `dismiss()` completes.
 
 ## Getting Started
 
 ### The possibilities
 
-![Flushbar Animated](/readme_resources/flushbar_animated.gif)
+![Flushbar Animated](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/flushbar_animated.gif)
 
 ### A basic Flushbar
 
@@ -323,7 +325,7 @@ Flushbar(
 
 You can listen to status update using the `onStatusChanged` property.
 
-* Note that when you pass a new listener using `onStatusChanged`, it will activate once immediately so you can check in what state the Flushbar is.
+- Note that when you pass a new listener using `onStatusChanged`, it will activate once immediately so you can check in what state the Flushbar is.
 
 ```dart
 
