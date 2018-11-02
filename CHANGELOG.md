@@ -1,3 +1,7 @@
+## [1.0.0] - 2018-11-02
+
+- No changes. Simply reached stable after a month without new bugs
+
 ## [0.9.2] - 2018-09-29
 
 ### Changes
