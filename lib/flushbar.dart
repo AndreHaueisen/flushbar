@@ -616,7 +616,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
         new Expanded(
           flex: 1,
           child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               (_isTitlePresent)
@@ -643,7 +643,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
         new Expanded(
           flex: 1,
           child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               (_isTitlePresent)
@@ -666,7 +666,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
         new Expanded(
           flex: 1,
           child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               (_isTitlePresent)
@@ -694,7 +694,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
         new Expanded(
           flex: 1,
           child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               (_isTitlePresent)
