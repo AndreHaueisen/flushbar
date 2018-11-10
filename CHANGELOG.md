@@ -1,3 +1,12 @@
+## [1.1.0] - 2018-11-10
+
+- Added two new features: aroundPadding and borderRadius
+- Fixed a bug where the overlay background was not null
+
+## [1.0.1] - 2018-11-02
+
+- Texts now respond to alignment
+
 ## [1.0.0] - 2018-11-02
 
 - No changes. Simply reached stable after a month without new bugs
