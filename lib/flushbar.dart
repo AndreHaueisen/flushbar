@@ -64,10 +64,9 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
             final Widget annotatedChild = new Semantics(
               child: AlignTransition(
                 alignment: _animation,
-                child: Padding(
-                  padding: EdgeInsets.all(flushbar.aroundPadding),
-                  child: flushbar.isDismissible ? _getDismissibleFlushbar(_builder) : _builder,
-                ),
+                child: flushbar.isDismissible
+                    ? _getDismissibleFlushbar(_builder)
+                    : Padding(padding: EdgeInsets.all(flushbar.aroundPadding), child: _builder),
               ),
               focused: true,
               scopesRoute: true,
@@ -98,7 +97,10 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
           navigator.removeRoute(this);
         }
       },
-      child: child,
+      child: Padding(
+        padding: EdgeInsets.all(flushbar.aroundPadding),
+        child: child,
+      ),
     );
   }
 
@@ -221,8 +223,12 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
 
     _result = result;
     _cancelTimer();
+
     if (_wasDismissedBySwipe) {
-      _controller.reset();
+      Timer(Duration(milliseconds: 200), () {
+        _controller.reset();
+      });
+
       _wasDismissedBySwipe = false;
     } else {
       _controller.reverse();

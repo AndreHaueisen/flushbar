@@ -1,3 +1,8 @@
+## [1.1.1] - 2018-11-10
+
+- Fixed bug where calling Navigator.push() on Flushbar swipe dismissal did not pop the route
+- Fixed bug where swipe to dismiss a padded Flushbar caused to being stuck at the edge
+
 ## [1.1.0] - 2018-11-10
 
 - Added two new features: aroundPadding and borderRadius
