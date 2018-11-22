@@ -392,6 +392,11 @@ class Flushbar<T extends Object> extends StatefulWidget {
   /// Dismisses the flushbar causing is to return a future containing [result].
   /// When this future finishes, it is guaranteed that Flushbar was dismissed.
   Future<T> dismiss([T result]) async {
+    // If route was never initialized, do nothing
+    if (_flushbarRoute == null) {
+      return null;
+    }
+
     if (_flushbarRoute.isCurrent) {
       _flushbarRoute.navigator.pop(result);
       return _flushbarRoute.completed;
@@ -407,12 +412,12 @@ class Flushbar<T extends Object> extends StatefulWidget {
 
   /// Checks if the flushbar is visible
   bool isShowing() {
-    return _flushbarRoute.currentStatus == FlushbarStatus.SHOWING;
+    return _flushbarRoute?.currentStatus == FlushbarStatus.SHOWING;
   }
 
   /// Checks if the flushbar is dismissed
   bool isDismissed() {
-    return _flushbarRoute.currentStatus == FlushbarStatus.DISMISSED;
+    return _flushbarRoute?.currentStatus == FlushbarStatus.DISMISSED;
   }
 
   @override
