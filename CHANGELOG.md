@@ -1,4 +1,8 @@
-## [1.1.1] - 2018-11-10
+## [1.1.2] - 2018-24-10
+- icon argument can now be any widget, though I recommend using Icon or Image
+- added null checks
+
+## [1.1.1] - 2018-17-10
 
 - Fixed bug where calling Navigator.push() on Flushbar swipe dismissal did not pop the route
 - Fixed bug where swipe to dismiss a padded Flushbar caused to being stuck at the edge

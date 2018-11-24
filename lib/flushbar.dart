@@ -306,7 +306,7 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// [message] The message displayed to the user.
 /// [titleText] If you need something more personalized, pass a [Text] widget to this variable. [title] will be ignored if this variable is not null.
 /// [messageText] If you need something more personalized, pass a [Text] widget to this variable. [message] will be ignored if this variable is not null.
-/// [icon] The [Icon] indication what kind of message you are displaying.
+/// [icon] You can use any widget here, but I recommend [Icon] or [Image] as indication of what kind of message you are displaying. Other widgets may break the layout
 /// [aroundPadding] Adds a padding to all sides of Flushbar to make it float
 /// [borderRadius] Adds a radius to all corners of Flushbar. Best combined with [aroundPadding]. I do not recommend using it with [showProgressIndicator] or [leftBarIndicatorColor]
 /// [backgroundColor] Flushbar background color. Will be ignored if [backgroundGradient] is not null.
@@ -360,7 +360,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
   Color leftBarIndicatorColor;
   Color shadowColor;
   Gradient backgroundGradient;
-  Icon icon;
+  Widget icon;
   FlatButton mainButton;
   Duration duration;
   bool showProgressIndicator;
@@ -764,11 +764,13 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   }
 
   Widget _getIcon() {
-    if (widget.icon != null) {
+    if (widget.icon != null && widget.icon is Icon) {
       return FadeTransition(
         opacity: _fadeAnimation,
         child: widget.icon,
       );
+    } else if (widget.icon != null) {
+      return widget.icon;
     } else {
       return _emptyWidget;
     }
