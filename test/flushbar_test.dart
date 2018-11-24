@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('Test Flushbar basic inicialization', () {
+  test('Test Flushbar basic inicialization', () async {
     final flushbar = new Flushbar(message: "This is a test");
     expect(flushbar.title, null);
     expect(flushbar.message, "This is a test");
@@ -26,7 +26,10 @@ void main() {
     expect(flushbar.progressIndicatorController, null);
     expect(flushbar.progressIndicatorBackgroundColor, null);
     expect(flushbar.progressIndicatorValueColor, null);
+    expect(flushbar.isShowing(), false);
+    expect(flushbar.isDismissed(), false);
+    expect(await flushbar.dismiss(), null);
   });
 
-  
+
 }
