@@ -124,10 +124,9 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
   /// one.
   AnimationController createAnimationController() {
     assert(!_transitionCompleter.isCompleted, 'Cannot reuse a $runtimeType after disposing it.');
-    final Duration duration = Duration(seconds: 1);
-    assert(duration != null && duration >= Duration.zero);
+    assert(flushbar.animationDuration != null && flushbar.animationDuration >= Duration.zero);
     return new AnimationController(
-      duration: duration,
+      duration: flushbar.animationDuration,
       debugLabel: debugLabel,
       vsync: navigator,
     );
@@ -319,36 +318,38 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// [flushbarPosition] (final) Flushbar can be based on [FlushbarPosition.TOP] or on [FlushbarPosition.BOTTOM] of your screen. [FlushbarPosition.BOTTOM] is the default.
 /// [forwardAnimationCurve] (final) The [Curve] animation used when show() is called. [Curves.easeOut] is default.
 /// [reverseAnimationCurve] (final) The [Curve] animation used when dismiss() is called. [Curves.fastOutSlowIn] is default.
+/// [animationDuration] Use it to speed up or slow down the animation duration
 /// [showProgressIndicator] true if you want to show a [LinearProgressIndicator].
 /// [progressIndicatorController] An optional [AnimationController] when you want to controll the progress of your [LinearProgressIndicator].
 /// [progressIndicatorBackgroundColor] a [LinearProgressIndicator] configuration parameter.
 /// [progressIndicatorValueColor] a [LinearProgressIndicator] configuration parameter.
 /// [userInputForm] A [TextFormField] in case you want a simple user input. Every other widget is ignored if this is not null.
 class Flushbar<T extends Object> extends StatefulWidget {
-  Flushbar({
-    Key key,
-    this.title,
-    this.message,
-    this.titleText,
-    this.messageText,
-    this.icon,
-    this.aroundPadding = 0.0,
-    this.borderRadius = 0.0,
-    this.backgroundColor = const Color(0xFF303030),
-    this.leftBarIndicatorColor,
-    this.shadowColor,
-    this.backgroundGradient,
-    this.mainButton,
-    this.duration,
-    this.isDismissible = true,
-    this.showProgressIndicator = false,
-    this.progressIndicatorController,
-    this.progressIndicatorBackgroundColor,
-    this.progressIndicatorValueColor,
-    this.flushbarPosition = FlushbarPosition.BOTTOM,
-    this.forwardAnimationCurve = Curves.easeOut,
-    this.reverseAnimationCurve = Curves.fastOutSlowIn,
-  }) : super(key: key);
+  Flushbar(
+      {Key key,
+      this.title,
+      this.message,
+      this.titleText,
+      this.messageText,
+      this.icon,
+      this.aroundPadding = 0.0,
+      this.borderRadius = 0.0,
+      this.backgroundColor = const Color(0xFF303030),
+      this.leftBarIndicatorColor,
+      this.shadowColor,
+      this.backgroundGradient,
+      this.mainButton,
+      this.duration,
+      this.isDismissible = true,
+      this.showProgressIndicator = false,
+      this.progressIndicatorController,
+      this.progressIndicatorBackgroundColor,
+      this.progressIndicatorValueColor,
+      this.flushbarPosition = FlushbarPosition.BOTTOM,
+      this.forwardAnimationCurve = Curves.easeOut,
+      this.reverseAnimationCurve = Curves.fastOutSlowIn,
+      this.animationDuration = const Duration(seconds: 1)})
+      : super(key: key);
 
   /// [onStatusChanged] A callback used to listen to Flushbar status [FlushbarStatus]. Set it using [setStatusListener()]
   FlushbarStatusCallback onStatusChanged = (FlushbarStatus status) {};
@@ -375,6 +376,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
   final FlushbarPosition flushbarPosition;
   final Curve forwardAnimationCurve;
   final Curve reverseAnimationCurve;
+  Duration animationDuration;
 
   _FlushbarRoute<T> _flushbarRoute;
   T _result;

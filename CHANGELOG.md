@@ -1,3 +1,6 @@
+## [1.2.0] - 2018-09-12
+- add animationDuration argument. You can now control how long does it take to show and dismiss Flushbar
+
 ## [1.1.2] - 2018-24-10
 - icon argument can now be any widget, though I recommend using Icon or Image
 - added null checks
