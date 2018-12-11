@@ -66,7 +66,7 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
                 alignment: _animation,
                 child: flushbar.isDismissible
                     ? _getDismissibleFlushbar(_builder)
-                    : Padding(padding: EdgeInsets.all(flushbar.aroundPadding), child: _builder),
+                    : Padding(padding: flushbar.padding ?? EdgeInsets.all(flushbar.aroundPadding), child: _builder),
               ),
               focused: true,
               scopesRoute: true,
@@ -98,7 +98,7 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
         }
       },
       child: Padding(
-        padding: EdgeInsets.all(flushbar.aroundPadding),
+        padding: flushbar.padding ?? EdgeInsets.all(flushbar.aroundPadding),
         child: child,
       ),
     );
@@ -307,6 +307,7 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// [messageText] If you need something more personalized, pass a [Text] widget to this variable. [message] will be ignored if this variable is not null.
 /// [icon] You can use any widget here, but I recommend [Icon] or [Image] as indication of what kind of message you are displaying. Other widgets may break the layout
 /// [aroundPadding] Adds a padding to all sides of Flushbar to make it float
+/// [padding] If you need more control over [aroundPadding], use [padding].
 /// [borderRadius] Adds a radius to all corners of Flushbar. Best combined with [aroundPadding]. I do not recommend using it with [showProgressIndicator] or [leftBarIndicatorColor]
 /// [backgroundColor] Flushbar background color. Will be ignored if [backgroundGradient] is not null.
 /// [leftBarIndicatorColor] If not null, shows a left vertical bar to better indicate the humor of the notification. It is not possible to use it with a [Form] and I do not recommend using it with [LinearProgressIndicator].
@@ -332,6 +333,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
       this.titleText,
       this.messageText,
       this.icon,
+      this.padding,
       this.aroundPadding = 0.0,
       this.borderRadius = 0.0,
       this.backgroundColor = const Color(0xFF303030),
@@ -369,6 +371,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
   Color progressIndicatorBackgroundColor;
   Animation<Color> progressIndicatorValueColor;
   bool isDismissible;
+  EdgeInsets padding;
   double aroundPadding;
   double borderRadius;
   Form userInputForm;
