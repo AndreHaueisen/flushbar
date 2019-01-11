@@ -1,3 +1,6 @@
+## [1.2.1] - 2019-11-01
+- aroundPadding is now more flexible and receives EdgeInsets instead of an int
+
 ## [1.2.0] - 2018-09-12
 - add animationDuration argument. You can now control how long does it take to show and dismiss Flushbar
 
