@@ -334,7 +334,6 @@ class Flushbar<T extends Object> extends StatefulWidget {
       this.borderRadius = 0.0,
       this.backgroundColor = const Color(0xFF303030),
       this.leftBarIndicatorColor,
-      this.shadowColor,
       this.boxShadow,
       this.backgroundGradient,
       this.mainButton,
@@ -358,7 +357,6 @@ class Flushbar<T extends Object> extends StatefulWidget {
   Text messageText;
   Color backgroundColor;
   Color leftBarIndicatorColor;
-  Color shadowColor;
   BoxShadow boxShadow;
   Gradient backgroundGradient;
   Widget icon;
@@ -484,39 +482,8 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   }
 
   void _setBoxShadow() {
-    switch (widget.flushbarPosition) {
-      case FlushbarPosition.TOP:
-        {
-          if (widget.boxShadow != null) {
-            _boxShadow = widget.boxShadow;
-          } else {
-            if (widget.shadowColor != null) {
-              _boxShadow = BoxShadow(
-                color: widget.shadowColor,
-                offset: Offset(0.0, 2.0),
-                blurRadius: 3.0,
-              );
-            }
-          }
-
-          break;
-        }
-      case FlushbarPosition.BOTTOM:
-        {
-          if (widget.boxShadow != null) {
-            _boxShadow = widget.boxShadow;
-          } else {
-            if (widget.shadowColor != null) {
-              _boxShadow = BoxShadow(
-                color: widget.shadowColor,
-                offset: Offset(0.0, -0.7),
-                blurRadius: 3.0,
-              );
-            }
-          }
-
-          break;
-        }
+    if (widget.boxShadow != null) {
+      _boxShadow = widget.boxShadow;
     }
   }
 
