@@ -1,3 +1,6 @@
+## [1.2.2] - 2019-22-02
+- Fixed a bug when push an route after flushbar, and flushbar timer pop the current route out
+
 ## [1.2.1] - 2019-11-01
 - aroundPadding is now more flexible and receives EdgeInsets instead of an int
 
