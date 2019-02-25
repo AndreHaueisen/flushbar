@@ -1,3 +1,6 @@
+## [1.2.3] - 2019-25-02
+- **Breaking Change** Flushbar now accepts a BoxShadow for a more customized shadow
+
 ## [1.2.2] - 2019-22-02
 - Fixed a bug when push an route after flushbar, and flushbar timer pop the current route out
 

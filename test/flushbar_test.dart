@@ -18,7 +18,7 @@ void main() {
     expect(flushbar.messageText, null);
     expect(flushbar.icon, null);
     expect(flushbar.leftBarIndicatorColor, null);
-    expect(flushbar.shadowColor, null);
+    expect(flushbar.boxShadow, null);
     expect(flushbar.backgroundGradient, null);
     expect(flushbar.mainButton, null);
     expect(flushbar.isDismissible, true);
