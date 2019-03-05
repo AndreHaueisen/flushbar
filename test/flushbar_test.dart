@@ -12,6 +12,7 @@ void main() {
     expect(flushbar.duration, null);
     expect(flushbar.backgroundColor, Color(0xFF303030));
     expect(flushbar.flushbarPosition, FlushbarPosition.BOTTOM);
+    expect(flushbar.flushbarStyle, FlushbarStyle.FLOATING);
     expect(flushbar.forwardAnimationCurve, Curves.easeOut);
     expect(flushbar.reverseAnimationCurve, Curves.fastOutSlowIn);
     expect(flushbar.titleText, null);

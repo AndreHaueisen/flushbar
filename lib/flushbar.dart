@@ -23,14 +23,14 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
     switch (flushbar.flushbarPosition) {
       case FlushbarPosition.TOP:
         {
-          _initialAlignment = new Alignment(-1.0, -2.0);
-          _endAlignment = new Alignment(-1.0, -1.0);
+          _initialAlignment = Alignment(-1.0, -2.0);
+          _endAlignment = Alignment(-1.0, -1.0);
           break;
         }
       case FlushbarPosition.BOTTOM:
         {
-          _initialAlignment = new Alignment(-1.0, 2.0);
-          _endAlignment = new Alignment(-1.0, 1.0);
+          _initialAlignment = Alignment(-1.0, 2.0);
+          _endAlignment = Alignment(-1.0, 1.0);
           break;
         }
     }
@@ -42,7 +42,7 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
   final ThemeData theme;
 
   Future<T> get completed => _transitionCompleter.future;
-  final Completer<T> _transitionCompleter = new Completer<T>();
+  final Completer<T> _transitionCompleter = Completer<T>();
 
   /// [onStatusChanged] A callback used to listen to Flushbar status [FlushbarStatus]. Set it using [setStatusListener()]
   FlushbarStatusCallback _onStatusChanged;
@@ -59,18 +59,18 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
     return [
       OverlayEntry(
           builder: (BuildContext context) {
-            final Widget annotatedChild = new Semantics(
+            final Widget annotatedChild = Semantics(
               child: AlignTransition(
                 alignment: _animation,
-                child: flushbar.isDismissible
-                    ? _getDismissibleFlushbar(_builder)
-                    : Padding(padding: flushbar.aroundPadding, child: _builder),
+                child: flushbar.isDismissible ?
+                _getDismissibleFlushbar(_builder) :
+                Padding(padding: flushbar.aroundPadding, child: _builder),
               ),
               focused: true,
               scopesRoute: true,
               explicitChildNodes: true,
             );
-            return theme != null ? new Theme(data: theme, child: annotatedChild) : annotatedChild;
+            return theme != null ? Theme(data: theme, child: annotatedChild) : annotatedChild;
           },
           maintainState: false,
           opaque: opaque),
@@ -81,7 +81,7 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
   String dismissibleKeyGen = "";
 
   Widget _getDismissibleFlushbar(Widget child) {
-    return new Dismissible(
+    return Dismissible(
       resizeDuration: null,
       key: Key(dismissibleKeyGen),
       onDismissed: (_) {
@@ -123,7 +123,7 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
   AnimationController createAnimationController() {
     assert(!_transitionCompleter.isCompleted, 'Cannot reuse a $runtimeType after disposing it.');
     assert(flushbar.animationDuration != null && flushbar.animationDuration >= Duration.zero);
-    return new AnimationController(
+    return AnimationController(
       duration: flushbar.animationDuration,
       debugLabel: debugLabel,
       vsync: navigator,
@@ -136,8 +136,8 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
   Animation<Alignment> createAnimation() {
     assert(!_transitionCompleter.isCompleted, 'Cannot reuse a $runtimeType after disposing it.');
     assert(_controller != null);
-    return AlignmentTween(begin: _initialAlignment, end: _endAlignment).animate(new CurvedAnimation(
-        parent: _controller, curve: flushbar.forwardAnimationCurve, reverseCurve: flushbar.reverseAnimationCurve));
+    return AlignmentTween(begin: _initialAlignment, end: _endAlignment)
+        .animate(CurvedAnimation(parent: _controller, curve: flushbar.forwardAnimationCurve, reverseCurve: flushbar.reverseAnimationCurve,),);
   }
 
   T _result;
@@ -183,7 +183,7 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
   /// animation lets this route coordinate with the entrance and exit transition
   /// of routes pushed on top of this route.
   // Animation<Alignment> get secondaryAnimation => _secondaryAnimation;
-  // final FlushbarProxyAnimation _secondaryAnimation = new FlushbarProxyAnimation(kAlwaysDismissedAnimation);
+  // final FlushbarProxyAnimation _secondaryAnimation = FlushbarProxyAnimation(kAlwaysDismissedAnimation);
 
   @override
   void install(OverlayEntry insertionPoint) {
@@ -239,8 +239,8 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
       if (_timer != null && _timer.isActive) {
         _timer.cancel();
       }
-      _timer = new Timer(flushbar.duration, () {
-        if(flushbar._flushbarRoute.isCurrent){
+      _timer = Timer(flushbar.duration, () {
+        if (flushbar._flushbarRoute.isCurrent) {
           navigator.pop();
         }
       });
@@ -287,7 +287,7 @@ class _FlushbarRoute<T> extends OverlayRoute<T> {
 _FlushbarRoute _showFlushbar<T>({@required BuildContext context, @required Flushbar flushbar}) {
   assert(flushbar != null);
 
-  return new _FlushbarRoute<T>(
+  return _FlushbarRoute<T>(
     flushbar: flushbar,
     theme: Theme.of(context),
     settings: RouteSettings(name: FLUSHBAR_ROUTE_NAME),
@@ -316,6 +316,7 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// [duration] How long until Flushbar will hide itself (be dismissed). To make it indefinite, leave it null.
 /// [isDismissible] Determines if the user can swipe to dismiss the bar. It is recommended that you set [duration] != null if [isDismissible] == false. If the user swipes Flushbar to dismiss it no value will be returned.
 /// [flushbarPosition] (final) Flushbar can be based on [FlushbarPosition.TOP] or on [FlushbarPosition.BOTTOM] of your screen. [FlushbarPosition.BOTTOM] is the default.
+/// [flushbarStyle] (final) Flushbar can be floating or be grounded to the edge of the screen. If grounded, I do not recomment unsing [aroundPadding] or [borderRadius]. [FlushbarStyle.FLOATING] is the default
 /// [forwardAnimationCurve] (final) The [Curve] animation used when show() is called. [Curves.easeOut] is default.
 /// [reverseAnimationCurve] (final) The [Curve] animation used when dismiss() is called. [Curves.fastOutSlowIn] is default.
 /// [animationDuration] Use it to speed up or slow down the animation duration
@@ -346,6 +347,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
       this.progressIndicatorBackgroundColor,
       this.progressIndicatorValueColor,
       this.flushbarPosition = FlushbarPosition.BOTTOM,
+      this.flushbarStyle = FlushbarStyle.FLOATING,
       this.forwardAnimationCurve = Curves.easeOut,
       this.reverseAnimationCurve = Curves.fastOutSlowIn,
       this.animationDuration = const Duration(seconds: 1)})
@@ -374,6 +376,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
   Form userInputForm;
 
   final FlushbarPosition flushbarPosition;
+  final FlushbarStyle flushbarStyle;
   final Curve forwardAnimationCurve;
   final Curve reverseAnimationCurve;
   Duration animationDuration;
@@ -424,7 +427,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
 
   @override
   State createState() {
-    return new _FlushbarState<T>();
+    return _FlushbarState<T>();
   }
 }
 
@@ -466,19 +469,21 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     _setBoxShadow();
 
     _configureLeftBarFuture();
-    _configurePulseAnimation();
     _configureProgressIndicatorAnimation();
 
-    _fadeController.forward();
+    if (widget.icon != null) {
+      _configurePulseAnimation();
+      _fadeController?.forward();
+    }
   }
 
   @override
   void dispose() {
-    _fadeController.dispose();
-    if (widget.progressIndicatorController != null) {
-      widget.progressIndicatorController.removeListener(_progressListener);
-      widget.progressIndicatorController.dispose();
-    }
+    _fadeController?.dispose();
+
+    widget.progressIndicatorController?.removeListener(_progressListener);
+    widget.progressIndicatorController?.dispose();
+
     focusNode.detach();
     super.dispose();
   }
@@ -506,8 +511,8 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
 
   void _configurePulseAnimation() {
     _fadeController = AnimationController(vsync: this, duration: _pulseAnimationDuration);
-    _fadeAnimation = new Tween(begin: _initialOpacity, end: _finalOpacity).animate(
-      new CurvedAnimation(
+    _fadeAnimation = Tween(begin: _initialOpacity, end: _finalOpacity).animate(
+      CurvedAnimation(
         parent: _fadeController,
         curve: Curves.linear,
       ),
@@ -540,10 +545,10 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
 
   @override
   Widget build(BuildContext context) {
-    return new Align(
+    return Align(
       heightFactor: 1.0,
       child: Material(
-        color: Colors.transparent,
+        color: widget.flushbarStyle == FlushbarStyle.FLOATING ? Colors.transparent : widget.backgroundColor,
         child: SafeArea(
           minimum: widget.flushbarPosition == FlushbarPosition.BOTTOM
               ? EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom)
@@ -565,14 +570,14 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   FocusScopeNode focusNode = FocusScopeNode();
 
   Widget _generateInputFlushbar() {
-    return new DecoratedBox(
-      decoration: new BoxDecoration(
+    return DecoratedBox(
+      decoration: BoxDecoration(
         color: widget.backgroundColor,
         gradient: widget.backgroundGradient,
         boxShadow: _getBoxShadowList(),
         borderRadius: BorderRadius.circular(widget.borderRadius),
       ),
-      child: new Padding(
+      child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0, top: 16.0),
         child: FocusScope(
           child: widget.userInputForm,
@@ -584,18 +589,18 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   }
 
   CurvedAnimation _progressAnimation;
-  GlobalKey backgroundBoxKey = new GlobalKey();
+  GlobalKey backgroundBoxKey = GlobalKey();
 
   Widget _generateFlushbar() {
-    return new DecoratedBox(
+    return DecoratedBox(
       key: backgroundBoxKey,
-      decoration: new BoxDecoration(
+      decoration: BoxDecoration(
         color: widget.backgroundColor,
         gradient: widget.backgroundGradient,
         boxShadow: _getBoxShadowList(),
         borderRadius: BorderRadius.circular(widget.borderRadius),
       ),
-      child: new Column(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           widget.showProgressIndicator
@@ -605,7 +610,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
                   valueColor: widget.progressIndicatorValueColor,
                 )
               : _emptyWidget,
-          new Row(mainAxisSize: MainAxisSize.max, children: _getAppropriateRowLayout()),
+          Row(mainAxisSize: MainAxisSize.max, children: _getAppropriateRowLayout()),
         ],
       ),
     );
@@ -615,19 +620,19 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     if (widget.icon == null && widget.mainButton == null) {
       return [
         _buildLeftBarIndicator(),
-        new Expanded(
+        Expanded(
           flex: 1,
-          child: new Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               (_isTitlePresent)
-                  ? new Padding(
+                  ? Padding(
                       padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
                       child: _getTitleText(),
                     )
                   : _emptyWidget,
-              new Padding(
+              Padding(
                 padding: EdgeInsets.only(top: _messageTopMargin, left: 16.0, right: 16.0, bottom: 16.0),
                 child: widget.messageText ?? _getDefaultNotificationText(),
               ),
@@ -638,23 +643,23 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     } else if (widget.icon != null && widget.mainButton == null) {
       return <Widget>[
         _buildLeftBarIndicator(),
-        new ConstrainedBox(
+        ConstrainedBox(
           constraints: BoxConstraints.tightFor(width: 42.0),
           child: _getIcon(),
         ),
-        new Expanded(
+        Expanded(
           flex: 1,
-          child: new Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               (_isTitlePresent)
-                  ? new Padding(
+                  ? Padding(
                       padding: const EdgeInsets.only(top: 16.0, left: 4.0, right: 16.0),
                       child: _getTitleText(),
                     )
                   : _emptyWidget,
-              new Padding(
+              Padding(
                 padding: EdgeInsets.only(top: _messageTopMargin, left: 4.0, right: 16.0, bottom: 16.0),
                 child: widget.messageText ?? _getDefaultNotificationText(),
               ),
@@ -665,26 +670,26 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     } else if (widget.icon == null && widget.mainButton != null) {
       return <Widget>[
         _buildLeftBarIndicator(),
-        new Expanded(
+        Expanded(
           flex: 1,
-          child: new Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               (_isTitlePresent)
-                  ? new Padding(
+                  ? Padding(
                       padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
                       child: _getTitleText(),
                     )
                   : _emptyWidget,
-              new Padding(
+              Padding(
                 padding: EdgeInsets.only(top: _messageTopMargin, left: 16.0, right: 8.0, bottom: 16.0),
                 child: widget.messageText ?? _getDefaultNotificationText(),
               ),
             ],
           ),
         ),
-        new Padding(
+        Padding(
           padding: const EdgeInsets.only(right: 4.0),
           child: _getMainActionButton(),
         ),
@@ -692,27 +697,27 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     } else {
       return <Widget>[
         _buildLeftBarIndicator(),
-        new ConstrainedBox(constraints: BoxConstraints.tightFor(width: 42.0), child: _getIcon()),
-        new Expanded(
+        ConstrainedBox(constraints: BoxConstraints.tightFor(width: 42.0), child: _getIcon()),
+        Expanded(
           flex: 1,
-          child: new Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               (_isTitlePresent)
-                  ? new Padding(
+                  ? Padding(
                       padding: const EdgeInsets.only(top: 16.0, left: 4.0, right: 8.0),
                       child: _getTitleText(),
                     )
                   : _emptyWidget,
-              new Padding(
+              Padding(
                 padding: EdgeInsets.only(top: _messageTopMargin, left: 4.0, right: 8.0, bottom: 16.0),
                 child: widget.messageText ?? _getDefaultNotificationText(),
               ),
             ],
           ),
         ),
-        new Padding(
+        Padding(
               padding: const EdgeInsets.only(right: 4.0),
               child: _getMainActionButton(),
             ) ??
@@ -758,14 +763,14 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   Text _getTitleText() {
     return widget.titleText != null
         ? widget.titleText
-        : new Text(
+        : Text(
             widget.title ?? "",
             style: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.bold),
           );
   }
 
   Text _getDefaultNotificationText() {
-    return new Text(
+    return Text(
       widget.message ?? "",
       style: TextStyle(fontSize: 14.0, color: Colors.white),
     );
@@ -782,6 +787,8 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
 
 /// Indicates if flushbar is going to start at the [TOP] or at the [BOTTOM]
 enum FlushbarPosition { TOP, BOTTOM }
+/// Indicates if flushbar will be attached to the edge of the screen or not
+enum FlushbarStyle { FLOATING, GROUNDED }
 
 /// Indicates the animation status
 /// [FlushbarStatus.SHOWING] Flushbar has stopped and the user can see it
