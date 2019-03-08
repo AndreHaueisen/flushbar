@@ -8,23 +8,25 @@ See the [install instructions](https://pub.dartlang.org/packages/flushbar#-insta
 This is a flutter widget inspired by [Flashbar](https://github.com/aritraroy/Flashbar).
 Development of Flushbar and Flashbar are totally separate.
 
-![Flushbar](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/flushbar_logo.png)
+![Flushbar](readme_resources/flushbar_logo.png)
 
 ## **IMPORTANT**
 
-Flushbar works by pushing a new route on top of the existing ones. For it to work as intended, make sure there is no route on top of the Flushbar you want to dismiss. To help you accomplish that, you have two options. First, a listener that you can subscribe to that will notify you when it changed state, including when it reaches the `DISMISSED` state. Second, the function `dismiss()` yields a Future that completes only when Flushbar is `DISMISSED`. Choose your pick.
+Flushbar works by pushing a new route on top of the existing ones. For it to work as intended, make sure there is no route on top of the Flushbar you want to dismiss. 
+To help you accomplish that, you have three options: 
+- A listener that you can subscribe to that will notify you when it changed state, including when it reaches the `DISMISSED` state. 
+- The function `dismiss()` yields a Future that completes only when Flushbar is `DISMISSED`.
+- Use the framework: `Navigator.of(context).popUntil()`
+Choose your pick.
 
-Dismissing a Flushbar that is not the top route will have the following effects:
-
-- It does not animate back. It simply vanishes.
-- FlushbarStatus listener will not register `FlushbarStatus.IS_HIDING` or `FlushbarStatus.DISMISSED`
-- It returns no value when the Future yield by `dismiss()` completes.
+The examples bellow were updated for version 1.2.4. Changes might have been made. See the [changelog](CHANGELOG.md) if any of the examples do not
+reflect Flushbar's current state.
 
 ## Getting Started
 
 ### The possibilities
 
-![Flushbar Animated](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/flushbar_animated.gif)
+![Flushbar Animated](readme_resources/flushbar_animated.gif)
 
 ### A basic Flushbar
 
@@ -40,7 +42,7 @@ class YourAwesomeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'YourAwesomeApp',
-      home: new Scaffold(
+      home: Scaffold(
         Container(
           child: Center(
             child: MaterialButton(
@@ -60,7 +62,7 @@ class YourAwesomeApp extends StatelessWidget {
 }
 ```
 
-![Basic Example](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/basic_bar.png)
+![Basic Example](readme_resources/basic_bar.png)
 
 ### Lets get crazy Flushbar
 
@@ -71,11 +73,12 @@ Flushbar(
       title: "Hey Ninja",
       message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
       flushbarPosition: FlushbarPosition.TOP, //Immutable
+      flushbarStyle: FlushbarStyle.FLOATING, //Immutable
       reverseAnimationCurve: Curves.decelerate, //Immutable
       forwardAnimationCurve: Curves.elasticOut, //Immutable
       backgroundColor: Colors.red,
-      shadowColor: Colors.blue[800],
-      backgroundGradient: new LinearGradient(colors: [Colors.blueGrey, Colors.black]),
+      boxShadow: BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0),
+      backgroundGradient: LinearGradient(colors: [Colors.blueGrey, Colors.black]),
       isDismissible: false,
       duration: Duration(seconds: 4),
       icon: Icon(
@@ -91,21 +94,21 @@ Flushbar(
       ),
       showProgressIndicator: true,
       progressIndicatorBackgroundColor: Colors.blueGrey,
-      titleText: new Text(
+      titleText: Text(
         "Hello Hero",
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.yellow[600], fontFamily: "ShadowsIntoLightTwo"),
       ),
-      messageText: new Text(
+      messageText: Text(
         "You killed that giant monster in the city. Congratulations!",
         style: TextStyle(fontSize: 18.0, color: Colors.green, fontFamily: "ShadowsIntoLightTwo"),
       ),
     );
 ```
 
-![Complete Example](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/complete_bar.png)
+![Complete Example](readme_resources/complete_bar.png)
 
-- Note that the properties `flushbarPosition`, `reverseAnimationCurve`, `forwardAnimationCurve` are immutable and have to be set at construction time.
+- Note that the properties `flushbarPosition`, `flushbarStyle`, `reverseAnimationCurve`, `forwardAnimationCurve` are immutable and have to be set at construction time.
 - Don't forget to call `show()` or the bar will stay hidden.
 - To deactivate any of those properties, pass `null` to it.
 
@@ -123,12 +126,39 @@ flushbar
       ..backgroundColor = Color()
       ..backgroundGradient = LinearGradient()
       ..isDismissible = true
-      ..shadowColor = Color()
-      ..showProgressIndicator = true,
-      ..progressIndicatorBackgroundColor = Colors.blueGrey,
+      ..boxShadow = BoxShadow()
+      ..showProgressIndicator = true
+      ..progressIndicatorBackgroundColor = Colors.blueGrey
       ..onStatusChanged = (status) {}
       ..show(context);
 ```
+
+### Styles
+Flushbar can be either floating or grounded to the edge of the screen.
+I don't recommend using `aroundPadding` or `borderRadius` if you chose `FlushbarStyle.GROUNDED` style.
+
+```dart
+Flushbar(flushbarStyle: FlushbarStyle.FLOATING)
+  ..
+```
+or
+```dart
+Flushbar(flushbarStyle: FlushbarStyle.GROUNDED)
+  ..
+```
+Floating Style            |  Grounded Style
+:------------------------------------------------------:|:-------------------------------------------------------:
+![Floating Style](readme_resources/floating_style.png)  |  ![Grounded Style](readme_resources/grounded_style.png) 
+
+### Padding and Border Radius
+You can give it some padding and a border radius. Works best with `FlushbarStyle.FLOATING`
+
+```dart
+Flushbar()
+  ..aroundPadding = EdgeInsets.all(8)
+  ..borderRadius = 8
+```
+![Padding and Radius](readme_resources/padding_and_radius.png)
 
 ### Left indicator bar
 
@@ -147,7 +177,7 @@ Flushbar()
   ..show(context);
 ```
 
-![Left indicator example](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/left_bar_indicator.png)
+![Left indicator example](readme_resources/left_bar_indicator.png)
 
 ### Customize your text
 
@@ -161,31 +191,28 @@ and pass it to the `titleText` or `messageText` variables.
 Flushbar()
   ..title = "Hey Ninja" //ignored since titleText != null
   ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry" //ignored since messageText != null
-  ..titleText = new Text("Hello Hero",
-      style:
-          TextStyle(fontWeight: FontWeight.bold, fontSize: color: Colors.yellow[600], fontFa"ShadowsIntoLightTwo"))
-  ..messageText = new Text("You killed that giant monster in the city. Congratulations!",
-      style: TextStyle(fontSize: 16.0, color: Colors.green[fontFamily: "ShadowsIntoLightTwo"))
+  ..titleText = Text("Hello Hero", style: TextStyle(fontWeight: FontWeight.bold, fontSize: color: Colors.yellow[600], fontFa"ShadowsIntoLightTwo"))
+  ..messageText = Text("You killed that giant monster in the city. Congratulations!", style: TextStyle(fontSize: 16.0, color: Colors.green[fontFamily: "ShadowsIntoLightTwo"))
   ..show(context);
 ```
 
-![Customized Text](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/text_bar.png)
+![Customized Text](readme_resources/text_bar.png)
 
 ### Customize background and shadow
 
-You can paint the background with any color you want. The same goes for shadows.
-`shadow` won't show by default. You will only see a shadow if you specify a color.
+You can paint the background with any color you want. You can use any shadow you want.
+Just give it a `BoxShadow()`.
 
 ```dart
 Flushbar()
   ..title = "Hey Ninja"
   ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
   ..backgroundColor = Colors.red
-  ..shadowColor = Colors.red[800]
+  ..boxShadow = BoxShadow(color: Colors.red[800], offset: Offset(0.0, 2.0), blurRadius: 3.0)
   ..show(context);
 ```
 
-![Background and Shadow](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/background_color_bar.png)
+![Background and Shadow](readme_resources/background_color_bar.png)
 
 Want a gradient in the background? No problem.
 
@@ -195,13 +222,13 @@ Want a gradient in the background? No problem.
 Flushbar()
   ..title = "Hey Ninja"
   ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-  ..backgroundGradient = new LinearGradient(colors: [Colors.Colors.teal])
+  ..backgroundGradient = LinearGradient(colors: [Colors.Colors.teal])
   ..backgroundColor = Colors.red
-  ..shadowColor = Colors.blue[800]
+  ..boxShadow = BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0)
   ..show(context);
 ```
 
-![Background Gradient](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/gradient_bar.png)
+![Background Gradient](readme_resources/gradient_bar.png)
 
 ### Icon and button action
 
@@ -250,7 +277,7 @@ bool _wasButtonClicked;
   }
 ```
 
-![Icon and Button](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/icon_and_button_bar.png)
+![Icon and Button](readme_resources/icon_and_button_bar.png)
 
 ### Flushbar position
 
@@ -265,7 +292,7 @@ Flushbar(flushbarPosition: FlushbarPosition.TOP)
   ..show(context);
 ```
 
-![Bar position](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/position_bar.png)
+![Bar position](readme_resources/position_bar.png)
 
 ### Duration and dismiss policy
 
@@ -370,7 +397,7 @@ Sometimes we just want a simple user input. Use the property`userInputForm`.
 
 ```dart
 Flushbar<List<String>> flush;
-final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 ```
 
 ```dart
@@ -429,7 +456,7 @@ flush = Flushbar<List<String>>()
 
 This example tries to mimic the [Material Design style guide](https://material.io/design/components/text-fields.html#anatomy)
 
-![Bar input](https://github.com/AndreHaueisen/flushbar/blob/master/readme_resources/input_bar.png)
+![Bar input](readme_resources/input_bar.png)
 
 ## Flushbar Helper
 

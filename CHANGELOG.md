@@ -1,6 +1,6 @@
-## [1.2.4] - 2019-02-03
-Added FlushbarStyle.FLOATING & FlushbarStyle.GROUNDED
-Fixed icon animation being started even if icon is null
+## [1.2.4] - 2019-05-03
+- Added FlushbarStyle.FLOATING & FlushbarStyle.GROUNDED
+- Fixed icon animation being started even if icon is null
 
 ## [1.2.3] - 2019-25-02
 - **Breaking Change** Flushbar now accepts a BoxShadow for a more customized shadow
