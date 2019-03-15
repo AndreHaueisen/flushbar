@@ -1,3 +1,14 @@
+## [1.3.0] - 2019-05-14
+- **Breaking Change** expect for `onStatusChanged`, all properties are now final. Two dot notation does 
+not work anymore. Since you can only use the instance one time, this
+is the best practice.
+- Add `dismissDirection` property.
+- **Behaviour change** dismiss is now vertical by default. This is more natural since 
+Flushbar show animation is also vertical.
+- It is now possible to dismiss a Flushbar that is not the top route. 
+The only inconvenient is that it will not animate back (simply disappear) and the listener, if used, will not register the dismissal.
+- Updated README file
+
 ## [1.2.4] - 2019-05-03
 - Added FlushbarStyle.FLOATING & FlushbarStyle.GROUNDED
 - Fixed icon animation being started even if icon is null

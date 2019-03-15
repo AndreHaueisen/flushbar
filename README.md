@@ -1,7 +1,7 @@
 # Flushbar
 
 Use this package if you need more customization when notifying your user. For Android developers, it is made to substitute
-toasts and snackbars. IOS developers, I don't know what you use there, but you will like it
+toasts and snackbars. IOS developers, I don't know what you use there, but you will like it.
 
 See the [install instructions](https://pub.dartlang.org/packages/flushbar#-installing-tab-).
 
@@ -18,8 +18,13 @@ To help you accomplish that, you have three options:
 - The function `dismiss()` yields a Future that completes only when Flushbar is `DISMISSED`.
 - Use the framework: `Navigator.of(context).popUntil()`
 Choose your pick.
+```
+Failing to do so won't generate any major problems. The only inconvenient 
+is that it will not animate back (simply disappear) and the listener, if used, 
+will not register the dismissal.
+```
 
-The examples bellow were updated for version 1.2.4. Changes might have been made. See the [changelog](CHANGELOG.md) if any of the examples do not
+The examples bellow were updated for version 1.3.0. Changes might have been made. See the [changelog](CHANGELOG.md) if any of the examples do not
 reflect Flushbar's current state.
 
 ## Getting Started
@@ -47,11 +52,11 @@ class YourAwesomeApp extends StatelessWidget {
           child: Center(
             child: MaterialButton(
               onPressed: (){
-                Flushbar()
-                  ..title = "Hey Ninja"
-                  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-                  ..duration = Duration(seconds: 3)
-                  ..show(context);
+                Flushbar(
+                  title:  "Hey Ninja",
+                  message:  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+                  duration:  Duration(seconds: 3),              
+                )..show(context);
               },
             ),
           ),
@@ -72,10 +77,10 @@ Here is how customized things can get.
 Flushbar(
       title: "Hey Ninja",
       message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-      flushbarPosition: FlushbarPosition.TOP, //Immutable
-      flushbarStyle: FlushbarStyle.FLOATING, //Immutable
-      reverseAnimationCurve: Curves.decelerate, //Immutable
-      forwardAnimationCurve: Curves.elasticOut, //Immutable
+      flushbarPosition: FlushbarPosition.TOP,
+      flushbarStyle: FlushbarStyle.FLOATING,
+      reverseAnimationCurve: Curves.decelerate,
+      forwardAnimationCurve: Curves.elasticOut,
       backgroundColor: Colors.red,
       boxShadow: BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0),
       backgroundGradient: LinearGradient(colors: [Colors.blueGrey, Colors.black]),
@@ -108,30 +113,8 @@ Flushbar(
 
 ![Complete Example](readme_resources/complete_bar.png)
 
-- Note that the properties `flushbarPosition`, `flushbarStyle`, `reverseAnimationCurve`, `forwardAnimationCurve` are immutable and have to be set at construction time.
 - Don't forget to call `show()` or the bar will stay hidden.
 - To deactivate any of those properties, pass `null` to it.
-
-Here is a notation I like to use.
-
-```dart
-flushbar
-      ..title = "Title"
-      ..message = "Message"
-      ..titleText = Text()
-      ..messageText = Text()
-      ..duration = Duration()
-      ..icon = Icon()
-      ..mainButton = FlatButton()
-      ..backgroundColor = Color()
-      ..backgroundGradient = LinearGradient()
-      ..isDismissible = true
-      ..boxShadow = BoxShadow()
-      ..showProgressIndicator = true
-      ..progressIndicatorBackgroundColor = Colors.blueGrey
-      ..onStatusChanged = (status) {}
-      ..show(context);
-```
 
 ### Styles
 Flushbar can be either floating or grounded to the edge of the screen.
@@ -139,12 +122,10 @@ I don't recommend using `aroundPadding` or `borderRadius` if you chose `Flushbar
 
 ```dart
 Flushbar(flushbarStyle: FlushbarStyle.FLOATING)
-  ..
 ```
 or
 ```dart
 Flushbar(flushbarStyle: FlushbarStyle.GROUNDED)
-  ..
 ```
 Floating Style            |  Grounded Style
 :------------------------------------------------------:|:-------------------------------------------------------:
@@ -154,9 +135,11 @@ Floating Style            |  Grounded Style
 You can give it some padding and a border radius. Works best with `FlushbarStyle.FLOATING`
 
 ```dart
-Flushbar()
-  ..aroundPadding = EdgeInsets.all(8)
-  ..borderRadius = 8
+Flushbar(
+  aroundPadding: EdgeInsets.all(8),
+  borderRadius: 8,
+);
+  
 ```
 ![Padding and Radius](readme_resources/padding_and_radius.png)
 
@@ -165,16 +148,16 @@ Flushbar()
 Flushbar has a lateral bar to better convey the humor of the notification. To use it, simple give `leftBarIndicatorColor` a color.
 
 ```dart
-Flushbar()
-  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-  ..icon = Icon(
+Flushbar(
+  message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+  icon: Icon(
     Icons.info_outline,
     size: 28.0,
     color: Colors.blue[300],
-    )
-  ..duration = Duration(seconds: 3)
-  ..leftBarIndicatorColor = Colors.blue[300]
-  ..show(context);
+    ),
+  duration: Duration(seconds: 3),
+  leftBarIndicatorColor: Colors.blue[300],
+)..show(context);
 ```
 
 ![Left indicator example](readme_resources/left_bar_indicator.png)
@@ -188,12 +171,12 @@ and pass it to the `titleText` or `messageText` variables.
 - Note that `message` will be ignored if `messageText` is not `null`
 
 ```dart
-Flushbar()
-  ..title = "Hey Ninja" //ignored since titleText != null
-  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry" //ignored since messageText != null
-  ..titleText = Text("Hello Hero", style: TextStyle(fontWeight: FontWeight.bold, fontSize: color: Colors.yellow[600], fontFa"ShadowsIntoLightTwo"))
-  ..messageText = Text("You killed that giant monster in the city. Congratulations!", style: TextStyle(fontSize: 16.0, color: Colors.green[fontFamily: "ShadowsIntoLightTwo"))
-  ..show(context);
+Flushbar(
+  title: "Hey Ninja", //ignored since titleText != null
+  message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry", //ignored since messageText != null
+  titleText: Text("Hello Hero", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0 color: Colors.yellow[600], fontFamily:"ShadowsIntoLightTwo"),),
+  messageText: Text("You killed that giant monster in the city. Congratulations!", style: TextStyle(fontSize: 16.0, color: Colors.green[fontFamily: "ShadowsIntoLightTwo"),),
+)..show(context);
 ```
 
 ![Customized Text](readme_resources/text_bar.png)
@@ -201,15 +184,15 @@ Flushbar()
 ### Customize background and shadow
 
 You can paint the background with any color you want. You can use any shadow you want.
-Just give it a `BoxShadow()`.
+Just give it a `backgroundColor` and a `boxShadow`.
 
 ```dart
-Flushbar()
-  ..title = "Hey Ninja"
-  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-  ..backgroundColor = Colors.red
-  ..boxShadow = BoxShadow(color: Colors.red[800], offset: Offset(0.0, 2.0), blurRadius: 3.0)
-  ..show(context);
+Flushbar(
+  title: "Hey Ninja",
+  message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+  backgroundColor: Colors.red,
+  boxShadow: BoxShadow(color: Colors.red[800], offset: Offset(0.0, 2.0), blurRadius: 3.0,),
+)..show(context);
 ```
 
 ![Background and Shadow](readme_resources/background_color_bar.png)
@@ -219,20 +202,20 @@ Want a gradient in the background? No problem.
 - Note that `backgroundColor` will be ignored while `backgroundGradient` is not `null`
 
 ```dart
-Flushbar()
-  ..title = "Hey Ninja"
-  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-  ..backgroundGradient = LinearGradient(colors: [Colors.Colors.teal])
-  ..backgroundColor = Colors.red
-  ..boxShadow = BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0)
-  ..show(context);
+Flushbar(
+  title: "Hey Ninja",
+  message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+  backgroundGradient: LinearGradient(colors: [Colors.Colors.teal],),
+  backgroundColor: Colors.red,
+  boxShadow: BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0,),
+)..show(context);
 ```
 
 ![Background Gradient](readme_resources/gradient_bar.png)
 
 ### Icon and button action
 
-Let us put a Icon that has a `PulseAnimation`. Icons have this animation by default and cannot be changed as of this moment.
+Let us put a Icon that has a `PulseAnimation`. Icons have this animation by default and cannot be changed as of now.
 Also, let us put a button. Have you noticed that `show()` returns a `Future`?
 This Future will yield a value when you call `dismiss([T result])`.
 I recommend that you specify the `result` generic type if you intend to collect an user input.
@@ -249,22 +232,21 @@ bool _wasButtonClicked;
       child: Center(
         child: MaterialButton(
           onPressed: () {
-            flush = Flushbar<bool>() // <bool> is the type of the result passed to dismiss() and collected by show().then((result){})
-              ..title = "Hey Ninja"
-              ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-              ..icon = Icon(
-                Icons.info_outline,
-                color: Colors.blue,
-              )
-              ..mainButton = FlatButton(
-                onPressed: () {
-                  flush.dismiss(true); // result = true
-                },
-                child: Text(
-                  "ADD",
-                  style: TextStyle(color: Colors.amber),
-                ),
-              )
+            flush = Flushbar<bool>(
+              title: "Hey Ninja",
+              message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+              icon: Icon(
+                       Icons.info_outline,
+                       color: Colors.blue,),
+              mainButton: FlatButton(
+                             onPressed: () {
+                                 flush.dismiss(true); // result = true
+                               },
+                             child: Text(
+                               "ADD",
+                               style: TextStyle(color: Colors.amber),
+                             ),
+                           ),) // <bool> is the type of the result passed to dismiss() and collected by show().then((result){})
               ..show(context).then((result) {
                 setState(() { // setState() is optional here
                   _wasButtonClicked = result;
@@ -283,13 +265,11 @@ bool _wasButtonClicked;
 
 Flushbar can be at `FlushbarPosition.BOTTOM` or `FlushbarPosition.TOP`.
 
-- This variable is immutable and can not be changed after the instance is created.
-
 ```dart
-Flushbar(flushbarPosition: FlushbarPosition.TOP)
-  ..title = "Hey Ninja"
-  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-  ..show(context);
+Flushbar(
+  flushbarPosition: FlushbarPosition.TOP,
+  title: "Hey Ninja",
+  message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",)..show(context);
 ```
 
 ![Bar position](readme_resources/position_bar.png)
@@ -301,19 +281,19 @@ By default, Flushbar is dismissible by the user. A right or left drag will dismi
 Set `isDismissible` to `false` to change this behaviour.
 
 ```dart
-Flushbar()
-  ..title = "Hey Ninja"
-  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-  ..duration = Duration(seconds: 3)
-  ..isDismissible = false
-  ..show(context);
+Flushbar(
+  title: "Hey Ninja",
+  message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+  duration: Duration(seconds: 3),
+  isDismissible: false,
+)..show(context);
 ```
 
 ### Progress Indicator
 
 If you are loading something, use a [LinearProgressIndicator](https://docs.flutter.io/flutter/material/LinearProgressIndicator-class.html)
 If you want an undetermined progress indicator, do not set `progressIndicatorController`.
-If you want a determined progress indicator, you now have full controll over the progress since you own the `AnimationController`
+If you want a determined progress indicator, you now have full control over the progress since you own the `AnimationController`
 
 - There is no need to add a listener to your controller just to call `setState(){}`. Once you pass in your controller, `Flushbar` will do this automatically. Just make sure you call `_controller.forward()`
 
@@ -324,29 +304,26 @@ AnimationController _controller = AnimationController(
       duration: Duration(seconds: 3),
     );
 
-Flushbar()
-  ..title = "Hey Ninja"
-  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-  ..showProgressIndicator = true,
-  ..progressIndicatorController = _controller,
-  ..progressIndicatorBackgroundColor = Colors.grey[800],
-  ..show(context);
+Flushbar(
+  title: "Hey Ninja",
+  message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+  showProgressIndicator: true,
+  progressIndicatorController: _controller,
+  progressIndicatorBackgroundColor: Colors.grey[800],
+)..show(context);
 ```
 
 ### Show and dismiss animation curves
 
 You can set custom animation curves using `forwardAnimationCurve` and `reverseAnimationCurve`.
 
-- These properties are immutable
-
 ```dart
 Flushbar(
   forwardAnimationCurve: Curves.decelerate,
   reverseAnimationCurve: Curves.easeOut,
-)
-  ..title = "Hey Ninja"
-  ..message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-  ..show(context);
+  title: "Hey Ninja",
+  message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+)..show(context);
 ```
 
 ### Listen to status updates
@@ -423,8 +400,8 @@ TextFormField getFormField(String text) {
     );
   }
 
-flush = Flushbar<List<String>>()
-      ..userInputForm = Form(
+flush = Flushbar<List<String>>(
+  userInputForm = Form(
           key: _formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -445,8 +422,8 @@ flush = Flushbar<List<String>>()
                 ),
               ),
             )
-          ]))
-      ..show(context).then((result) {
+          ],),),
+)..show(context).then((result) {
         if (result != null) {
           String userInput1 = result[0];
           String userInput2 = result[1];
