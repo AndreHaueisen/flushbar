@@ -340,32 +340,32 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// [userInputForm] A [TextFormField] in case you want a simple user input. Every other widget is ignored if this is not null.
 class Flushbar<T extends Object> extends StatefulWidget {
   Flushbar({Key key,
-    title,
-    message,
-    titleText,
-    messageText,
-    icon,
-    aroundPadding = const EdgeInsets.all(0.0),
-    borderRadius = 0.0,
-    backgroundColor = const Color(0xFF303030),
-    leftBarIndicatorColor,
-    boxShadow,
-    backgroundGradient,
-    mainButton,
-    duration,
-    isDismissible = true,
-    dismissDirection = FlushbarDismissDirection.VERTICAL,
-    showProgressIndicator = false,
-    progressIndicatorController,
-    progressIndicatorBackgroundColor,
-    progressIndicatorValueColor,
-    flushbarPosition = FlushbarPosition.BOTTOM,
-    flushbarStyle = FlushbarStyle.FLOATING,
-    forwardAnimationCurve = Curves.easeOut,
-    reverseAnimationCurve = Curves.fastOutSlowIn,
-    animationDuration = const Duration(seconds: 1),
-    onStatusChanged,
-    userInputForm})
+    String title,
+    String message,
+    Text titleText,
+    Text messageText,
+    Widget icon,
+    EdgeInsets aroundPadding = const EdgeInsets.all(0.0),
+    double borderRadius = 0.0,
+    Color backgroundColor = const Color(0xFF303030),
+    Color leftBarIndicatorColor,
+    BoxShadow boxShadow,
+    Gradient backgroundGradient,
+    FlatButton mainButton,
+    Duration duration,
+    bool isDismissible = true,
+    FlushbarDismissDirection dismissDirection = FlushbarDismissDirection.VERTICAL,
+    bool showProgressIndicator = false,
+    AnimationController progressIndicatorController,
+    Color progressIndicatorBackgroundColor,
+    Animation<Color> progressIndicatorValueColor,
+    FlushbarPosition flushbarPosition = FlushbarPosition.BOTTOM,
+    FlushbarStyle flushbarStyle = FlushbarStyle.FLOATING,
+    Curve forwardAnimationCurve = Curves.easeOut,
+    Curve reverseAnimationCurve = Curves.fastOutSlowIn,
+    Duration animationDuration = const Duration(seconds: 1),
+    FlushbarStatusCallback onStatusChanged,
+    Form userInputForm})
       : this.title = title,
         this.message = message,
         this.titleText = titleText,
@@ -501,8 +501,8 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   void initState() {
     super.initState();
 
-    assert(((widget.userInputForm != null || (widget.message != null || widget.messageText != null))),
-    "Don't forget to show a message to your user!");
+    assert(((widget.userInputForm != null || ((widget.message != null && widget.message.isNotEmpty) || widget.messageText != null))),
+    "A message is mandatory if you are not using userInputForm. Set either a message or messageText");
 
     _isTitlePresent = (widget.title != null || widget.titleText != null);
     _messageTopMargin = _isTitlePresent ? 6.0 : 16.0;

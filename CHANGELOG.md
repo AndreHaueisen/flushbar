@@ -1,3 +1,7 @@
+## [1.3.1] - 2019-18-03
+- Constructor now has strongly typed parameters (my bad for forgetting it)
+- Improved null message error
+
 ## [1.3.0] - 2019-05-14
 - **Breaking Change** expect for `onStatusChanged`, all properties are now final. Two dot notation does 
 not work anymore. Since you can only use the instance one time, this
