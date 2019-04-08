@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 
 class FlushbarHelper {
   /// Get a success notification flushbar.
-  static Flushbar createSuccess({@required String message, String title, Duration duration = const Duration(seconds: 3)}) {
+  static Flushbar createSuccess(
+      {@required String message,
+      String title,
+      Duration duration = const Duration(seconds: 3)}) {
     return Flushbar(
       title: title,
       message: message,
@@ -17,7 +20,10 @@ class FlushbarHelper {
   }
 
   /// Get an information notification flushbar
-  static Flushbar createInformation({@required String message, String title, Duration duration = const Duration(seconds: 3)}) {
+  static Flushbar createInformation(
+      {@required String message,
+      String title,
+      Duration duration = const Duration(seconds: 3)}) {
     return Flushbar(
       title: title,
       message: message,
@@ -32,7 +38,10 @@ class FlushbarHelper {
   }
 
   /// Get a error notification flushbar
-  static Flushbar createError({@required String message, String title, Duration duration = const Duration(seconds: 3)}) {
+  static Flushbar createError(
+      {@required String message,
+      String title,
+      Duration duration = const Duration(seconds: 3)}) {
     return Flushbar(
       title: title,
       message: message,
@@ -48,7 +57,10 @@ class FlushbarHelper {
 
   /// Get a flushbar that can receive a user action through a button.
   static Flushbar createAction(
-      {@required String message, @required FlatButton button, String title, Duration duration = const Duration(seconds: 3)}) {
+      {@required String message,
+      @required FlatButton button,
+      String title,
+      Duration duration = const Duration(seconds: 3)}) {
     return Flushbar(
       title: title,
       message: message,

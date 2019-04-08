@@ -1,8 +1,13 @@
-## [1.3.1] - 2019-18-03
+## [1.4.0] - 2019-08-04
+- Add `overlayBlur` property that pushes an overlay blocking user input on the background. Only takes effect if greater then 0.0
+- Add `overlayColor` property that changes the overlay color. Default is transparent. Only takes effect if overlayBlur is greater then 0.0
+- Create new file for FlushbarRoute
+
+## [1.3.1] - 2019-02-04
 - Constructor now has strongly typed parameters (my bad for forgetting it)
 - Improved null message error
 
-## [1.3.0] - 2019-05-14
+## [1.3.0] - 2019-14-03
 - **Breaking Change** expect for `onStatusChanged`, all properties are now final. Two dot notation does 
 not work anymore. Since you can only use the instance one time, this
 is the best practice.

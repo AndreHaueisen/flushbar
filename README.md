@@ -10,20 +10,6 @@ Development of Flushbar and Flashbar are totally separate.
 
 ![Flushbar](readme_resources/flushbar_logo.png)
 
-## **IMPORTANT**
-
-Flushbar works by pushing a new route on top of the existing ones. For it to work as intended, make sure there is no route on top of the Flushbar you want to dismiss. 
-To help you accomplish that, you have three options: 
-- A listener that you can subscribe to that will notify you when it changed state, including when it reaches the `DISMISSED` state. 
-- The function `dismiss()` yields a Future that completes only when Flushbar is `DISMISSED`.
-- Use the framework: `Navigator.of(context).popUntil()`
-Choose your pick.
-```
-Failing to do so won't generate any major problems. The only inconvenient 
-is that it will not animate back (simply disappear) and the listener, if used, 
-will not register the dismissal.
-```
-
 The examples bellow were updated for version 1.3.0. Changes might have been made. See the [changelog](CHANGELOG.md) if any of the examples do not
 reflect Flushbar's current state.
 
