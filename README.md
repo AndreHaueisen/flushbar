@@ -68,7 +68,7 @@ Flushbar(
       reverseAnimationCurve: Curves.decelerate,
       forwardAnimationCurve: Curves.elasticOut,
       backgroundColor: Colors.red,
-      boxShadow: BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0),
+      boxShadows: [BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0)],
       backgroundGradient: LinearGradient(colors: [Colors.blueGrey, Colors.black]),
       isDismissible: false,
       duration: Duration(seconds: 4),
@@ -170,14 +170,14 @@ Flushbar(
 ### Customize background and shadow
 
 You can paint the background with any color you want. You can use any shadow you want.
-Just give it a `backgroundColor` and a `boxShadow`.
+Just give it a `backgroundColor` and `boxShadows`.
 
 ```dart
 Flushbar(
   title: "Hey Ninja",
   message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
   backgroundColor: Colors.red,
-  boxShadow: BoxShadow(color: Colors.red[800], offset: Offset(0.0, 2.0), blurRadius: 3.0,),
+  boxShadows: [BoxShadow(color: Colors.red[800], offset: Offset(0.0, 2.0), blurRadius: 3.0,)],
 )..show(context);
 ```
 
@@ -193,7 +193,7 @@ Flushbar(
   message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
   backgroundGradient: LinearGradient(colors: [Colors.Colors.teal],),
   backgroundColor: Colors.red,
-  boxShadow: BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0,),
+  boxShadows: [BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0,)],
 )..show(context);
 ```
 

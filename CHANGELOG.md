@@ -1,3 +1,6 @@
+## [1.5.0] - 2019-04-05
+- **Breaking Change** boxShadow is now called boxShadows and is a List<BoxShadow>
+
 ## [1.4.0] - 2019-08-04
 - Add `overlayBlur` property that pushes an overlay blocking user input on the background. Only takes effect if greater then 0.0
 - Add `overlayColor` property that changes the overlay color. Default is transparent. Only takes effect if overlayBlur is greater then 0.0
