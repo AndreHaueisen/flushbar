@@ -37,6 +37,7 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// [progressIndicatorController] An optional [AnimationController] when you want to control the progress of your [LinearProgressIndicator].
 /// [progressIndicatorBackgroundColor] a [LinearProgressIndicator] configuration parameter.
 /// [progressIndicatorValueColor] a [LinearProgressIndicator] configuration parameter.
+/// [pulse] An option to animate the icon (if present). Default to true.
 /// [overlayBlur] Default is 0.0. If different than 0.0, creates a blurred overlay that prevents the user from interacting with the screen. The greater the value, the greater the blur.
 /// [overlayColor] Default is [Colors.transparent]. Only takes effect if [overlayBlur] > 0.0. Make sure you use a color with transparency here e.g. Colors.grey[600].withOpacity(0.2).
 /// [userInputForm] A [TextFormField] in case you want a simple user input. Every other widget is ignored if this is not null.
@@ -483,10 +484,10 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
 
   Widget _getIcon() {
     if (widget.icon != null && widget.icon is Icon) {
-      return FadeTransition(
+      return widget.pulse ? FadeTransition(
         opacity: _fadeAnimation,
         child: widget.icon,
-      );
+      ) : widget.icon;
     } else if (widget.icon != null) {
       return widget.icon;
     } else {
