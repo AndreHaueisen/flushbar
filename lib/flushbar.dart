@@ -483,11 +483,11 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   }
 
   Widget _getIcon() {
-    if (widget.icon != null && widget.icon is Icon) {
-      return widget.pulse ? FadeTransition(
+    if (widget.icon != null && widget.icon is Icon && widget.pulse) {
+      return FadeTransition(
         opacity: _fadeAnimation,
         child: widget.icon,
-      ) : widget.icon;
+      );
     } else if (widget.icon != null) {
       return widget.icon;
     } else {
