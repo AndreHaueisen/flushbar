@@ -69,6 +69,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
       Duration animationDuration = const Duration(seconds: 1),
       FlushbarStatusCallback onStatusChanged,
       double overlayBlur = 0.0,
+      bool pulse = true,
       Color overlayColor = Colors.transparent,
       Form userInputForm})
       : this.title = title,
@@ -98,6 +99,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
         this.overlayBlur = overlayBlur,
         this.overlayColor = overlayColor,
         this.userInputForm = userInputForm,
+        this.pulse = pulse,
         super(key: key) {
     this.onStatusChanged = onStatusChanged ?? (status) {};
   }
@@ -130,7 +132,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
   final Duration animationDuration;
   final double overlayBlur;
   final Color overlayColor;
-
+  final bool pulse;
   route.FlushbarRoute<T> _flushbarRoute;
 
   /// Show the flushbar. Kicks in [FlushbarStatus.IS_APPEARING] state followed by [FlushbarStatus.SHOWING]
@@ -209,7 +211,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     _configureLeftBarFuture();
     _configureProgressIndicatorAnimation();
 
-    if (widget.icon != null) {
+    if (widget.icon != null && widget.pulse) {
       _configurePulseAnimation();
       _fadeController?.forward();
     }
