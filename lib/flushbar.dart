@@ -37,7 +37,7 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// [progressIndicatorController] An optional [AnimationController] when you want to control the progress of your [LinearProgressIndicator].
 /// [progressIndicatorBackgroundColor] a [LinearProgressIndicator] configuration parameter.
 /// [progressIndicatorValueColor] a [LinearProgressIndicator] configuration parameter.
-/// [pulse] An option to animate the icon (if present). Default to true.
+/// [shouldIconPulse] An option to animate the icon (if present). Default to true.
 /// [overlayBlur] Default is 0.0. If different than 0.0, creates a blurred overlay that prevents the user from interacting with the screen. The greater the value, the greater the blur.
 /// [overlayColor] Default is [Colors.transparent]. Only takes effect if [overlayBlur] > 0.0. Make sure you use a color with transparency here e.g. Colors.grey[600].withOpacity(0.2).
 /// [userInputForm] A [TextFormField] in case you want a simple user input. Every other widget is ignored if this is not null.
@@ -70,7 +70,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
       Duration animationDuration = const Duration(seconds: 1),
       FlushbarStatusCallback onStatusChanged,
       double overlayBlur = 0.0,
-      bool pulse = true,
+      bool shouldIconPulse = true,
       Color overlayColor = Colors.transparent,
       Form userInputForm})
       : this.title = title,
@@ -100,7 +100,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
         this.overlayBlur = overlayBlur,
         this.overlayColor = overlayColor,
         this.userInputForm = userInputForm,
-        this.pulse = pulse,
+        this.shouldIconPulse = shouldIconPulse,
         super(key: key) {
     this.onStatusChanged = onStatusChanged ?? (status) {};
   }
@@ -133,7 +133,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
   final Duration animationDuration;
   final double overlayBlur;
   final Color overlayColor;
-  final bool pulse;
+  final bool shouldIconPulse;
   route.FlushbarRoute<T> _flushbarRoute;
 
   /// Show the flushbar. Kicks in [FlushbarStatus.IS_APPEARING] state followed by [FlushbarStatus.SHOWING]
@@ -212,7 +212,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     _configureLeftBarFuture();
     _configureProgressIndicatorAnimation();
 
-    if (widget.icon != null && widget.pulse) {
+    if (widget.icon != null && widget.shouldIconPulse) {
       _configurePulseAnimation();
       _fadeController?.forward();
     }
@@ -483,7 +483,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   }
 
   Widget _getIcon() {
-    if (widget.icon != null && widget.icon is Icon && widget.pulse) {
+    if (widget.icon != null && widget.icon is Icon && widget.shouldIconPulse) {
       return FadeTransition(
         opacity: _fadeAnimation,
         child: widget.icon,
