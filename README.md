@@ -150,7 +150,7 @@ Flushbar(
 
 ### Customize your text
 
-If you need a more fancy text, you can create a [Text](https://docs.flutter.io/flutter/widgets/Text-class.html)
+If you need a more fancy text, you can use [Text](https://docs.flutter.io/flutter/widgets/Text-class.html) or [RichText](https://api.flutter.dev/flutter/widgets/RichText-class.html)
 and pass it to the `titleText` or `messageText` variables.
 
 - Note that `title` will be ignored if `titleText` is not `null`

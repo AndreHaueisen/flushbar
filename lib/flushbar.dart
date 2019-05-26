@@ -15,9 +15,10 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 ///
 /// [title] The title displayed to the user
 /// [message] The message displayed to the user.
-/// [titleText] If you need something more personalized, pass a [Text] widget to this variable. [title] will be ignored if this variable is not null.
-/// [messageText] If you need something more personalized, pass a [Text] widget to this variable. [message] will be ignored if this variable is not null.
+/// [titleText] Replaces [title]. Although this accepts a [Widget], it is meant to receive [Text] or [RichText]
+/// [messageText] Replaces [message]. Although this accepts a [Widget], it is meant to receive [Text] or  [RichText]
 /// [icon] You can use any widget here, but I recommend [Icon] or [Image] as indication of what kind of message you are displaying. Other widgets may break the layout
+/// [shouldIconPulse] An option to animate the icon (if present). Defaults to true.
 /// [aroundPadding] Adds a custom padding to Flushbar
 /// [borderRadius] Adds a radius to all corners of Flushbar. Best combined with [aroundPadding]. I do not recommend using it with [showProgressIndicator] or [leftBarIndicatorColor]
 /// [backgroundColor] Flushbar background color. Will be ignored if [backgroundGradient] is not null.
@@ -37,7 +38,6 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// [progressIndicatorController] An optional [AnimationController] when you want to control the progress of your [LinearProgressIndicator].
 /// [progressIndicatorBackgroundColor] a [LinearProgressIndicator] configuration parameter.
 /// [progressIndicatorValueColor] a [LinearProgressIndicator] configuration parameter.
-/// [shouldIconPulse] An option to animate the icon (if present). Default to true.
 /// [overlayBlur] Default is 0.0. If different than 0.0, creates a blurred overlay that prevents the user from interacting with the screen. The greater the value, the greater the blur.
 /// [overlayColor] Default is [Colors.transparent]. Only takes effect if [overlayBlur] > 0.0. Make sure you use a color with transparency here e.g. Colors.grey[600].withOpacity(0.2).
 /// [userInputForm] A [TextFormField] in case you want a simple user input. Every other widget is ignored if this is not null.
@@ -46,9 +46,10 @@ class Flushbar<T extends Object> extends StatefulWidget {
       {Key key,
       String title,
       String message,
-      Text titleText,
-      Text messageText,
+      Widget titleText,
+      Widget messageText,
       Widget icon,
+      bool shouldIconPulse = true,
       EdgeInsets aroundPadding = const EdgeInsets.all(0.0),
       double borderRadius = 0.0,
       Color backgroundColor = const Color(0xFF303030),
@@ -70,7 +71,6 @@ class Flushbar<T extends Object> extends StatefulWidget {
       Duration animationDuration = const Duration(seconds: 1),
       FlushbarStatusCallback onStatusChanged,
       double overlayBlur = 0.0,
-      bool shouldIconPulse = true,
       Color overlayColor = Colors.transparent,
       Form userInputForm})
       : this.title = title,
@@ -78,6 +78,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
         this.titleText = titleText,
         this.messageText = messageText,
         this.icon = icon,
+        this.shouldIconPulse = shouldIconPulse,
         this.aroundPadding = aroundPadding,
         this.borderRadius = borderRadius,
         this.backgroundColor = backgroundColor,
@@ -100,7 +101,6 @@ class Flushbar<T extends Object> extends StatefulWidget {
         this.overlayBlur = overlayBlur,
         this.overlayColor = overlayColor,
         this.userInputForm = userInputForm,
-        this.shouldIconPulse = shouldIconPulse,
         super(key: key) {
     this.onStatusChanged = onStatusChanged ?? (status) {};
   }
@@ -108,13 +108,14 @@ class Flushbar<T extends Object> extends StatefulWidget {
   FlushbarStatusCallback onStatusChanged;
   final String title;
   final String message;
-  final Text titleText;
-  final Text messageText;
+  final Widget titleText;
+  final Widget messageText;
   final Color backgroundColor;
   final Color leftBarIndicatorColor;
   final List<BoxShadow> boxShadows;
   final Gradient backgroundGradient;
   final Widget icon;
+  final bool shouldIconPulse;
   final FlatButton mainButton;
   final Duration duration;
   final bool showProgressIndicator;
@@ -133,7 +134,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
   final Duration animationDuration;
   final double overlayBlur;
   final Color overlayColor;
-  final bool shouldIconPulse;
+
   route.FlushbarRoute<T> _flushbarRoute;
 
   /// Show the flushbar. Kicks in [FlushbarStatus.IS_APPEARING] state followed by [FlushbarStatus.SHOWING]
@@ -184,7 +185,6 @@ class Flushbar<T extends Object> extends StatefulWidget {
 }
 
 class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProviderStateMixin {
-
   FlushbarStatus currentStatus;
 
   AnimationController _fadeController;
@@ -495,7 +495,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     }
   }
 
-  Text _getTitleText() {
+  Widget _getTitleText() {
     return widget.titleText != null
         ? widget.titleText
         : Text(

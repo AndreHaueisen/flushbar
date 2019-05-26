@@ -1,3 +1,7 @@
+## [1.5.2] - 2019-26-05
+- `titleText` and `messageText` are now widgets so users can use `RichText` or `Text`
+- Add `shouldIconPulse` property
+
 ## [1.5.0] - 2019-04-05
 - **Breaking Change** boxShadow is now called boxShadows and is a List<BoxShadow>
 
