@@ -10,8 +10,7 @@ const String FLUSHBAR_ROUTE_NAME = "/flushbarRoute";
 
 typedef void FlushbarStatusCallback(FlushbarStatus status);
 
-/// A custom widget so you can notify your user when you fell like he needs an explanation.
-/// This is inspired on a custom view (Flashbar)[https://github.com/aritraroy/Flashbar] created for android.
+/// A highly customizable widget so you can notify your user when you fell like he needs a beautiful explanation.
 ///
 /// [title] The title displayed to the user
 /// [message] The message displayed to the user.
@@ -41,6 +40,7 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 /// [overlayBlur] Default is 0.0. If different than 0.0, creates a blurred overlay that prevents the user from interacting with the screen. The greater the value, the greater the blur.
 /// [overlayColor] Default is [Colors.transparent]. Only takes effect if [overlayBlur] > 0.0. Make sure you use a color with transparency here e.g. Colors.grey[600].withOpacity(0.2).
 /// [userInputForm] A [TextFormField] in case you want a simple user input. Every other widget is ignored if this is not null.
+/// [onStatusChanged] a callback for you to listen to the different Flushbar status
 class Flushbar<T extends Object> extends StatefulWidget {
   Flushbar(
       {Key key,

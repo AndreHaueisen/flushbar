@@ -1,3 +1,6 @@
+## [1.5.3] - 2019-27-05
+- update README file
+
 ## [1.5.2] - 2019-26-05
 - `titleText` and `messageText` are now widgets so users can use `RichText` or `Text`
 - Add `shouldIconPulse` property
