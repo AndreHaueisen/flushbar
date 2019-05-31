@@ -1,3 +1,8 @@
+## [1.6.0] - 2019-31-05
+- **breaking change** this fixes `The method 'detach' isn't defined for the class 'FocusScopeNode'`
+To use this version you will need Flutter 1.6, which in currently in the beta channel
+If you need to use Flutter Stable channel, stay in version 1.5.3 while flutter 1.6 is in beta.
+
 ## [1.5.3] - 2019-27-05
 - update README file
 
