@@ -23,6 +23,7 @@ void main() {
     expect(flushbar.boxShadows, null);
     expect(flushbar.backgroundGradient, null);
     expect(flushbar.mainButton, null);
+    expect(flushbar.onTap, null);
     expect(flushbar.isDismissible, true);
     expect(flushbar.dismissDirection, FlushbarDismissDirection.VERTICAL);
     expect(flushbar.showProgressIndicator, false);
