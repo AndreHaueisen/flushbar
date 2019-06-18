@@ -204,7 +204,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   double _messageTopMargin;
 
   FocusScopeNode _focusNode;
-  FocusAttachment _focusAttachment;
+  
 
   @override
   void initState() {
@@ -225,7 +225,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     }
 
     _focusNode = FocusScopeNode();
-    _focusAttachment = _focusNode.attach(context);
+    
   }
 
   @override
@@ -235,8 +235,8 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     widget.progressIndicatorController?.removeListener(_progressListener);
     widget.progressIndicatorController?.dispose();
 
-    _focusAttachment.detach();
-    _focusNode.dispose();
+    
+    _focusNode.detach();
     super.dispose();
   }
 
