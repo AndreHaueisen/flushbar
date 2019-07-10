@@ -1,3 +1,6 @@
+## [1.7.1+1] - 2019-10-07
+- Fixed environment variables
+
 ## [1.7.1] - 2019-10-07
 - Changed file docs to comply with dartdoc directives
 - Flutter minimum version for Flushbar is now 1.7.8
