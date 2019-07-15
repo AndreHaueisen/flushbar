@@ -1,3 +1,11 @@
+## Next release
+
+- Number of deprecations: `backgroundColor`, `boxShadows`, `backgroundGradient` and `borderRadius`
+- Add `decoration` property which allows setting the same decorations on a Flushbar but with greater
+control
+- When using `decoration` together with any of the properties mentioned above, the property will act
+as an override to the values of the decoration. This is for backwards compatibility.
+
 ## [1.7.1+1] - 2019-10-07
 - Fixed environment variables
 
