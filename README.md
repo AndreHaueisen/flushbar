@@ -46,6 +46,7 @@ overlayBlur | Default is 0.0. If different than 0.0, creates a blurred overlay t
 overlayColor | Default is [Colors.transparent]. Only takes effect if [overlayBlur] > 0.0. Make sure you use a color with transparency e.g. `Colors.grey[600].withOpacity(0.2)`.
 userInputForm | A [TextFormField] in case you want a simple user input. Every other widget is ignored if this is not null.
 onStatusChanged | a callback for you to listen to the different Flushbar status
+decoration | Decoration to use for the Flushbar
 
 ## We are on YouTube!
 
