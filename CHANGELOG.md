@@ -1,3 +1,10 @@
+## [1.8.0] - 2019-17-07
+- **Breaking Change** renamed `aroundPadding` to `margin`
+- Flushbar now supports uniform borders (same border on all sides)
+- Added `borderColor` property
+- Added `borderWidth` property
+- Added `padding` property - default still complies with material design specs
+
 ## [1.7.1+1] - 2019-10-07
 - Fixed environment variables
 

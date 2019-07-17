@@ -20,8 +20,11 @@ class Flushbar<T extends Object> extends StatefulWidget {
       Widget messageText,
       Widget icon,
       bool shouldIconPulse = true,
-      EdgeInsets aroundPadding = const EdgeInsets.all(0.0),
+      EdgeInsets margin = const EdgeInsets.all(0.0),
+      EdgeInsets padding = const EdgeInsets.all(16),
       double borderRadius = 0.0,
+      Color borderColor,
+      double borderWidth = 1.0,
       Color backgroundColor = const Color(0xFF303030),
       Color leftBarIndicatorColor,
       List<BoxShadow> boxShadows,
@@ -50,8 +53,11 @@ class Flushbar<T extends Object> extends StatefulWidget {
         this.messageText = messageText,
         this.icon = icon,
         this.shouldIconPulse = shouldIconPulse,
-        this.aroundPadding = aroundPadding,
+        this.margin = margin,
+        this.padding = padding,
         this.borderRadius = borderRadius,
+        this.borderColor = borderColor,
+        this.borderWidth = borderWidth,
         this.backgroundColor = backgroundColor,
         this.leftBarIndicatorColor = leftBarIndicatorColor,
         this.boxShadows = boxShadows,
@@ -140,12 +146,23 @@ class Flushbar<T extends Object> extends StatefulWidget {
   /// If the user swipes to dismiss no value will be returned.
   final bool isDismissible;
 
-  /// Adds a custom padding to Flushbar
-  final EdgeInsets aroundPadding;
+  /// Adds a custom margin to Flushbar
+  final EdgeInsets margin;
 
-  /// Adds a radius to all corners of Flushbar. Best combined with [aroundPadding].
+  /// Adds a custom padding to Flushbar
+  /// The default follows material design guide line
+  final EdgeInsets padding;
+
+  /// Adds a radius to all corners of Flushbar. Best combined with [margin].
   /// I do not recommend using it with [showProgressIndicator] or [leftBarIndicatorColor].
   final double borderRadius;
+
+  /// Adds a border to every side of Flushbar
+  /// I do not recommend using it with [showProgressIndicator] or [leftBarIndicatorColor].
+  final Color borderColor;
+
+  /// Changes the width of the border if [borderColor] is specified
+  final double borderWidth;
 
   /// Flushbar can be based on [FlushbarPosition.TOP] or on [FlushbarPosition.BOTTOM] of your screen.
   /// [FlushbarPosition.BOTTOM] is the default.
@@ -156,7 +173,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
   final FlushbarDismissDirection dismissDirection;
 
   /// Flushbar can be floating or be grounded to the edge of the screen.
-  /// If grounded, I do not recommend using [aroundPadding] or [borderRadius]. [FlushbarStyle.FLOATING] is the default
+  /// If grounded, I do not recommend using [margin] or [borderRadius]. [FlushbarStyle.FLOATING] is the default
   final FlushbarStyle flushbarStyle;
 
   /// The [Curve] animation used when show() is called. [Curves.easeOut] is default
@@ -255,7 +272,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
         "A message is mandatory if you are not using userInputForm. Set either a message or messageText");
 
     _isTitlePresent = (widget.title != null || widget.titleText != null);
-    _messageTopMargin = _isTitlePresent ? 6.0 : 16.0;
+    _messageTopMargin = _isTitlePresent ? 6.0 : widget.padding.top;
 
     _configureLeftBarFuture();
     _configureProgressIndicatorAnimation();
@@ -380,11 +397,11 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     return DecoratedBox(
       key: backgroundBoxKey,
       decoration: BoxDecoration(
-        color: widget.backgroundColor,
-        gradient: widget.backgroundGradient,
-        boxShadow: widget.boxShadows,
-        borderRadius: BorderRadius.circular(widget.borderRadius),
-      ),
+          color: widget.backgroundColor,
+          gradient: widget.backgroundGradient,
+          boxShadow: widget.boxShadows,
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+          border: widget.borderColor != null ? Border.all(color: widget.borderColor, width: widget.borderWidth) : null),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -402,6 +419,19 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   }
 
   List<Widget> _getAppropriateRowLayout() {
+
+    double buttonRightPadding;
+    double iconPadding = 0;
+    if (widget.padding.right - 12 < 0) {
+      buttonRightPadding = 4;
+    } else {
+      buttonRightPadding = widget.padding.right - 12;
+    }
+
+    if(widget.padding.left > 16.0){
+      iconPadding = widget.padding.left;
+    }
+
     if (widget.icon == null && widget.mainButton == null) {
       return [
         _buildLeftBarIndicator(),
@@ -413,12 +443,21 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
             children: <Widget>[
               (_isTitlePresent)
                   ? Padding(
-                      padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+                      padding: EdgeInsets.only(
+                        top: widget.padding.top,
+                        left: widget.padding.left,
+                        right: widget.padding.right,
+                      ),
                       child: _getTitleText(),
                     )
                   : _emptyWidget,
               Padding(
-                padding: EdgeInsets.only(top: _messageTopMargin, left: 16.0, right: 16.0, bottom: 16.0),
+                padding: EdgeInsets.only(
+                  top: _messageTopMargin,
+                  left: widget.padding.left,
+                  right: widget.padding.right,
+                  bottom: widget.padding.bottom,
+                ),
                 child: widget.messageText ?? _getDefaultNotificationText(),
               ),
             ],
@@ -429,7 +468,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
       return <Widget>[
         _buildLeftBarIndicator(),
         ConstrainedBox(
-          constraints: BoxConstraints.tightFor(width: 42.0),
+          constraints: BoxConstraints.tightFor(width: 42.0 + iconPadding),
           child: _getIcon(),
         ),
         Expanded(
@@ -440,12 +479,21 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
             children: <Widget>[
               (_isTitlePresent)
                   ? Padding(
-                      padding: const EdgeInsets.only(top: 16.0, left: 4.0, right: 16.0),
+                      padding: EdgeInsets.only(
+                        top: widget.padding.top,
+                        left: 4.0,
+                        right: widget.padding.left,
+                      ),
                       child: _getTitleText(),
                     )
                   : _emptyWidget,
               Padding(
-                padding: EdgeInsets.only(top: _messageTopMargin, left: 4.0, right: 16.0, bottom: 16.0),
+                padding: EdgeInsets.only(
+                  top: _messageTopMargin,
+                  left: 4.0,
+                  right: widget.padding.right,
+                  bottom: widget.padding.bottom,
+                ),
                 child: widget.messageText ?? _getDefaultNotificationText(),
               ),
             ],
@@ -463,26 +511,38 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
             children: <Widget>[
               (_isTitlePresent)
                   ? Padding(
-                      padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+                      padding: EdgeInsets.only(
+                        top: widget.padding.top,
+                        left: widget.padding.left,
+                        right: widget.padding.right,
+                      ),
                       child: _getTitleText(),
                     )
                   : _emptyWidget,
               Padding(
-                padding: EdgeInsets.only(top: _messageTopMargin, left: 16.0, right: 8.0, bottom: 16.0),
+                padding: EdgeInsets.only(
+                  top: _messageTopMargin,
+                  left: widget.padding.left,
+                  right: 8.0,
+                  bottom: widget.padding.bottom,
+                ),
                 child: widget.messageText ?? _getDefaultNotificationText(),
               ),
             ],
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 4.0),
+          padding: EdgeInsets.only(right: buttonRightPadding),
           child: _getMainActionButton(),
         ),
       ];
     } else {
       return <Widget>[
         _buildLeftBarIndicator(),
-        ConstrainedBox(constraints: BoxConstraints.tightFor(width: 42.0), child: _getIcon()),
+        ConstrainedBox(
+          constraints: BoxConstraints.tightFor(width: 42.0 + iconPadding),
+          child: _getIcon(),
+        ),
         Expanded(
           flex: 1,
           child: Column(
@@ -491,19 +551,28 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
             children: <Widget>[
               (_isTitlePresent)
                   ? Padding(
-                      padding: const EdgeInsets.only(top: 16.0, left: 4.0, right: 8.0),
+                      padding: EdgeInsets.only(
+                        top: widget.padding.top,
+                        left: 4.0,
+                        right: 8.0,
+                      ),
                       child: _getTitleText(),
                     )
                   : _emptyWidget,
               Padding(
-                padding: EdgeInsets.only(top: _messageTopMargin, left: 4.0, right: 8.0, bottom: 16.0),
+                padding: EdgeInsets.only(
+                  top: _messageTopMargin,
+                  left: 4.0,
+                  right: 8.0,
+                  bottom: widget.padding.bottom,
+                ),
                 child: widget.messageText ?? _getDefaultNotificationText(),
               ),
             ],
           ),
         ),
         Padding(
-              padding: const EdgeInsets.only(right: 4.0),
+              padding: EdgeInsets.only(right: buttonRightPadding),
               child: _getMainActionButton(),
             ) ??
             _emptyWidget,

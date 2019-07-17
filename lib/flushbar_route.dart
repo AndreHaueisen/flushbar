@@ -7,7 +7,10 @@ import 'dart:ui';
 import 'package:flutter/scheduler.dart';
 
 class FlushbarRoute<T> extends OverlayRoute<T> {
+  final BuildContext context;
+
   FlushbarRoute({
+    @required this.context,
     @required this.theme,
     @required this.flushbar,
     RouteSettings settings,
@@ -15,9 +18,11 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
     this._builder = Builder(builder: (BuildContext innerContext) {
       return GestureDetector(
         child: flushbar,
-        onTap: flushbar.onTap != null ? () {
-          flushbar.onTap(flushbar);
-        } : null,
+        onTap: flushbar.onTap != null
+            ? () {
+                flushbar.onTap(flushbar);
+              }
+            : null,
       );
     });
 
@@ -87,10 +92,9 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
             final Widget annotatedChild = Semantics(
               child: AlignTransition(
                 alignment: _animation,
-                child:
-                    flushbar.isDismissible ? _getDismissibleFlushbar(_builder) : Padding(padding: flushbar.aroundPadding, child: _builder),
+                child: flushbar.isDismissible ? _getDismissibleFlushbar(_builder) : _getFlushbar(),
               ),
-              focused: true,
+              focused: false,
               scopesRoute: true,
               explicitChildNodes: true,
             );
@@ -128,10 +132,14 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
           navigator.removeRoute(this);
         }
       },
-      child: Padding(
-        padding: flushbar.aroundPadding,
-        child: child,
-      ),
+      child: _getFlushbar(),
+    );
+  }
+
+  Widget _getFlushbar() {
+    return Container(
+      margin: flushbar.margin,
+      child: _builder,
     );
   }
 
@@ -334,6 +342,7 @@ FlushbarRoute showFlushbar<T>({@required BuildContext context, @required Flushba
   assert(flushbar != null);
 
   return FlushbarRoute<T>(
+    context: context,
     flushbar: flushbar,
     theme: Theme.of(context),
     settings: RouteSettings(name: FLUSHBAR_ROUTE_NAME),
