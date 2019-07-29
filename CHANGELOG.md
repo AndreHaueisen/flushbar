@@ -1,3 +1,7 @@
+## [1.8.1] - 2019-29-07
+- Removed context requirement from flushbar_route
+- Fix onTap requiring a return value
+
 ## [1.8.0] - 2019-17-07
 - **Breaking Change** renamed `aroundPadding` to `margin`
 - Flushbar now supports uniform borders (same border on all sides)

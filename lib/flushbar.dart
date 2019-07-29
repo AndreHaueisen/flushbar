@@ -9,6 +9,7 @@ import 'flushbar_route.dart' as route;
 const String FLUSHBAR_ROUTE_NAME = "/flushbarRoute";
 
 typedef void FlushbarStatusCallback(FlushbarStatus status);
+typedef void OnTap(Flushbar flushbar);
 
 /// A highly customizable widget so you can notify your user when you fell like he needs a beautiful explanation.
 class Flushbar<T extends Object> extends StatefulWidget {
@@ -30,7 +31,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
       List<BoxShadow> boxShadows,
       Gradient backgroundGradient,
       FlatButton mainButton,
-      Function onTap(Flushbar flushbar),
+      OnTap onTap,
       Duration duration,
       bool isDismissible = true,
       FlushbarDismissDirection dismissDirection = FlushbarDismissDirection.VERTICAL,
@@ -124,7 +125,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
   final FlatButton mainButton;
 
   /// A callback that registers the user's click anywhere. An alternative to [mainButton]
-  final Function(Flushbar) onTap;
+  final OnTap onTap;
 
   /// How long until Flushbar will hide itself (be dismissed). To make it indefinite, leave it null.
   final Duration duration;

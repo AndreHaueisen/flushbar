@@ -7,10 +7,8 @@ import 'dart:ui';
 import 'package:flutter/scheduler.dart';
 
 class FlushbarRoute<T> extends OverlayRoute<T> {
-  final BuildContext context;
 
   FlushbarRoute({
-    @required this.context,
     @required this.theme,
     @required this.flushbar,
     RouteSettings settings,
@@ -342,7 +340,6 @@ FlushbarRoute showFlushbar<T>({@required BuildContext context, @required Flushba
   assert(flushbar != null);
 
   return FlushbarRoute<T>(
-    context: context,
     flushbar: flushbar,
     theme: Theme.of(context),
     settings: RouteSettings(name: FLUSHBAR_ROUTE_NAME),
