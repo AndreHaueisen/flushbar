@@ -47,6 +47,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
       FlushbarStatusCallback onStatusChanged,
       double overlayBlur = 0.0,
       Color overlayColor = Colors.transparent,
+      bool isOverlayDismissible = false,
       Form userInputForm})
       : this.title = title,
         this.message = message,
@@ -79,6 +80,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
         this.animationDuration = animationDuration,
         this.overlayBlur = overlayBlur,
         this.overlayColor = overlayColor,
+        this.isOverlayDismissible = isOverlayDismissible,
         this.userInputForm = userInputForm,
         super(key: key) {
     this.onStatusChanged = onStatusChanged ?? (status) {};
@@ -194,6 +196,9 @@ class Flushbar<T extends Object> extends StatefulWidget {
   /// Default is [Colors.transparent]. Only takes effect if [overlayBlur] > 0.0.
   /// Make sure you use a color with transparency here e.g. Colors.grey[600].withOpacity(0.2).
   final Color overlayColor;
+
+  /// Determines if the user can dismiss the flusbar by tapping on the overlay
+  final bool isOverlayDismissible;
 
   /// A [TextFormField] in case you want a simple user input. Every other widget is ignored if this is not null.
   final Form userInputForm;
