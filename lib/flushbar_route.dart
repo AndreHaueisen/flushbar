@@ -349,8 +349,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
   String toString() => '$runtimeType(animation: $_controller)';
 }
 
-FlushbarRoute showFlushbar<T>(
-    {@required BuildContext context, @required Flushbar flushbar}) {
+FlushbarRoute showFlushbar<T>({@required BuildContext context, @required Flushbar flushbar}) {
   assert(flushbar != null);
 
   return FlushbarRoute<T>(
