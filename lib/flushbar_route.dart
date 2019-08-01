@@ -67,8 +67,8 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
     List<OverlayEntry> overlays = [];
 
     if (flushbar.overlayBlur > 0.0) {
-      OverlayEntry entry;
-      entry = OverlayEntry(
+      overlays.add( 
+        OverlayEntry(
           builder: (BuildContext context) {
             return GestureDetector(
                 onTap: flushbar.isOverlayDismissible ? () => _dismiss() : null,
@@ -83,8 +83,8 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
                 ));
           },
           maintainState: false,
-          opaque: opaque);
-      overlays.add(entry);
+          opaque: opaque),
+      );
     }
 
     overlays.add(
