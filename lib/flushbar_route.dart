@@ -101,9 +101,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
               scopesRoute: true,
               explicitChildNodes: true,
             );
-            return theme != null
-                ? Theme(data: theme, child: annotatedChild)
-                : annotatedChild;
+            return theme != null ? Theme(data: theme, child: annotatedChild) : annotatedChild;
           },
           maintainState: false,
           opaque: opaque),
@@ -120,8 +118,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
       direction: _getDismissDirection(),
       resizeDuration: null,
       confirmDismiss: (_) {
-        if (currentStatus == FlushbarStatus.IS_APPEARING ||
-            currentStatus == FlushbarStatus.IS_HIDING) {
+        if (currentStatus == FlushbarStatus.IS_APPEARING || currentStatus == FlushbarStatus.IS_HIDING) {
           return Future.value(false);
         }
         return Future.value(true);
@@ -165,8 +162,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
   }
 
   @override
-  bool get finishedWhenPopped =>
-      _controller.status == AnimationStatus.dismissed;
+  bool get finishedWhenPopped =>  _controller.status == AnimationStatus.dismissed;
 
   /// The animation that drives the route's transition and the previous route's
   /// forward transition.
@@ -252,11 +248,9 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
 
   @override
   void install(OverlayEntry insertionPoint) {
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot install a $runtimeType after disposing it.');
+    assert(!_transitionCompleter.isCompleted, 'Cannot install a $runtimeType after disposing it.');
     _controller = createAnimationController();
-    assert(_controller != null,
-        '$runtimeType.createAnimationController() returned null.');
+    assert(_controller != null, '$runtimeType.createAnimationController() returned null.');
     _animation = createAnimation();
     assert(_animation != null, '$runtimeType.createAnimation() returned null.');
     super.install(insertionPoint);
@@ -264,10 +258,8 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
 
   @override
   TickerFuture didPush() {
-    assert(_controller != null,
-        '$runtimeType.didPush called before calling install() or after calling dispose().');
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot reuse a $runtimeType after disposing it.');
+    assert(_controller != null, '$runtimeType.didPush called before calling install() or after calling dispose().');
+    assert(!_transitionCompleter.isCompleted, 'Cannot reuse a $runtimeType after disposing it.');
     _animation.addStatusListener(_handleStatusChanged);
     _configureTimer();
     return _controller.forward();
@@ -275,10 +267,8 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
 
   @override
   void didReplace(Route<dynamic> oldRoute) {
-    assert(_controller != null,
-        '$runtimeType.didReplace called before calling install() or after calling dispose().');
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot reuse a $runtimeType after disposing it.');
+    assert(_controller != null, '$runtimeType.didReplace called before calling install() or after calling dispose().');
+    assert(!_transitionCompleter.isCompleted, 'Cannot reuse a $runtimeType after disposing it.');
     if (oldRoute is FlushbarRoute)
       _controller.value = oldRoute._controller.value;
     _animation.addStatusListener(_handleStatusChanged);
@@ -287,10 +277,8 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
 
   @override
   bool didPop(T result) {
-    assert(_controller != null,
-        '$runtimeType.didPop called before calling install() or after calling dispose().');
-    assert(!_transitionCompleter.isCompleted,
-        'Cannot reuse a $runtimeType after disposing it.');
+    assert(_controller != null, '$runtimeType.didPop called before calling install() or after calling dispose().');
+    assert(!_transitionCompleter.isCompleted, 'Cannot reuse a $runtimeType after disposing it.');
 
     _result = result;
     _cancelTimer();
