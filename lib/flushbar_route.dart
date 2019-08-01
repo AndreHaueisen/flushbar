@@ -269,8 +269,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
   void didReplace(Route<dynamic> oldRoute) {
     assert(_controller != null, '$runtimeType.didReplace called before calling install() or after calling dispose().');
     assert(!_transitionCompleter.isCompleted, 'Cannot reuse a $runtimeType after disposing it.');
-    if (oldRoute is FlushbarRoute)
-      _controller.value = oldRoute._controller.value;
+    if (oldRoute is FlushbarRoute) _controller.value = oldRoute._controller.value;
     _animation.addStatusListener(_handleStatusChanged);
     super.didReplace(oldRoute);
   }
