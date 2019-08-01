@@ -93,9 +93,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
             final Widget annotatedChild = Semantics(
               child: AlignTransition(
                 alignment: _animation,
-                child: flushbar.isDismissible
-                    ? _getDismissibleFlushbar(_builder)
-                    : _getFlushbar(),
+                child: flushbar.isDismissible ? _getDismissibleFlushbar(_builder) : _getFlushbar(),
               ),
               focused: false,
               scopesRoute: true,
@@ -162,7 +160,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
   }
 
   @override
-  bool get finishedWhenPopped =>  _controller.status == AnimationStatus.dismissed;
+  bool get finishedWhenPopped => _controller.status == AnimationStatus.dismissed;
 
   /// The animation that drives the route's transition and the previous route's
   /// forward transition.
