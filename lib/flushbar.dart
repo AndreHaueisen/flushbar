@@ -142,9 +142,9 @@ class Flushbar<T extends Object> extends StatefulWidget {
   /// A [LinearProgressIndicator] configuration parameter.
   final Animation<Color> progressIndicatorValueColor;
 
-  /// Determines if the user can swipe to dismiss the bar.
+  /// Determines if the user can swipe or click the overlay (if [overlayBlur] > 0) to dismiss.
   /// It is recommended that you set [duration] != null if this is false.
-  /// If the user swipes to dismiss no value will be returned.
+  /// If the user swipes to dismiss or clicks the overlay, no value will be returned.
   final bool isDismissible;
 
   /// Adds a custom margin to Flushbar

@@ -34,7 +34,7 @@ backgroundGradient | Flushbar background gradient. Makes [backgroundColor] be ig
 mainButton | A [FlatButton] widget if you need an action from the user.
 onTap | A callback that registers the user's click anywhere. An alternative to [mainButton]
 duration | How long until Flushbar will hide itself (be dismissed). To make it indefinite, leave it null.
-isDismissible | Determines if the user can swipe to dismiss the bar. It is recommended that you set a [duration] if [isDismissible] is false. If the user swipes to dismiss it, no value will be returned.
+isDismissible | Determines if the user can swipe or click the overlay (if [overlayBlur] > 0) to dismiss. It is recommended that you set [duration] != null if this is false. If the user swipes to dismiss or clicks the overlay, no value will be returned.
 dismissDirection | FlushbarDismissDirection.VERTICAL by default. Can also be [FlushbarDismissDirection.HORIZONTAL] in which case both left and right dismiss are allowed.
 flushbarPosition | Flushbar can be based on [FlushbarPosition.TOP] or on [FlushbarPosition.BOTTOM] of your screen. [FlushbarPosition.BOTTOM] is the default.
 flushbarStyle | Flushbar can be floating or be grounded to the edge of the screen. If grounded, I do not recommend using [margin] or [borderRadius]. [FlushbarStyle.FLOATING] is the default

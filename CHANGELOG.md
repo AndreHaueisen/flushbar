@@ -1,3 +1,7 @@
+## [1.8.2] - 2019-02-08
+- Blur overlay is now dismissible by click if `isDismissible = true`
+- Blur overlay will now animate until it disappears instead of vanishing
+
 ## [1.8.1] - 2019-29-07
 - Removed context requirement from flushbar_route
 - Fix onTap requiring a return value

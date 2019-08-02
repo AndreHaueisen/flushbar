@@ -7,6 +7,8 @@ import 'dart:ui';
 import 'package:flutter/scheduler.dart';
 
 class FlushbarRoute<T> extends OverlayRoute<T> {
+  Animation<double> _filterBlurAnimation;
+  Animation<Color> _filterColorAnimation;
 
   FlushbarRoute({
     @required this.theme,
@@ -25,7 +27,6 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
     });
 
     _configureAlignment(this.flushbar.flushbarPosition);
-
     _onStatusChanged = flushbar.onStatusChanged;
   }
 
@@ -71,11 +72,19 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
       overlays.add(
         OverlayEntry(
             builder: (BuildContext context) {
-              return BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: flushbar.overlayBlur, sigmaY: flushbar.overlayBlur),
-                child: Container(
-                  constraints: BoxConstraints.expand(),
-                  color: flushbar.overlayColor,
+              return GestureDetector(
+                onTap: flushbar.isDismissible ? () => flushbar.dismiss() : null,
+                child: AnimatedBuilder(
+                  animation: _filterBlurAnimation,
+                  builder: (context, child) {
+                    return BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: _filterBlurAnimation.value, sigmaY: _filterBlurAnimation.value),
+                      child: Container(
+                        constraints: BoxConstraints.expand(),
+                        color: _filterColorAnimation.value,
+                      ),
+                    );
+                  },
                 ),
               );
             },
@@ -196,6 +205,24 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
     );
   }
 
+  Animation<double> createBlurFilterAnimation(){
+    return Tween(begin: 0.0, end: flushbar.overlayBlur).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(0.0, 0.35, curve: Curves.easeOut,),
+      ),
+    );
+  }
+
+  Animation<Color> createColorFilterAnimation(){
+    return  ColorTween(begin: Colors.transparent, end: flushbar.overlayColor).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(0.0, 0.35, curve: Curves.easeOut,),
+      ),
+    );
+  }
+
   T _result;
   FlushbarStatus currentStatus;
 
@@ -240,6 +267,8 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
     assert(!_transitionCompleter.isCompleted, 'Cannot install a $runtimeType after disposing it.');
     _controller = createAnimationController();
     assert(_controller != null, '$runtimeType.createAnimationController() returned null.');
+    _filterBlurAnimation = createBlurFilterAnimation();
+    _filterColorAnimation = createColorFilterAnimation();
     _animation = createAnimation();
     assert(_animation != null, '$runtimeType.createAnimation() returned null.');
     super.install(insertionPoint);
