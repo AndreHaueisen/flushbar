@@ -195,7 +195,6 @@ class Flushbar<T extends Object> extends StatefulWidget {
   /// Make sure you use a color with transparency here e.g. Colors.grey[600].withOpacity(0.2).
   final Color overlayColor;
 
-
   /// A [TextFormField] in case you want a simple user input. Every other widget is ignored if this is not null.
   final Form userInputForm;
 
