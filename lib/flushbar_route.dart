@@ -71,7 +71,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
         OverlayEntry(
           builder: (BuildContext context) {
             return GestureDetector(
-                onTap: flushbar.isOverlayDismissible ? () => _dismiss() : null,
+                onTap: flushbar.isDismissible? () => _dismiss() : null,
                 child: BackdropFilter(
                   filter: ImageFilter.blur(
                       sigmaX: flushbar.overlayBlur,
