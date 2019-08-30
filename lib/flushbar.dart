@@ -12,6 +12,7 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 typedef void OnTap(Flushbar flushbar);
 
 /// A highly customizable widget so you can notify your user when you fell like he needs a beautiful explanation.
+// ignore: must_be_immutable
 class Flushbar<T extends Object> extends StatefulWidget {
   Flushbar(
       {Key key,

@@ -65,6 +65,14 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
   bool get opaque => false;
 
   @override
+  Future<RoutePopDisposition> willPop() {
+    if (!flushbar.isDismissible)
+      return Future.value(RoutePopDisposition.doNotPop);
+
+    return Future.value(RoutePopDisposition.pop);
+  }
+
+  @override
   Iterable<OverlayEntry> createOverlayEntries() {
     List<OverlayEntry> overlays = [];
 
