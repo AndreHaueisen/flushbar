@@ -67,7 +67,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
   Future<RoutePopDisposition> willPop() async {
     bool result = true;
 
-    if (flushbar.onFlushbarRouteWillPop != null) {
+    if (!flushbar.isDismissible && flushbar.onFlushbarRouteWillPop != null) {
       result = await flushbar.onFlushbarRouteWillPop(flushbar);
     }
 

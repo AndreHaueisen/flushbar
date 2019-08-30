@@ -51,7 +51,10 @@ class Flushbar<T extends Object> extends StatefulWidget {
     this.overlayColor = Colors.transparent,
     this.userInputForm,
     this.onFlushbarRouteWillPop,
-  }) : super(key: key) {
+  })  : assert(isDismissible != null),
+        assert(!(isDismissible == true && onFlushbarRouteWillPop != null),
+            'Impossible to veto route if isDismissible = true, this is illogical operation'),
+        super(key: key) {
     this.onStatusChanged = onStatusChanged ?? (status) {};
   }
 
