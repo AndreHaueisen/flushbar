@@ -177,7 +177,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
   /// Example:
   /// ```dart
   /// Flushbar(
-  ///   isDismissible: false // optional,
+  ///   isDismissible: false // should be false,
   ///   onFlushbarRouteWillPop: (flushbar) => Future.value(false),
   ///   message: Text('No internet connection.'),
   /// )..show(context)
