@@ -1,5 +1,10 @@
+## [1.9.0] - 2019-01-09
+- Added `maxWidth` property
+- Added `barBlur` which applies a BackdropFilter only to Flushbar's background
+- Default animation curve changed from `fastOutSlowIn` to `easeOutCirc`
+
 ## [1.8.2] - 2019-02-08
-- Blur overlay is now dismissible by click if `isDismissible = true`
+- Blur overlay is now dismissible by click if `isDismissible == true`
 - Blur overlay will now animate until it disappears instead of vanishing
 
 ## [1.8.1] - 2019-29-07

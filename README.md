@@ -22,6 +22,7 @@ titleText | Replaces [title]. Although this accepts a [widget], **it is meant to
 messageText | Replaces [message]. Although this accepts a [widget], **it is meant to receive [Text] or  [RichText]**
 icon | You can use any widget here, but I recommend [Icon] or [Image] as indication of what kind of message you are displaying. Other widgets may break the layout
 shouldIconPulse | An option to animate the icon (if present). Defaults to true.
+maxWidth | Used to limit Flushbar width (usually on large screens)
 margin | Adds a custom margin to Flushbar
 padding | Adds a custom padding to Flushbar. The default follows material design guide line
 borderRadius | Adds a radius to all corners of Flushbar. Best combined with [margin]. I do not recommend using it with [showProgressIndicator] or [leftBarIndicatorColor]
@@ -45,6 +46,7 @@ showProgressIndicator | true if you want to show a [LinearProgressIndicator].
 progressIndicatorController | An optional [AnimationController] when you want to control the progress of your [LinearProgressIndicator].
 progressIndicatorBackgroundColor | a [LinearProgressIndicator] configuration parameter.
 progressIndicatorValueColor | a [LinearProgressIndicator] configuration parameter.
+barBlur | Default is 0.0. If different than 0.0, blurs only Flushbar's background. To take effect, make sure your [backgroundColor] has some opacity. The greater the value, the greater the blur.
 overlayBlur | Default is 0.0. If different than 0.0, creates a blurred overlay that prevents the user from interacting with the screen. The greater the value, the greater the blur.
 overlayColor | Default is [Colors.transparent]. Only takes effect if [overlayBlur] > 0.0. Make sure you use a color with transparency e.g. `Colors.grey[600].withOpacity(0.2)`.
 userInputForm | A [TextFormField] in case you want a simple user input. Every other widget is ignored if this is not null.

@@ -1,6 +1,6 @@
 name: flushbar
 description: A flexible widget for user notification. Customize your text, button, duration, animations and much more. For Android devs, it is made to replace Snackbars and Toasts.
-version: 1.8.2
+version: 1.9.0
 author: Andre Haueisen <andrehaueisen@gmail.com>
 homepage: https://github.com/AndreHaueisen/flushbar
 

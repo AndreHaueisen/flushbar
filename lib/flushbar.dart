@@ -21,6 +21,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
       Widget messageText,
       Widget icon,
       bool shouldIconPulse = true,
+      double maxWidth,
       EdgeInsets margin = const EdgeInsets.all(0.0),
       EdgeInsets padding = const EdgeInsets.all(16),
       double borderRadius = 0.0,
@@ -41,10 +42,11 @@ class Flushbar<T extends Object> extends StatefulWidget {
       Animation<Color> progressIndicatorValueColor,
       FlushbarPosition flushbarPosition = FlushbarPosition.BOTTOM,
       FlushbarStyle flushbarStyle = FlushbarStyle.FLOATING,
-      Curve forwardAnimationCurve = Curves.easeOut,
-      Curve reverseAnimationCurve = Curves.fastOutSlowIn,
+      Curve forwardAnimationCurve = Curves.easeOutCirc,
+      Curve reverseAnimationCurve = Curves.easeOutCirc,
       Duration animationDuration = const Duration(seconds: 1),
       FlushbarStatusCallback onStatusChanged,
+      double barBlur = 0.0,
       double overlayBlur = 0.0,
       Color overlayColor = Colors.transparent,
       Form userInputForm})
@@ -54,6 +56,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
         this.messageText = messageText,
         this.icon = icon,
         this.shouldIconPulse = shouldIconPulse,
+        this.maxWidth = maxWidth,
         this.margin = margin,
         this.padding = padding,
         this.borderRadius = borderRadius,
@@ -77,6 +80,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
         this.forwardAnimationCurve = forwardAnimationCurve,
         this.reverseAnimationCurve = reverseAnimationCurve,
         this.animationDuration = animationDuration,
+        this.barBlur = barBlur,
         this.overlayBlur = overlayBlur,
         this.overlayColor = overlayColor,
         this.userInputForm = userInputForm,
@@ -147,6 +151,9 @@ class Flushbar<T extends Object> extends StatefulWidget {
   /// If the user swipes to dismiss or clicks the overlay, no value will be returned.
   final bool isDismissible;
 
+  /// Used to limit Flushbar width (usually on large screens)
+  final double maxWidth;
+
   /// Adds a custom margin to Flushbar
   final EdgeInsets margin;
 
@@ -185,6 +192,11 @@ class Flushbar<T extends Object> extends StatefulWidget {
 
   /// Use it to speed up or slow down the animation duration
   final Duration animationDuration;
+
+  /// Default is 0.0. If different than 0.0, blurs only Flushbar's background.
+  /// To take effect, make sure your [backgroundColor] has some opacity.
+  /// The greater the value, the greater the blur.
+  final double barBlur;
 
   /// Default is 0.0. If different than 0.0, creates a blurred
   /// overlay that prevents the user from interacting with the screen.
@@ -369,11 +381,25 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   }
 
   Widget _getFlushbar() {
-    return (widget.userInputForm != null) ? _generateInputFlushbar() : _generateFlushbar();
+    Widget flushbar;
+
+    if (widget.userInputForm != null) {
+      flushbar = _generateInputFlushbar();
+    } else {
+      flushbar = _generateFlushbar();
+    }
+
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: widget.barBlur, sigmaY: widget.barBlur),
+        child: flushbar,
+      ),
+    );
   }
 
   Widget _generateInputFlushbar() {
-    return DecoratedBox(
+    return Container(
+      constraints: widget.maxWidth != null ? BoxConstraints(maxWidth: widget.maxWidth) : null,
       decoration: BoxDecoration(
         color: widget.backgroundColor,
         gradient: widget.backgroundGradient,
@@ -395,8 +421,9 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   GlobalKey backgroundBoxKey = GlobalKey();
 
   Widget _generateFlushbar() {
-    return DecoratedBox(
+    return Container(
       key: backgroundBoxKey,
+      constraints: widget.maxWidth != null ? BoxConstraints(maxWidth: widget.maxWidth) : null,
       decoration: BoxDecoration(
           color: widget.backgroundColor,
           gradient: widget.backgroundGradient,
@@ -413,14 +440,16 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
                   valueColor: widget.progressIndicatorValueColor,
                 )
               : _emptyWidget,
-          Row(mainAxisSize: MainAxisSize.max, children: _getAppropriateRowLayout()),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: _getAppropriateRowLayout(),
+          ),
         ],
       ),
     );
   }
 
   List<Widget> _getAppropriateRowLayout() {
-
     double buttonRightPadding;
     double iconPadding = 0;
     if (widget.padding.right - 12 < 0) {
@@ -429,7 +458,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
       buttonRightPadding = widget.padding.right - 12;
     }
 
-    if(widget.padding.left > 16.0){
+    if (widget.padding.left > 16.0) {
       iconPadding = widget.padding.left;
     }
 

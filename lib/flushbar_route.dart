@@ -209,7 +209,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
     return Tween(begin: 0.0, end: flushbar.overlayBlur).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.0, 0.35, curve: Curves.easeOut,),
+        curve: Interval(0.0, 0.35, curve: Curves.easeInOutCirc,),
       ),
     );
   }
@@ -218,7 +218,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
     return  ColorTween(begin: Colors.transparent, end: flushbar.overlayColor).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.0, 0.35, curve: Curves.easeOut,),
+        curve: Interval(0.0, 0.35, curve: Curves.easeInOutCirc,),
       ),
     );
   }
