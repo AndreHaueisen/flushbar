@@ -1,3 +1,6 @@
+## [1.9.1] - 2019-21-10
+- Fixed shadows not showing up
+
 ## [1.9.0] - 2019-01-09
 - Added `maxWidth` property
 - Added `barBlur` which applies a BackdropFilter only to Flushbar's background

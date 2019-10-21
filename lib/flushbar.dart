@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+
 import 'flushbar_route.dart' as route;
 
 const String FLUSHBAR_ROUTE_NAME = "/flushbarRoute";
@@ -182,6 +182,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
 
   /// Flushbar can be floating or be grounded to the edge of the screen.
   /// If grounded, I do not recommend using [margin] or [borderRadius]. [FlushbarStyle.FLOATING] is the default
+  /// If grounded, I do not recommend using a [backgroundColor] with transparency or [barBlur]
   final FlushbarStyle flushbarStyle;
 
   /// The [Curve] animation used when show() is called. [Curves.easeOut] is default
@@ -311,7 +312,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     super.dispose();
   }
 
-  final Completer<double> _boxHeightCompleter = Completer<double>();
+  final Completer<Size> _boxHeightCompleter = Completer<Size>();
 
   void _configureLeftBarFuture() {
     SchedulerBinding.instance.addPostFrameCallback(
@@ -320,7 +321,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
 
         if (keyContext != null) {
           final RenderBox box = keyContext.findRenderObject();
-          _boxHeightCompleter.complete(box.size.height);
+          _boxHeightCompleter.complete(box.size);
         }
       },
     );
@@ -389,22 +390,45 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
       flushbar = _generateFlushbar();
     }
 
-    return ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: widget.barBlur, sigmaY: widget.barBlur),
-        child: flushbar,
-      ),
+    return Stack(
+      children: [
+        FutureBuilder(
+          future: _boxHeightCompleter.future,
+          builder: (context, AsyncSnapshot<Size> snapshot) {
+            if (snapshot.hasData) {
+              return ClipRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: widget.barBlur, sigmaY: widget.barBlur),
+                  child: Container(
+                    height: snapshot.data.height,
+                    width: snapshot.data.width,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(widget.borderRadius),
+                    ),
+                  ),
+                ),
+              );
+            } else {
+              return _emptyWidget;
+            }
+          },
+        ),
+        flushbar,
+      ],
     );
   }
 
   Widget _generateInputFlushbar() {
     return Container(
+      key: backgroundBoxKey,
       constraints: widget.maxWidth != null ? BoxConstraints(maxWidth: widget.maxWidth) : null,
       decoration: BoxDecoration(
         color: widget.backgroundColor,
         gradient: widget.backgroundGradient,
         boxShadow: widget.boxShadows,
         borderRadius: BorderRadius.circular(widget.borderRadius),
+        border: widget.borderColor != null ? Border.all(color: widget.borderColor, width: widget.borderWidth) : null,
       ),
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0, top: 16.0),
@@ -425,11 +449,12 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
       key: backgroundBoxKey,
       constraints: widget.maxWidth != null ? BoxConstraints(maxWidth: widget.maxWidth) : null,
       decoration: BoxDecoration(
-          color: widget.backgroundColor,
-          gradient: widget.backgroundGradient,
-          boxShadow: widget.boxShadows,
-          borderRadius: BorderRadius.circular(widget.borderRadius),
-          border: widget.borderColor != null ? Border.all(color: widget.borderColor, width: widget.borderWidth) : null),
+        color: widget.backgroundColor,
+        gradient: widget.backgroundGradient,
+        boxShadow: widget.boxShadows,
+        borderRadius: BorderRadius.circular(widget.borderRadius),
+        border: widget.borderColor != null ? Border.all(color: widget.borderColor, width: widget.borderWidth) : null,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -614,12 +639,12 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     if (widget.leftBarIndicatorColor != null) {
       return FutureBuilder(
         future: _boxHeightCompleter.future,
-        builder: (BuildContext buildContext, AsyncSnapshot<double> snapshot) {
+        builder: (BuildContext buildContext, AsyncSnapshot<Size> snapshot) {
           if (snapshot.hasData) {
             return Container(
               color: widget.leftBarIndicatorColor,
               width: 5.0,
-              height: snapshot.data,
+              height: snapshot.data.height,
             );
           } else {
             return _emptyWidget;

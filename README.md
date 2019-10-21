@@ -5,11 +5,6 @@ toasts and snackbars. IOS developers, I don't know what you use there, but you w
 
 See the [install instructions](https://pub.dartlang.org/packages/flushbar#-installing-tab-).
 
-This is a flutter widget inspired by [Flashbar](https://github.com/aritraroy/Flashbar).
-Development of Flushbar and Flashbar are totally separate.
-
-![Flushbar](readme_resources/flushbar_logo.png)
-
 ## Quick reference
 
 Since customization requires a lot of properties, here is a quick cheatsheet:

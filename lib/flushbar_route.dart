@@ -1,9 +1,8 @@
-import 'package:flushbar/flushbar.dart';
-import 'package:flutter/material.dart';
-
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:flushbar/flushbar.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 class FlushbarRoute<T> extends OverlayRoute<T> {
@@ -102,7 +101,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
                 child: flushbar.isDismissible ? _getDismissibleFlushbar(_builder) : _getFlushbar(),
               ),
               focused: false,
-              scopesRoute: true,
+              container: true,
               explicitChildNodes: true,
             );
             return theme != null ? Theme(data: theme, child: annotatedChild) : annotatedChild;
@@ -205,20 +204,28 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
     );
   }
 
-  Animation<double> createBlurFilterAnimation(){
+  Animation<double> createBlurFilterAnimation() {
     return Tween(begin: 0.0, end: flushbar.overlayBlur).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.0, 0.35, curve: Curves.easeInOutCirc,),
+        curve: Interval(
+          0.0,
+          0.35,
+          curve: Curves.easeInOutCirc,
+        ),
       ),
     );
   }
 
-  Animation<Color> createColorFilterAnimation(){
-    return  ColorTween(begin: Colors.transparent, end: flushbar.overlayColor).animate(
+  Animation<Color> createColorFilterAnimation() {
+    return ColorTween(begin: Colors.transparent, end: flushbar.overlayColor).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.0, 0.35, curve: Curves.easeInOutCirc,),
+        curve: Interval(
+          0.0,
+          0.35,
+          curve: Curves.easeInOutCirc,
+        ),
       ),
     );
   }
