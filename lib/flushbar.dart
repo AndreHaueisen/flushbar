@@ -215,12 +215,19 @@ class Flushbar<T extends Object> extends StatefulWidget {
 
   /// Show the flushbar. Kicks in [FlushbarStatus.IS_APPEARING] state followed by [FlushbarStatus.SHOWING]
   Future<T> show(BuildContext context) async {
-    _flushbarRoute = route.showFlushbar<T>(
-      context: context,
-      flushbar: this,
+    return showWithoutContext(
+        themeData: Theme.of(context),
+        navigatorState: Navigator.of(context, rootNavigator: false),
     );
+  }
 
-    return await Navigator.of(context, rootNavigator: false).push(_flushbarRoute);
+  Future<T> showWithoutContext({@required ThemeData themeData, @required NavigatorState navigatorState}) async {
+    _flushbarRoute = route.FlushbarRoute<T>(
+      flushbar: this,
+      theme: themeData,
+      settings: RouteSettings(name: FLUSHBAR_ROUTE_NAME),
+    );
+     return navigatorState.push(_flushbarRoute);
   }
 
   /// Dismisses the flushbar causing is to return a future containing [result].
