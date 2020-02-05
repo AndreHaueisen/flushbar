@@ -240,7 +240,7 @@ Want a gradient in the background? No problem.
 Flushbar(
   title: "Hey Ninja",
   message: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-  backgroundGradient: LinearGradient(colors: [Colors.Colors.teal],),
+  backgroundGradient: LinearGradient(colors: [Colors.blue, Colors.teal]),
   backgroundColor: Colors.red,
   boxShadows: [BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0,)],
 )..show(context);
