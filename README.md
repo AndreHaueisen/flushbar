@@ -478,7 +478,7 @@ I made a helper class to facilitate the creation of the most common Flushbars.
 FlushbarHelper.createSuccess({message, title, duration});
 FlushbarHelper.createInformation({message, title, duration});
 FlushbarHelper.createError({message, title, duration});
-FlushbarHelper.createAction({message, title, duration flatButton});
+FlushbarHelper.createAction({message, title, duration buttonWidget});
 FlushbarHelper.createLoading({message,linearProgressIndicator, title, duration, progressIndicatorController, progressIndicatorBackgroundColor});
 FlushbarHelper.createInputFlushbar({textForm});
 ```

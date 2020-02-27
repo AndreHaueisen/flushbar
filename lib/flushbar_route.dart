@@ -270,7 +270,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
   }
 
   @override
-  void install() {
+  void install(OverlayEntry insertionPoint) {
     assert(!_transitionCompleter.isCompleted, 'Cannot install a $runtimeType after disposing it.');
     _controller = createAnimationController();
     assert(_controller != null, '$runtimeType.createAnimationController() returned null.');
@@ -278,13 +278,14 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
     _filterColorAnimation = createColorFilterAnimation();
     _animation = createAnimation();
     assert(_animation != null, '$runtimeType.createAnimation() returned null.');
-    super.install();
+    super.install(insertionPoint);
   }
 
   @override
   TickerFuture didPush() {
     assert(_controller != null, '$runtimeType.didPush called before calling install() or after calling dispose().');
     assert(!_transitionCompleter.isCompleted, 'Cannot reuse a $runtimeType after disposing it.');
+    super.didPush();
     _animation.addStatusListener(_handleStatusChanged);
     _configureTimer();
     return _controller.forward();

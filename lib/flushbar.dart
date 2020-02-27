@@ -31,7 +31,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
       Color leftBarIndicatorColor,
       List<BoxShadow> boxShadows,
       Gradient backgroundGradient,
-      FlatButton mainButton,
+      Widget mainButton,
       OnTap onTap,
       Duration duration,
       bool isDismissible = true,
@@ -125,8 +125,8 @@ class Flushbar<T extends Object> extends StatefulWidget {
   /// An option to animate the icon (if present). Defaults to true.
   final bool shouldIconPulse;
 
-  /// A [FlatButton] widget if you need an action from the user.
-  final FlatButton mainButton;
+  /// A [Widget] if you need an action from the user.
+  final Widget mainButton;
 
   /// A callback that registers the user's click anywhere. An alternative to [mainButton]
   final OnTap onTap;
@@ -685,7 +685,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     );
   }
 
-  FlatButton _getMainActionButton() {
+  Widget _getMainActionButton() {
     if (widget.mainButton != null) {
       return widget.mainButton;
     } else {
