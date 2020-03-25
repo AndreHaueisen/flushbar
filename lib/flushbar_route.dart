@@ -6,30 +6,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 class FlushbarRoute<T> extends OverlayRoute<T> {
+  final Flushbar flushbar;
+  final Builder _builder;
+  final Completer<T> _transitionCompleter = Completer<T>();
+  final FlushbarStatusCallback _onStatusChanged;
+
   Animation<double> _filterBlurAnimation;
   Animation<Color> _filterColorAnimation;
+  Alignment _initialAlignment;
+  Alignment _endAlignment;
+  bool _wasDismissedBySwipe = false;
+  Timer _timer;
+  T _result;
+  FlushbarStatus currentStatus;
 
   FlushbarRoute({
-    @required this.theme,
     @required this.flushbar,
     RouteSettings settings,
-  }) : super(settings: settings) {
-    this._builder = Builder(builder: (BuildContext innerContext) {
-      return GestureDetector(
-        child: flushbar,
-        onTap: flushbar.onTap != null
-            ? () {
-                flushbar.onTap(flushbar);
-              }
-            : null,
-      );
-    });
-
+  })  : _builder = Builder(builder: (BuildContext innerContext) {
+          return GestureDetector(
+            child: flushbar,
+            onTap: flushbar.onTap != null ? () => flushbar.onTap(flushbar) : null,
+          );
+        }),
+        _onStatusChanged = flushbar.onStatusChanged,
+        super(settings: settings) {
     _configureAlignment(this.flushbar.flushbarPosition);
-    _onStatusChanged = flushbar.onStatusChanged;
   }
 
-  _configureAlignment(FlushbarPosition flushbarPosition) {
+  void _configureAlignment(FlushbarPosition flushbarPosition) {
     switch (flushbar.flushbarPosition) {
       case FlushbarPosition.TOP:
         {
@@ -46,45 +51,20 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
     }
   }
 
-  Flushbar flushbar;
-  Builder _builder;
-
-  final ThemeData theme;
-
   Future<T> get completed => _transitionCompleter.future;
-  final Completer<T> _transitionCompleter = Completer<T>();
-
-  FlushbarStatusCallback _onStatusChanged;
-  Alignment _initialAlignment;
-  Alignment _endAlignment;
-  bool _wasDismissedBySwipe = false;
-
-  Timer _timer;
-
   bool get opaque => false;
 
   @override
   Iterable<OverlayEntry> createOverlayEntries() {
-    List<OverlayEntry> overlays = [];
+    final List<OverlayEntry> overlays = [];
 
-    if (flushbar.overlayBlur > 0.0) {
+    if (flushbar.blockBackgroundInteraction) {
       overlays.add(
         OverlayEntry(
             builder: (BuildContext context) {
               return GestureDetector(
                 onTap: flushbar.isDismissible ? () => flushbar.dismiss() : null,
-                child: AnimatedBuilder(
-                  animation: _filterBlurAnimation,
-                  builder: (context, child) {
-                    return BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: _filterBlurAnimation.value, sigmaY: _filterBlurAnimation.value),
-                      child: Container(
-                        constraints: BoxConstraints.expand(),
-                        color: _filterColorAnimation.value,
-                      ),
-                    );
-                  },
-                ),
+                child: _createBackgroundOverlay(),
               );
             },
             maintainState: false,
@@ -104,13 +84,62 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
               container: true,
               explicitChildNodes: true,
             );
-            return theme != null ? Theme(data: theme, child: annotatedChild) : annotatedChild;
+            return annotatedChild;
           },
           maintainState: false,
           opaque: opaque),
     );
 
     return overlays;
+  }
+
+  Widget _createBackgroundOverlay() {
+    if (_filterBlurAnimation != null && _filterColorAnimation != null) {
+      return AnimatedBuilder(
+        animation: _filterBlurAnimation,
+        builder: (context, child) {
+          return BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: _filterBlurAnimation.value, sigmaY: _filterBlurAnimation.value),
+            child: Container(
+              constraints: BoxConstraints.expand(),
+              color: _filterColorAnimation.value,
+            ),
+          );
+        },
+      );
+    }
+
+    if (_filterBlurAnimation != null) {
+      return AnimatedBuilder(
+        animation: _filterBlurAnimation,
+        builder: (context, child) {
+          return BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: _filterBlurAnimation.value, sigmaY: _filterBlurAnimation.value),
+            child: Container(
+              constraints: BoxConstraints.expand(),
+              color: Colors.transparent,
+            ),
+          );
+        },
+      );
+    }
+
+    if (_filterColorAnimation != null) {
+      AnimatedBuilder(
+        animation: _filterColorAnimation,
+        builder: (context, child) {
+          return Container(
+            constraints: BoxConstraints.expand(),
+            color: _filterColorAnimation.value,
+          );
+        },
+      );
+    }
+
+    return Container(
+      constraints: BoxConstraints.expand(),
+      color: Colors.transparent,
+    );
   }
 
   /// This string is a workaround until Dismissible supports a returning item
@@ -142,13 +171,6 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
     );
   }
 
-  Widget _getFlushbar() {
-    return Container(
-      margin: flushbar.margin,
-      child: _builder,
-    );
-  }
-
   DismissDirection _getDismissDirection() {
     if (flushbar.dismissDirection == FlushbarDismissDirection.HORIZONTAL) {
       return DismissDirection.horizontal;
@@ -159,6 +181,13 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
         return DismissDirection.down;
       }
     }
+  }
+
+  Widget _getFlushbar() {
+    return Container(
+      margin: flushbar.margin,
+      child: _builder,
+    );
   }
 
   @override
@@ -205,7 +234,9 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
   }
 
   Animation<double> createBlurFilterAnimation() {
-    return Tween(begin: 0.0, end: flushbar.overlayBlur).animate(
+    if (flushbar.routeBlur == null) return null;
+
+    return Tween(begin: 0.0, end: flushbar.routeBlur).animate(
       CurvedAnimation(
         parent: _controller,
         curve: Interval(
@@ -218,7 +249,9 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
   }
 
   Animation<Color> createColorFilterAnimation() {
-    return ColorTween(begin: Colors.transparent, end: flushbar.overlayColor).animate(
+    if (flushbar.routeColor == null) return null;
+
+    return ColorTween(begin: Colors.transparent, end: flushbar.routeColor).animate(
       CurvedAnimation(
         parent: _controller,
         curve: Interval(
@@ -229,9 +262,6 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
       ),
     );
   }
-
-  T _result;
-  FlushbarStatus currentStatus;
 
   //copy of `routes.dart`
   void _handleStatusChanged(AnimationStatus status) {
@@ -270,7 +300,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
   }
 
   @override
-  void install(OverlayEntry insertionPoint) {
+  void install() {
     assert(!_transitionCompleter.isCompleted, 'Cannot install a $runtimeType after disposing it.');
     _controller = createAnimationController();
     assert(_controller != null, '$runtimeType.createAnimationController() returned null.');
@@ -278,7 +308,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
     _filterColorAnimation = createColorFilterAnimation();
     _animation = createAnimation();
     assert(_animation != null, '$runtimeType.createAnimation() returned null.');
-    super.install(insertionPoint);
+    super.install();
   }
 
   @override
@@ -287,6 +317,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
     assert(!_transitionCompleter.isCompleted, 'Cannot reuse a $runtimeType after disposing it.');
     _animation.addStatusListener(_handleStatusChanged);
     _configureTimer();
+    super.didPush();
     return _controller.forward();
   }
 
@@ -377,7 +408,6 @@ FlushbarRoute showFlushbar<T>({@required BuildContext context, @required Flushba
 
   return FlushbarRoute<T>(
     flushbar: flushbar,
-    theme: Theme.of(context),
     settings: RouteSettings(name: FLUSHBAR_ROUTE_NAME),
   );
 }

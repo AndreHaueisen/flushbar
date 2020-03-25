@@ -30,20 +30,21 @@ backgroundGradient | Flushbar background gradient. Makes [backgroundColor] be ig
 mainButton | A [FlatButton] widget if you need an action from the user.
 onTap | A callback that registers the user's click anywhere. An alternative to [mainButton]
 duration | How long until Flushbar will hide itself (be dismissed). To make it indefinite, leave it null.
-isDismissible | Determines if the user can swipe or click the overlay (if [overlayBlur] > 0) to dismiss. It is recommended that you set [duration] != null if this is false. If the user swipes to dismiss or clicks the overlay, no value will be returned.
+isDismissible | Determines if the user can swipe or click the overlay (if [routeBlur] > 0) to dismiss. It is recommended that you set [duration] != null if this is false. If the user swipes to dismiss or clicks the overlay, no value will be returned.
 dismissDirection | FlushbarDismissDirection.VERTICAL by default. Can also be [FlushbarDismissDirection.HORIZONTAL] in which case both left and right dismiss are allowed.
 flushbarPosition | Flushbar can be based on [FlushbarPosition.TOP] or on [FlushbarPosition.BOTTOM] of your screen. [FlushbarPosition.BOTTOM] is the default.
 flushbarStyle | Flushbar can be floating or be grounded to the edge of the screen. If grounded, I do not recommend using [margin] or [borderRadius]. [FlushbarStyle.FLOATING] is the default
 forwardAnimationCurve | The [Curve] animation used when show() is called. [Curves.easeOut] is default.
 reverseAnimationCurve | The [Curve] animation used when dismiss() is called. [Curves.fastOutSlowIn] is default.
 animationDuration | Use it to speed up or slow down the animation duration
-showProgressIndicator | true if you want to show a [LinearProgressIndicator].
-progressIndicatorController | An optional [AnimationController] when you want to control the progress of your [LinearProgressIndicator].
+showProgressIndicator | true if you want to show a [LinearProgressIndicator]. If [progressIndicatorController] is null, an infinite progress indicator will be shown
+progressIndicatorController | An optional [AnimationController] when you want to control the progress of your [LinearProgressIndicator]. You are responsible for controlling the progress
 progressIndicatorBackgroundColor | a [LinearProgressIndicator] configuration parameter.
 progressIndicatorValueColor | a [LinearProgressIndicator] configuration parameter.
 barBlur | Default is 0.0. If different than 0.0, blurs only Flushbar's background. To take effect, make sure your [backgroundColor] has some opacity. The greater the value, the greater the blur.
-overlayBlur | Default is 0.0. If different than 0.0, creates a blurred overlay that prevents the user from interacting with the screen. The greater the value, the greater the blur.
-overlayColor | Default is [Colors.transparent]. Only takes effect if [overlayBlur] > 0.0. Make sure you use a color with transparency e.g. `Colors.grey[600].withOpacity(0.2)`.
+blockBackgroundInteraction | Determines if user can interact with the screen behind it. If this is false, [routeBlur] and [routeColor] will be ignored
+routeBlur | Default is 0.0. If different than 0.0, creates a blurred overlay that prevents the user from interacting with the screen. The greater the value, the greater the blur. It does not take effect if [blockBackgroundInteraction] is false
+routeColor | Default is [Colors.transparent]. Only takes effect if [routeBlur] > 0.0. Make sure you use a color with transparency e.g. `Colors.grey[600].withOpacity(0.2)`. It does not take effect if [blockBackgroundInteraction] is false
 userInputForm | A [TextFormField] in case you want a simple user input. Every other widget is ignored if this is not null.
 onStatusChanged | a callback for you to listen to the different Flushbar status
 

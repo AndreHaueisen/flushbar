@@ -1,3 +1,12 @@
+## [1.10.0] - 2020-25-03
+- **Breaking change** fixes a breaking change introduced by Flutter. Only use this version if you are using flutter v1.15 or greater (currently on the beta channel)
+- **Breaking change** adds blockBackgroundInteraction property.
+- **Breaking change** overlayBlur renamed to routeBlur. Will be ignored if blockBackgroundInteraction is false
+- **Breaking change** overlayColor renamed to routeColor. Will be ignored if blockBackgroundInteraction is false
+- Now, if [showProgressIndicator] is true and [progressIndicatorController] is null, an infinite linear progress indicator will be shown
+- Performance improvements
+- Code refactoring
+
 ## [1.9.1] - 2019-21-10
 - Fixed shadows not showing up
 

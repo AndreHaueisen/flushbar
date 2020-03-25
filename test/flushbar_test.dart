@@ -41,12 +41,10 @@ void main() {
     expect(flushbar.progressIndicatorController, null);
     expect(flushbar.progressIndicatorBackgroundColor, null);
     expect(flushbar.progressIndicatorValueColor, null);
-    expect(flushbar.overlayBlur, 0.0);
-    expect(flushbar.overlayColor, Colors.transparent);
+    expect(flushbar.routeBlur, 0.0);
+    expect(flushbar.routeColor, Colors.transparent);
     expect(flushbar.isShowing(), false);
     expect(flushbar.isDismissed(), false);
     expect(await flushbar.dismiss(), null);
   });
-
-
 }

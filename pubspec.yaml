@@ -1,6 +1,6 @@
 name: flushbar
 description: A flexible widget for user notification. Customize your text, button, duration, animations and much more. For Android devs, it is made to replace Snackbars and Toasts.
-version: 1.9.1
+version: 1.10.0
 author: Andre Haueisen <andrehaueisen@gmail.com>
 homepage: https://github.com/AndreHaueisen/flushbar
 
@@ -19,7 +19,7 @@ environment:
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
 
-# publish command flutter packages pub publish --dry-run
+# publish command: flutter packages pub publish --dry-run
 
 # The following section is specific to Flutter.
 flutter:
