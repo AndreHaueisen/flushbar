@@ -33,6 +33,7 @@ duration | How long until Flushbar will hide itself (be dismissed). To make it i
 isDismissible | Determines if the user can swipe or click the overlay (if [routeBlur] > 0) to dismiss. It is recommended that you set [duration] != null if this is false. If the user swipes to dismiss or clicks the overlay, no value will be returned.
 dismissDirection | FlushbarDismissDirection.VERTICAL by default. Can also be [FlushbarDismissDirection.HORIZONTAL] in which case both left and right dismiss are allowed.
 flushbarPosition | Flushbar can be based on [FlushbarPosition.TOP] or on [FlushbarPosition.BOTTOM] of your screen. [FlushbarPosition.BOTTOM] is the default.
+positionOffset | Adds a vertical offset for the position of the flusbar
 flushbarStyle | Flushbar can be floating or be grounded to the edge of the screen. If grounded, I do not recommend using [margin] or [borderRadius]. [FlushbarStyle.FLOATING] is the default
 forwardAnimationCurve | The [Curve] animation used when show() is called. [Curves.easeOut] is default.
 reverseAnimationCurve | The [Curve] animation used when dismiss() is called. [Curves.fastOutSlowIn] is default.
