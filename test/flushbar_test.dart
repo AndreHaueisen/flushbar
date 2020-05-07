@@ -14,8 +14,8 @@ void main() {
     expect(flushbar.backgroundColor, Color(0xFF303030));
     expect(flushbar.flushbarPosition, FlushbarPosition.BOTTOM);
     expect(flushbar.flushbarStyle, FlushbarStyle.FLOATING);
-    expect(flushbar.forwardAnimationCurve, Curves.easeOut);
-    expect(flushbar.reverseAnimationCurve, Curves.fastOutSlowIn);
+    expect(flushbar.forwardAnimationCurve, Curves.easeOutCirc);
+    expect(flushbar.reverseAnimationCurve, Curves.easeOutCirc);
     expect(flushbar.titleText, null);
     expect(flushbar.messageText, null);
     expect(flushbar.icon, null);
@@ -41,8 +41,8 @@ void main() {
     expect(flushbar.progressIndicatorController, null);
     expect(flushbar.progressIndicatorBackgroundColor, null);
     expect(flushbar.progressIndicatorValueColor, null);
-    expect(flushbar.routeBlur, 0.0);
-    expect(flushbar.routeColor, Colors.transparent);
+    expect(flushbar.routeBlur, null);
+    expect(flushbar.routeColor, null);
     expect(flushbar.isShowing(), false);
     expect(flushbar.isDismissed(), false);
     expect(await flushbar.dismiss(), null);

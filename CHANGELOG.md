@@ -1,3 +1,6 @@
+## [1.10.2] - 2020-07-05
+- Fixes SDK version
+
 ## [1.10.1] - 2020-07-05
 - With FLutter's 1.17 release, Flushbar 1.10 is now compatible with stable channel
 
