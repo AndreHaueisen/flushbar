@@ -1,3 +1,6 @@
+## [1.10.1] - 2020-07-05
+- With FLutter's 1.17 release, Flushbar 1.10 is now compatible with stable channel
+
 ## [1.10.0] - 2020-25-03
 - **Breaking change** fixes a breaking change introduced by Flutter. Only use this version if you are using flutter v1.15 or greater (currently on the beta channel)
 - **Breaking change** adds blockBackgroundInteraction property.
