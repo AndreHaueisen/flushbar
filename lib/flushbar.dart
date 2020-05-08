@@ -413,7 +413,8 @@ class _FlushbarState<K extends Object> extends State<Flushbar>
           future: _boxHeightCompleter.future,
           builder: (context, AsyncSnapshot<Size> snapshot) {
             if (snapshot.hasData) {
-              return ClipRect(
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(widget.borderRadius),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(
                       sigmaX: widget.barBlur, sigmaY: widget.barBlur),
