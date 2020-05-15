@@ -1,3 +1,6 @@
+## [1.10.3] - 2020-15-05
+- Fixes example pictures
+
 ## [1.10.2] - 2020-07-05
 - Fixes SDK version
 
