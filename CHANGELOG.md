@@ -1,7 +1,12 @@
+## [1.10.4] - 2020-15-05
+- [button] is now a [Widget] instead of [FlatButton]
+- Removed generic type requirement to extend Object
+- Fixed bar blur clipping
+
 ## [1.10.3] - 2020-15-05
 - Fixes example pictures
 
-## [1.10.2] - 2020-07-05
+## [1.10.2] - 2020-15-05
 - Fixes SDK version
 
 ## [1.10.1] - 2020-07-05

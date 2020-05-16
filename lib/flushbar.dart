@@ -12,7 +12,7 @@ typedef void FlushbarStatusCallback(FlushbarStatus status);
 typedef void OnTap(Flushbar flushbar);
 
 /// A highly customizable widget so you can notify your user when you fell like he needs a beautiful explanation.
-class Flushbar<T extends Object> extends StatefulWidget {
+class Flushbar<T> extends StatefulWidget {
   Flushbar(
       {Key key,
       String title,
@@ -31,7 +31,7 @@ class Flushbar<T extends Object> extends StatefulWidget {
       Color leftBarIndicatorColor,
       List<BoxShadow> boxShadows,
       Gradient backgroundGradient,
-      FlatButton mainButton,
+      Widget mainButton,
       OnTap onTap,
       Duration duration,
       bool isDismissible = true,
@@ -129,8 +129,8 @@ class Flushbar<T extends Object> extends StatefulWidget {
   /// An option to animate the icon (if present). Defaults to true.
   final bool shouldIconPulse;
 
-  /// A [FlatButton] widget if you need an action from the user.
-  final FlatButton mainButton;
+  /// Use if you need an action from the user. [FlatButton] is recommended here
+  final Widget mainButton;
 
   /// A callback that registers the user's click anywhere. An alternative to [mainButton]
   final OnTap onTap;
@@ -413,7 +413,8 @@ class _FlushbarState<K extends Object> extends State<Flushbar>
           future: _boxHeightCompleter.future,
           builder: (context, AsyncSnapshot<Size> snapshot) {
             if (snapshot.hasData) {
-              return ClipRect(
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(widget.borderRadius),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(
                       sigmaX: widget.barBlur, sigmaY: widget.barBlur),
@@ -729,7 +730,7 @@ class _FlushbarState<K extends Object> extends State<Flushbar>
     );
   }
 
-  FlatButton _getMainActionButton() {
+  Widget _getMainActionButton() {
     if (widget.mainButton != null) {
       return widget.mainButton;
     } else {
