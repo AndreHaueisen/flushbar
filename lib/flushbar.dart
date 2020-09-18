@@ -26,6 +26,7 @@ class Flushbar<T> extends StatefulWidget {
       EdgeInsets padding = const EdgeInsets.all(16),
       double borderRadius = 0.0,
       Color borderColor,
+      BoxBorder border,
       double borderWidth = 1.0,
       Color backgroundColor = const Color(0xFF303030),
       Color leftBarIndicatorColor,
@@ -64,6 +65,7 @@ class Flushbar<T> extends StatefulWidget {
         this.borderRadius = borderRadius,
         this.borderColor = borderColor,
         this.borderWidth = borderWidth,
+        this.border = border,
         this.backgroundColor = backgroundColor,
         this.leftBarIndicatorColor = leftBarIndicatorColor,
         this.boxShadows = boxShadows,
@@ -174,6 +176,10 @@ class Flushbar<T> extends StatefulWidget {
   /// Adds a border to every side of Flushbar
   /// I do not recommend using it with [showProgressIndicator] or [leftBarIndicatorColor].
   final Color borderColor;
+
+  /// Border of the Flushbar, to control which side it can show
+  /// I do not recommend using it with [showProgressIndicator] or [leftBarIndicatorColor].
+  final BoxBorder border;
 
   /// Changes the width of the border if [borderColor] is specified
   final double borderWidth;
@@ -449,9 +455,12 @@ class _FlushbarState<K extends Object> extends State<Flushbar>
         gradient: widget.backgroundGradient,
         boxShadow: widget.boxShadows,
         borderRadius: BorderRadius.circular(widget.borderRadius),
-        border: widget.borderColor != null
-            ? Border.all(color: widget.borderColor, width: widget.borderWidth)
-            : null,
+        border: widget.border != null
+            ? widget.border
+            : widget.borderColor != null
+                ? Border.all(
+                    color: widget.borderColor, width: widget.borderWidth)
+                : null,
       ),
       child: Padding(
         padding: const EdgeInsets.only(
@@ -476,9 +485,12 @@ class _FlushbarState<K extends Object> extends State<Flushbar>
         gradient: widget.backgroundGradient,
         boxShadow: widget.boxShadows,
         borderRadius: BorderRadius.circular(widget.borderRadius),
-        border: widget.borderColor != null
-            ? Border.all(color: widget.borderColor, width: widget.borderWidth)
-            : null,
+        border: widget.border != null
+            ? widget.border
+            : widget.borderColor != null
+                ? Border.all(
+                    color: widget.borderColor, width: widget.borderWidth)
+                : null,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
