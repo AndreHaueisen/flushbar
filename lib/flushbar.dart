@@ -257,14 +257,31 @@ class Flushbar<T> extends StatefulWidget {
     return null;
   }
 
-  /// Checks if the flushbar is visible
+  /// Checks if the flushbar status is showing
   bool isShowing() {
     return _flushbarRoute?.currentStatus == FlushbarStatus.SHOWING;
   }
 
-  /// Checks if the flushbar is dismissed
+  /// Checks if the flushbar status is appearing
+  bool isAppearing() {
+    return _flushbarRoute?.currentStatus == FlushbarStatus.IS_APPEARING;
+  }
+
+  /// Checks if the flushbar status is hiding
+  bool isHiding() {
+    return _flushbarRoute?.currentStatus == FlushbarStatus.IS_HIDING;
+  }
+
+  /// Checks if the flushbar status is dismissed
   bool isDismissed() {
     return _flushbarRoute?.currentStatus == FlushbarStatus.DISMISSED;
+  }
+
+  /// Checks if the flushbar is visible
+  bool isVisible() {
+    return _flushbarRoute?.currentStatus == FlushbarStatus.SHOWING ||
+        _flushbarRoute?.currentStatus == FlushbarStatus.IS_APPEARING ||
+        _flushbarRoute?.currentStatus == FlushbarStatus.IS_HIDING;
   }
 
   @override
