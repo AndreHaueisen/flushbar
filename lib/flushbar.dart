@@ -23,6 +23,7 @@ class Flushbar<T> extends StatefulWidget {
       Widget closeIcon,
       bool shouldIconPulse = true,
       double maxWidth,
+      Alignment alignment = Alignment.center,
       EdgeInsets margin = const EdgeInsets.all(0.0),
       EdgeInsets padding = const EdgeInsets.all(16),
       double borderRadius = 0.0,
@@ -36,7 +37,8 @@ class Flushbar<T> extends StatefulWidget {
       OnTap onTap,
       Duration duration,
       bool isDismissible = true,
-      FlushbarDismissDirection dismissDirection = FlushbarDismissDirection.VERTICAL,
+      FlushbarDismissDirection dismissDirection =
+          FlushbarDismissDirection.VERTICAL,
       bool showProgressIndicator = false,
       AnimationController progressIndicatorController,
       Color progressIndicatorBackgroundColor,
@@ -60,6 +62,7 @@ class Flushbar<T> extends StatefulWidget {
         this.closeIcon = closeIcon,
         this.shouldIconPulse = shouldIconPulse,
         this.maxWidth = maxWidth,
+        this.alignment = alignment,
         this.margin = margin,
         this.padding = padding,
         this.borderRadius = borderRadius,
@@ -76,7 +79,8 @@ class Flushbar<T> extends StatefulWidget {
         this.dismissDirection = dismissDirection,
         this.showProgressIndicator = showProgressIndicator,
         this.progressIndicatorController = progressIndicatorController,
-        this.progressIndicatorBackgroundColor = progressIndicatorBackgroundColor,
+        this.progressIndicatorBackgroundColor =
+            progressIndicatorBackgroundColor,
         this.progressIndicatorValueColor = progressIndicatorValueColor,
         this.flushbarPosition = flushbarPosition,
         this.flushbarStyle = flushbarStyle,
@@ -159,6 +163,8 @@ class Flushbar<T> extends StatefulWidget {
   /// If the user swipes to dismiss or clicks the overlay, no value will be returned.
   final bool isDismissible;
 
+  final Alignment alignment;
+
   /// Used to limit Flushbar width (usually on large screens)
   final double maxWidth;
 
@@ -234,7 +240,8 @@ class Flushbar<T> extends StatefulWidget {
       flushbar: this,
     );
 
-    return await Navigator.of(context, rootNavigator: false).push(_flushbarRoute);
+    return await Navigator.of(context, rootNavigator: false)
+        .push(_flushbarRoute);
   }
 
   /// Dismisses the flushbar causing is to return a future containing [result].
@@ -274,7 +281,8 @@ class Flushbar<T> extends StatefulWidget {
   }
 }
 
-class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProviderStateMixin {
+class _FlushbarState<K extends Object> extends State<Flushbar>
+    with TickerProviderStateMixin {
   final Duration _pulseAnimationDuration = const Duration(seconds: 1);
   final Widget _emptyWidget = const SizedBox();
   final double _initialOpacity = 1.0;
@@ -299,7 +307,10 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
     _backgroundBoxKey = GlobalKey();
     _boxHeightCompleter = Completer<Size>();
 
-    assert(((widget.userInputForm != null || ((widget.message != null && widget.message.isNotEmpty) || widget.messageText != null))),
+    assert(
+        ((widget.userInputForm != null ||
+            ((widget.message != null && widget.message.isNotEmpty) ||
+                widget.messageText != null))),
         "A message is mandatory if you are not using userInputForm. Set either a message or messageText");
 
     _isTitlePresent = (widget.title != null || widget.titleText != null);
@@ -343,13 +354,16 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   }
 
   void _configureProgressIndicatorAnimation() {
-    if (widget.showProgressIndicator && widget.progressIndicatorController != null) {
-      _progressAnimation = CurvedAnimation(curve: Curves.linear, parent: widget.progressIndicatorController);
+    if (widget.showProgressIndicator &&
+        widget.progressIndicatorController != null) {
+      _progressAnimation = CurvedAnimation(
+          curve: Curves.linear, parent: widget.progressIndicatorController);
     }
   }
 
   void _configurePulseAnimation() {
-    _fadeController = AnimationController(vsync: this, duration: _pulseAnimationDuration);
+    _fadeController =
+        AnimationController(vsync: this, duration: _pulseAnimationDuration);
     _fadeAnimation = Tween(begin: _initialOpacity, end: _finalOpacity).animate(
       CurvedAnimation(
         parent: _fadeController,
@@ -373,10 +387,16 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   Widget build(BuildContext context) {
     return Align(
       heightFactor: 1.0,
+      alignment: widget.alignment,
       child: Material(
-        color: widget.flushbarStyle == FlushbarStyle.FLOATING ? Colors.transparent : widget.backgroundColor,
+        color: widget.flushbarStyle == FlushbarStyle.FLOATING
+            ? Colors.transparent
+            : widget.backgroundColor,
         child: SafeArea(
-          minimum: widget.flushbarPosition == FlushbarPosition.BOTTOM ? EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom) : EdgeInsets.only(top: MediaQuery.of(context).viewInsets.top),
+          minimum: widget.flushbarPosition == FlushbarPosition.BOTTOM
+              ? EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom)
+              : EdgeInsets.only(top: MediaQuery.of(context).viewInsets.top),
           bottom: widget.flushbarPosition == FlushbarPosition.BOTTOM,
           top: widget.flushbarPosition == FlushbarPosition.TOP,
           left: false,
@@ -405,7 +425,8 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
               return ClipRRect(
                 borderRadius: BorderRadius.circular(widget.borderRadius),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: widget.barBlur, sigmaY: widget.barBlur),
+                  filter: ImageFilter.blur(
+                      sigmaX: widget.barBlur, sigmaY: widget.barBlur),
                   child: Container(
                     height: snapshot.data.height,
                     width: snapshot.data.width,
@@ -429,16 +450,21 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   Widget _generateInputFlushbar() {
     return Container(
       key: _backgroundBoxKey,
-      constraints: widget.maxWidth != null ? BoxConstraints(maxWidth: widget.maxWidth) : null,
+      constraints: widget.maxWidth != null
+          ? BoxConstraints(maxWidth: widget.maxWidth)
+          : null,
       decoration: BoxDecoration(
         color: widget.backgroundColor,
         gradient: widget.backgroundGradient,
         boxShadow: widget.boxShadows,
         borderRadius: BorderRadius.circular(widget.borderRadius),
-        border: widget.borderColor != null ? Border.all(color: widget.borderColor, width: widget.borderWidth) : null,
+        border: widget.borderColor != null
+            ? Border.all(color: widget.borderColor, width: widget.borderWidth)
+            : null,
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0, top: 16.0),
+        padding: const EdgeInsets.only(
+            left: 8.0, right: 8.0, bottom: 8.0, top: 16.0),
         child: FocusScope(
           child: widget.userInputForm,
           node: _focusNode,
@@ -451,13 +477,17 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   Widget _generateFlushbar() {
     return Container(
       key: _backgroundBoxKey,
-      constraints: widget.maxWidth != null ? BoxConstraints(maxWidth: widget.maxWidth) : null,
+      constraints: widget.maxWidth != null
+          ? BoxConstraints(maxWidth: widget.maxWidth)
+          : null,
       decoration: BoxDecoration(
         color: widget.backgroundColor,
         gradient: widget.backgroundGradient,
         boxShadow: widget.boxShadows,
         borderRadius: BorderRadius.circular(widget.borderRadius),
-        border: widget.borderColor != null ? Border.all(color: widget.borderColor, width: widget.borderWidth) : null,
+        border: widget.borderColor != null
+            ? Border.all(color: widget.borderColor, width: widget.borderWidth)
+            : null,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -575,7 +605,8 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
                         right: widget.padding.right,
                         bottom: widget.padding.bottom,
                       ),
-                      child: widget.messageText ?? _getDefaultNotificationText(),
+                      child:
+                          widget.messageText ?? _getDefaultNotificationText(),
                     ),
                   ],
                 ),
@@ -601,7 +632,9 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
   }
 
   Widget _getCloseIcon() {
-    if (widget.closeIcon != null && widget.closeIcon is Icon && widget.shouldIconPulse) {
+    if (widget.closeIcon != null &&
+        widget.closeIcon is Icon &&
+        widget.shouldIconPulse) {
       return FadeTransition(
         opacity: _fadeAnimation,
         child: widget.closeIcon,
@@ -618,7 +651,10 @@ class _FlushbarState<K extends Object> extends State<Flushbar> with TickerProvid
         ? widget.titleText
         : Text(
             widget.title ?? "",
-            style: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
           );
   }
 
