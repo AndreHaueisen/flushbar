@@ -129,7 +129,7 @@ class Flushbar<T> extends StatefulWidget {
   /// An option to animate the icon (if present). Defaults to true.
   final bool shouldIconPulse;
 
-  /// Use if you need an action from the user. [FlatButton] is recommended here
+  /// Use if you need an action from the user. [TextButton] is recommended here
   final Widget? mainButton;
 
   /// A callback that registers the user's click anywhere. An alternative to [mainButton]

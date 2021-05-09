@@ -280,17 +280,17 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
     switch (status) {
       case AnimationStatus.completed:
         currentStatus = FlushbarStatus.SHOWING;
-        _onStatusChanged!(currentStatus);
+        _onStatusChanged!(currentStatus!);
         if (overlayEntries.isNotEmpty) overlayEntries.first.opaque = opaque;
 
         break;
       case AnimationStatus.forward:
         currentStatus = FlushbarStatus.IS_APPEARING;
-        _onStatusChanged!(currentStatus);
+        _onStatusChanged!(currentStatus!);
         break;
       case AnimationStatus.reverse:
         currentStatus = FlushbarStatus.IS_HIDING;
-        _onStatusChanged!(currentStatus);
+        _onStatusChanged!(currentStatus!);
         if (overlayEntries.isNotEmpty) overlayEntries.first.opaque = false;
         break;
       case AnimationStatus.dismissed:
@@ -300,7 +300,7 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
         // back gesture drives this animation to the dismissed status before
         // popping the navigator.
         currentStatus = FlushbarStatus.DISMISSED;
-        _onStatusChanged!(currentStatus);
+        _onStatusChanged!(currentStatus!);
 
         if (!isCurrent) {
           navigator!.finalizeRoute(this);
