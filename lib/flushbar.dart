@@ -614,7 +614,10 @@ class _FlushbarState<K extends Object> extends State<Flushbar>
                         left: 4.0,
                         right: 12.0,
                       ),
-                      child: _getCloseIcon(),
+                      child: Visibility(
+                        child: _getCloseIcon(),
+                        visible: false,
+                      ),
                     ),
                   ],
                 ),
