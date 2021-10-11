@@ -599,24 +599,15 @@ class _FlushbarState<K extends Object> extends State<Flushbar>
                         child: _getIcon(),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 4.0,
-                        right: widget.padding.right,
-                        bottom: widget.padding.bottom,
-                      ),
-                      child:
-                          widget.messageText ?? _getDefaultNotificationText(),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: widget.padding.top,
-                        left: 4.0,
-                        right: 12.0,
-                      ),
-                      child: Visibility(
-                        child: _getCloseIcon(),
-                        visible: false,
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 4.0,
+                          right: widget.padding.right,
+                          bottom: widget.padding.bottom,
+                        ),
+                        child:
+                            widget.messageText ?? _getDefaultNotificationText(),
                       ),
                     ),
                   ],
