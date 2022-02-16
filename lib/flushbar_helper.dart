@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 class FlushbarHelper {
   /// Get a success notification flushbar.
   static Flushbar createSuccess(
-      {@required String message,
-      String title,
+      {required String message,
+      String? title,
       Duration duration = const Duration(seconds: 3)}) {
     return Flushbar(
       title: title,
@@ -21,8 +21,8 @@ class FlushbarHelper {
 
   /// Get an information notification flushbar
   static Flushbar createInformation(
-      {@required String message,
-      String title,
+      {required String message,
+      String? title,
       Duration duration = const Duration(seconds: 3)}) {
     return Flushbar(
       title: title,
@@ -39,8 +39,8 @@ class FlushbarHelper {
 
   /// Get a error notification flushbar
   static Flushbar createError(
-      {@required String message,
-      String title,
+      {required String message,
+      String? title,
       Duration duration = const Duration(seconds: 3)}) {
     return Flushbar(
       title: title,
@@ -57,9 +57,9 @@ class FlushbarHelper {
 
   /// Get a flushbar that can receive a user action through a button.
   static Flushbar createAction(
-      {@required String message,
-      @required FlatButton button,
-      String title,
+      {required String message,
+      required FlatButton button,
+      String? title,
       Duration duration = const Duration(seconds: 3)}) {
     return Flushbar(
       title: title,
@@ -71,12 +71,12 @@ class FlushbarHelper {
 
   // Get a flushbar that shows the progress of a async computation.
   static Flushbar createLoading(
-      {@required String message,
-      @required LinearProgressIndicator linearProgressIndicator,
-      String title,
+      {required String message,
+      required LinearProgressIndicator linearProgressIndicator,
+      String? title,
       Duration duration = const Duration(seconds: 3),
-      AnimationController progressIndicatorController,
-      Color progressIndicatorBackgroundColor}) {
+      AnimationController? progressIndicatorController,
+      Color? progressIndicatorBackgroundColor}) {
     return Flushbar(
       title: title,
       message: message,
@@ -92,7 +92,7 @@ class FlushbarHelper {
   }
 
   /// Get a flushbar that shows an user input form.
-  static Flushbar createInputFlushbar({@required Form textForm}) {
+  static Flushbar createInputFlushbar({required Form textForm}) {
     return Flushbar(
       duration: null,
       userInputForm: textForm,
