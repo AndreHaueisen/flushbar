@@ -16,9 +16,9 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
   late Alignment _initialAlignment;
   late Alignment _endAlignment;
   bool _wasDismissedBySwipe = false;
-  late Timer _timer;
+  Timer? _timer;
   T? _result;
-  late FlushbarStatus currentStatus;
+  FlushbarStatus? currentStatus;
 
   FlushbarRoute({
     required this.flushbar,
@@ -377,8 +377,8 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
 
   void _configureTimer() {
     if (flushbar.duration != null) {
-      if (_timer != null && _timer.isActive) {
-        _timer.cancel();
+      if (_timer != null && _timer!.isActive) {
+        _timer?.cancel();
       }
       _timer = Timer(flushbar.duration!, () {
         if (this.isCurrent) {
@@ -389,14 +389,14 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
       });
     } else {
       if (_timer != null) {
-        _timer.cancel();
+        _timer?.cancel();
       }
     }
   }
 
   void _cancelTimer() {
-    if (_timer != null && _timer.isActive) {
-      _timer.cancel();
+    if (_timer != null && _timer!.isActive) {
+      _timer?.cancel();
     }
   }
 
